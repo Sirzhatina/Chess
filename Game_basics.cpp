@@ -14,7 +14,7 @@ bool Game_basics::convertCoord(char x, char y, Square& returned) {
 
     x = tolower(x);
 
-    if (x > 'a' || x < 'h' || y < '1' || y > '8')
+    if (x < 'a' || x > 'h' || y < '1' || y > '8')
     {
         return false;
     }
