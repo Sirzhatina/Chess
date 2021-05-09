@@ -14,6 +14,7 @@ class Game_basics {
 public:
     static int run();
     static void play();
+    static void draw();
 };
 
 
