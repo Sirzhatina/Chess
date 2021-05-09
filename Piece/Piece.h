@@ -5,32 +5,26 @@
 #ifndef CHESS_PIECE_H
 #define CHESS_PIECE_H
 
-enum class Horizontal { A = 1, B, C, D, E, F, G, H };
-enum class Vertical { one = 1, two, three, four, five, six, seven, eight };
-
-struct Coordinates {
-    Horizontal x;
-    Vertical y;
-};
+#include "..\Square.h"
 
 
 class Piece {
-    Coordinates coord;
+    Square coord;
 public:
-    explicit Piece(Coordinates c);
+    explicit Piece(Square c);
 
     virtual ~Piece() = 0;
 
     virtual void Move();
 
-    virtual Coordinates getCoord() const;
+    virtual Square getCoord() const;
 };
 
 class Pawn: public Piece {
 
     bool firstMove = true;
 public:
-    Pawn(Coordinates c);
+    Pawn(Square c);
 
     void Move() final;
 };
@@ -38,27 +32,27 @@ public:
 
 class Knight: public Piece {
 public:
-    explicit Knight(Coordinates c);
+    explicit Knight(Square c);
 };
 
 class Bishop: public Piece {
 public:
-    explicit Bishop(Coordinates c);
+    explicit Bishop(Square c);
 };
 
 class Rook: public Piece {
 public:
-    explicit Rook(Coordinates c);
+    explicit Rook(Square c);
 };
 
 class Queen: public Piece {
 public:
-    explicit Queen(Coordinates c);
+    explicit Queen(Square c);
 };
 
 class King: public Piece {
 public:
-    explicit King(Coordinates c);
+    explicit King(Square c);
 };
 
 

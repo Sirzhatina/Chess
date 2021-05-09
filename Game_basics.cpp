@@ -6,62 +6,21 @@
 #include "Player.h"
 #include <iostream>
 #include <memory>
+#include <cctype>
 
-bool Game_basics::convertCoord(char x, char y, Coordinates& returned) {
+bool Game_basics::convertCoord(char x, char y, Square& returned) {
     Horizontal tempX;
     Vertical tempY;
 
-    switch (x) {
-        case 'a':
-        case 'A': tempX = Horizontal::A;
-            break;
-        case 'b':
-        case 'B': tempX = Horizontal::B;
-            break;
-        case 'c':
-        case 'C': tempX = Horizontal::C;
-            break;
-        case 'd':
-        case 'D': tempX = Horizontal::D;
-            break;
-        case 'e':
-        case 'E': tempX = Horizontal::E;
-            break;
-        case 'f':
-        case 'F': tempX = Horizontal::F;
-            break;
-        case 'g':
-        case 'G': tempX = Horizontal::G;
-            break;
-        case 'h':
-        case 'H': tempX = Horizontal::H;
-            break;
-        default:
-            return false;
-    }
-    switch (y) {
-        case '1': tempY = Vertical::one;
-            break;
-        case '2': tempY = Vertical::two;
-            break;
-        case '3': tempY = Vertical::three;
-            break;
-        case '4': tempY = Vertical::four;
-            break;
-        case '5': tempY = Vertical::five;
-            break;
-        case '6': tempY = Vertical::six;
-            break;
-        case '7': tempY = Vertical::seven;
-            break;
-        case '8': tempY = Vertical::eight;
-            break;
-        default:
-            return false;
+    x = tolower(x);
+
+    if (x < 'a' || x > 'h' || y < '1' || y > '8')
+    {
+        return false;
     }
 
-    returned.x = tempX;
-    returned.y = tempY;
+    returned.x = static_cast<Horizontal>(x - 'a');
+    returned.y = static_cast<Vertical>(y - '0');
 
     return true;
 }
@@ -97,7 +56,7 @@ void Game_basics::play() {
     char xFrom, yFrom;
     char xTo, yTo;
 
-    Coordinates from, to;
+    Square from, to;
 
     while (!white->isCheckMate() && !black->isCheckMate()) {
 

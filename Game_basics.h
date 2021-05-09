@@ -6,9 +6,10 @@
 #define CHESS_GAME_BASICS_H
 
 #include "Piece/Piece.h"
+#include "Square.h"
 
 class Game_basics {
-    static bool convertCoord(char x, char y, Coordinates& returned);
+    static bool convertCoord(char x, char y, Square& returned);
 
 public:
     static int run();

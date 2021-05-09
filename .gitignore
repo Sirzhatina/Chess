@@ -1,0 +1,9 @@
+# that .gitignore modified: https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
+
+# User-specific stuff
+.idea/workspace.xml
+.idea/misc.xml
+.idea/modules.xml
+
+# CMake
+cmake-build-debug/
