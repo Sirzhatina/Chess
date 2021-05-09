@@ -25,7 +25,9 @@ bool Game_basics::convertCoord(char x, char y, Square& returned) {
     return true;
 }
 
-int Game_basics::run() {
+int Game_basics::run()
+{
+    system("cls");
 
     char choice;
     while (true) {
