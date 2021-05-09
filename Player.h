@@ -23,14 +23,14 @@ class Player {
     bool isDefeated = false;
 
 
-    std::unique_ptr<Pawn> pawn[PAWNS];
+    std::shared_ptr<Pawn> pawn[PAWNS];
 
-    std::unique_ptr<Knight> knight[PAIR_PIECES];
-    std::unique_ptr<Bishop> bishop[PAIR_PIECES];
-    std::unique_ptr<Rook> rook[PAIR_PIECES];
+    std::shared_ptr<Knight> knight[PAIR_PIECES];
+    std::shared_ptr<Bishop> bishop[PAIR_PIECES];
+    std::shared_ptr<Rook> rook[PAIR_PIECES];
 
-    std::unique_ptr<Queen> queen;
-    std::unique_ptr<King> king;
+    std::shared_ptr<Queen> queen;
+    std::shared_ptr<King> king;
 
 public:
     Player(color c);
