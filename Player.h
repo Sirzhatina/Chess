@@ -6,8 +6,10 @@
 #define CHESS_PLAYER_H
 
 #include <memory>
+#include <array>
 #include "Piece/Piece.h"
 #include "Game_basics.h"
+#include "Square.h"
 
 class Player {
     friend void Game_basics::play();
@@ -36,7 +38,7 @@ public:
     Player(color c);
 
 
-    bool Move(Coordinates from, Coordinates to);
+    bool Move(Square from, Square to);
 
     bool isUnderCheck() const { return isChecked; }
     bool isCheckMate() const { return isDefeated; }
