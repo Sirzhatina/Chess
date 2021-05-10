@@ -41,7 +41,6 @@ void Game_basics::play() {
 
     char xFrom, yFrom;
     char xTo, yTo;
-
     Square from, to;
 
     while (!white->isCheckMate() && !black->isCheckMate())
@@ -52,8 +51,8 @@ void Game_basics::play() {
         std::cout << "To: ";
         std::cin.get(xTo).get(yTo);
 
-        Square::convertCoord(xFrom, yFrom, from);
-        Square::convertCoord(xTo, yTo, to);
+        from.convertCoord(xFrom, yFrom);
+        to.convertCoord(xTo, yTo);
 
         if (whiteMove)
         {
