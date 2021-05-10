@@ -4,26 +4,9 @@
 
 #include "Game_basics.h"
 #include "Player.h"
+#include "Square.h"
 #include <iostream>
 #include <memory>
-#include <cctype>
-
-bool Game_basics::convertCoord(char x, char y, Square& returned) {
-    Horizontal tempX;
-    Vertical tempY;
-
-    x = tolower(x);
-
-    if (x < 'a' || x > 'h' || y < '1' || y > '8')
-    {
-        return false;
-    }
-
-    returned.x = static_cast<Horizontal>(x - 'a');
-    returned.y = static_cast<Vertical>(y - '0');
-
-    return true;
-}
 
 int Game_basics::run()
 {
@@ -35,7 +18,8 @@ int Game_basics::run()
                      "2 -- quit";
         (std::cin >> choice).get();
 
-        switch (choice) {
+        switch (choice)
+        {
             case '1': play();
                 break;
             case '2':
@@ -60,21 +44,21 @@ void Game_basics::play() {
 
     Square from, to;
 
-    while (!white->isCheckMate() && !black->isCheckMate()) {
+    while (!white->isCheckMate() && !black->isCheckMate())
+    {
+        std::cout << "From: ";
+        std::cin.get(xFrom).get(yFrom);
 
+        std::cout << "To: ";
+        std::cin.get(xTo).get(yTo);
 
-        if (whiteMove) {
+        Square::convertCoord(xFrom, yFrom, from);
+        Square::convertCoord(xTo, yTo, to);
 
-            std::cout << "From: ";
-            std::cin.get(xFrom).get(yFrom);
-
-            std::cout << "To: ";
-            std::cin.get(xTo).get(yTo);
-
-            convertCoord(xFrom, yFrom, from);
-            convertCoord(xTo, yTo, to);
-
-            if (!white->Move(from, to)) {
+        if (whiteMove)
+        {
+            if (!white->Move(from, to))
+            {
                 std::cout << "Wrong move\n";
                 continue;
             }

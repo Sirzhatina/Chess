@@ -18,6 +18,7 @@ class Square {
 public:
     Square(Horizontal X, Vertical Y, std::shared_ptr<Piece> p = nullptr): x(X), y(Y), piece(std::move(p)) { }
 
+    static bool convertCoord(char x, char y, Square& returned);
 };
 
 
