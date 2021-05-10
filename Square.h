@@ -7,18 +7,20 @@
 
 #include <memory>
 
-enum class Horizontal { A, B, C, D, E, F, G, H };
-enum class Vertical { one, two, three, four, five, six, seven, eight };
+enum class Horizontal { NULLPOS, A, B, C, D, E, F, G, H };
+enum class Vertical { NULLPOS, one, two, three, four, five, six, seven, eight };
 
 class Piece;
 class Square {
-    Horizontal x;
-    Vertical y;
-    std::shared_ptr<Piece> piece;
+    Horizontal x = Horizontal::NULLPOS;
+    Vertical y = Vertical::NULLPOS;
+    std::shared_ptr<Piece> piece = nullptr;
+
 public:
+    Square() = default;
     Square(Horizontal X, Vertical Y, std::shared_ptr<Piece> p = nullptr): x(X), y(Y), piece(std::move(p)) { }
 
-    static bool convertCoord(char x, char y, Square& returned);
+    bool convertCoord(char horiz, char vert);
 };
 
 

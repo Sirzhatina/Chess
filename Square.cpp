@@ -6,19 +6,16 @@
 #include <cctype>
 
 
-bool Square::convertCoord(char x, char y, Square& returned) {
-    Horizontal tempX;
-    Vertical tempY;
+bool Square::convertCoord(char horiz, char vert)
+{
+    horiz = tolower(horiz);
 
-    x = tolower(x);
-
-    if (x < 'a' || x > 'h' || y < '1' || y > '8')
+    if (horiz < 'a' || horiz > 'h' || vert < '1' || vert > '8')
     {
         return false;
     }
-
-    returned.x = static_cast<Horizontal>(x - 'a');
-    returned.y = static_cast<Vertical>(y - '0');
+    this->x = static_cast<Horizontal>(horiz - 'a' + 1);
+    this->y = static_cast<Vertical>(vert - '1' + 1);
 
     return true;
 }
