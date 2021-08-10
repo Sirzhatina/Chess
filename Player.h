@@ -6,47 +6,41 @@
 #define CHESS_PLAYER_H
 
 #include <memory>
-#include <array>
+#include "Traits.h"
 #include "Piece/Piece.h"
-#include "Game_basics.h"
-#include "Square.h"
 
 class Player {
-    friend void Game_basics::play();
-
-    enum class color { BLACK, WHITE };
 
     static constexpr auto PAWNS = 8;
     static constexpr auto PAIR_PIECES = 2;
 
-    color pieceClr;
+    Color pieceClr;
 
-    bool isChecked = false;
-    bool isDefeated = false;
+    bool check{ false };
+    bool checkmate{ false };
 
+    Piece* pawn[PAWNS];
 
-    std::shared_ptr<Pawn> pawn[PAWNS];
+    Piece* knight[PAIR_PIECES];
+    Piece* bishop[PAIR_PIECES];
+    Piece* rook[PAIR_PIECES];
 
-    std::shared_ptr<Knight> knight[PAIR_PIECES];
-    std::shared_ptr<Bishop> bishop[PAIR_PIECES];
-    std::shared_ptr<Rook> rook[PAIR_PIECES];
-
-    std::shared_ptr<Queen> queen;
-    std::shared_ptr<King> king;
+    Piece* queen;
+    Piece* king;
 
 public:
-    Player(color c);
-
+    Player(Color c);
 
     bool Move(Square from, Square to);
 
-    bool isUnderCheck() const { return isChecked; }
-    bool isCheckMate() const { return isDefeated; }
+    Color getColor() const { return pieceClr; }
+
+    bool isCheck() const { return check; }
+    bool isCheckmate() const { return checkmate; }
 
 
     Player(const Player&) = delete;
     Player& operator=(const Player&) = delete;
 };
-
 
 #endif //CHESS_PLAYER_H
