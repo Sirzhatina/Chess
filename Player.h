@@ -8,6 +8,7 @@
 #include <memory>
 #include "Traits.h"
 #include "Piece/Piece.h"
+#include "Board.h"
 
 class Player {
 
@@ -29,7 +30,7 @@ class Player {
     Piece* king;
 
 public:
-    Player(Color c);
+    Player(Board& b, Color c);
 
     bool move(Square from, Square to);
 
