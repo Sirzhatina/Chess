@@ -15,7 +15,7 @@ class Piece {
     Player* player;
     Color col;
 public:
-    explicit Piece(Player* p, Color c, Square* c);
+    explicit Piece(Player* p, Color c, Square* sqr);
 
     virtual ~Piece() = 0;
 
