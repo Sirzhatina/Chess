@@ -6,12 +6,16 @@
 #define CHESS_PIECE_H
 
 #include "..\Square.h"
+#include "..\Traits.h"
 
+class Player;
 
 class Piece {
-    Square coord;
+    Square* currentSqr;
+    Player* player;
+    Color col;
 public:
-    explicit Piece(Square c);
+    explicit Piece(Player* p, Square* c);
 
     virtual ~Piece() = 0;
 
@@ -21,8 +25,7 @@ public:
 };
 
 class Pawn: public Piece {
-
-    bool firstMove = true;
+    bool firstMove{ true };
 public:
     Pawn(Square c);
 
