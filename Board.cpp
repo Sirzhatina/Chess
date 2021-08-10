@@ -23,3 +23,14 @@ Board::Board()
         vert--;
     }
 }
+
+Board::~Board()
+{
+    for (auto& arr: board)
+    {
+        for (auto& sqr: arr)
+        {
+            delete sqr;
+        }
+    }
+}
