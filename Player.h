@@ -31,7 +31,7 @@ class Player {
 public:
     Player(Color c);
 
-    bool Move(Square from, Square to);
+    bool move(Square from, Square to);
 
     Color getColor() const { return pieceClr; }
 
