@@ -7,20 +7,16 @@
 
 Board::Board()
 {
-    int hor = 1;
-    int vert = 8;
     bool color = false;
 
-    for (auto& arr: board)
+    for (int i = 0; i < board.size(); i++)
     {
-        for (auto& sqr: arr)
+        for (int j = 0; j < board[i].size(); j++)
         {
-            sqr = new Square(Horizontal(hor++), Vertical(vert), Color(color));
+            board[i][j] = new Square(Horizontal(j), Vertical((SIZE - 1) - i), Color(color));
             color = !color;
         }
         color = !color;
-        hor = 1;
-        vert--;
     }
 }
 
