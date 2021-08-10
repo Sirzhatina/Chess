@@ -10,4 +10,5 @@ add_executable(
         Player.cpp
         Game_basics.cpp
         Square.cpp
+        Board.cpp
 )
