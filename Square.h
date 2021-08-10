@@ -5,22 +5,22 @@
 #ifndef CHESS_SQUARE_H
 #define CHESS_SQUARE_H
 
-#include <memory>
-
-enum class Horizontal { NULLPOS, A, B, C, D, E, F, G, H };
-enum class Vertical { NULLPOS, one, two, three, four, five, six, seven, eight };
+#include "Traits.h"
 
 class Piece;
-class Square {
-    Horizontal x = Horizontal::NULLPOS;
-    Vertical y = Vertical::NULLPOS;
-    std::shared_ptr<Piece> piece = nullptr;
-
+class Square
+{
+    Coordinates coord;
+    Color color;
+    Piece* piece;
 public:
-    Square() = default;
-    Square(Horizontal X, Vertical Y, std::shared_ptr<Piece> p = nullptr): x(X), y(Y), piece(std::move(p)) { }
+    Square(Horizontal X, Vertical Y, Color c, Piece* p = nullptr)
+    :
+    coord{ X, Y }
+    , color{ c }
+    , piece{ p } { }
 
-    bool convertCoord(char horiz, char vert);
+    void setPiece(Piece* p) { piece = p; }
 };
 
 
