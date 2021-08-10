@@ -19,6 +19,8 @@ public:
     Board();
     ~Board();
     void setPieces(const Player& pl);
+
+    const Square* getSquare(int i, int j) { return board[i][j]; }
 };
 
 #endif //CHESS_BOARD_H
