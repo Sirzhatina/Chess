@@ -6,12 +6,14 @@
 #define CHESS_GAME_BASICS_H
 
 #include "Piece/Piece.h"
+#include "Square.h"
+#include <array>
 
 class Game_basics {
+    static void draw();
+    static void play();
 public:
     static int run();
-    static void play();
-    static void draw();
 };
 
 

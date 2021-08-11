@@ -4,16 +4,18 @@
 
 #include "Game_basics.h"
 #include "Player.h"
-#include "Square.h"
+#include "Board.h"
 #include <iostream>
 #include <memory>
 
+
 int Game_basics::run()
 {
-    system("cls");
-
     char choice;
-    while (true) {
+    while (true)
+    {
+        system("cls");
+
         std::cout << "1 -- play\n"
                      "2 -- quit";
         (std::cin >> choice).get();
@@ -32,8 +34,8 @@ int Game_basics::run()
     }
 }
 
-void Game_basics::play() {
-
+void Game_basics::play()
+{
     std::unique_ptr<Player> white = std::make_unique<Player>(Player::color::WHITE);
     std::unique_ptr<Player> black = std::make_unique<Player>(Player::color::BLACK);
 
@@ -51,8 +53,10 @@ void Game_basics::play() {
         std::cout << "To: ";
         std::cin.get(xTo).get(yTo);
 
-        from.convertCoord(xFrom, yFrom);
-        to.convertCoord(xTo, yTo);
+        if (!from.setCoord(xFrom, yFrom) || !to.setCoord(xTo, yTo))
+        {
+            continue;
+        }
 
         if (whiteMove)
         {
