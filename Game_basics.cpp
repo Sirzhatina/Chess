@@ -5,8 +5,8 @@
 #include "Game_basics.h"
 #include "Player.h"
 #include "Board.h"
+#include "Traits.h"
 #include <iostream>
-#include <memory>
 
 
 int Game_basics::run()
@@ -36,16 +36,8 @@ int Game_basics::run()
 
 void Game_basics::play()
 {
-    std::unique_ptr<Player> white = std::make_unique<Player>(Player::color::WHITE);
-    std::unique_ptr<Player> black = std::make_unique<Player>(Player::color::BLACK);
 
-    bool whiteMove = true;
-
-    char xFrom, yFrom;
-    char xTo, yTo;
-    Square from, to;
-
-    while (!white->isCheckMate() && !black->isCheckMate())
+    while (!white->isCheckmate() && !black->isCheckmate())
     {
         std::cout << "From: ";
         std::cin.get(xFrom).get(yFrom);
