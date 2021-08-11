@@ -15,7 +15,11 @@ class Gameplay
 
     bool whiteMove{ true };
 
-    bool isPossibleMove(Piece* who, Traits::Coordinates from, Traits::Coordinates to) const;
+    bool isPossibleMove(Traits::Coordinates from, Traits::Coordinates to) const;
+    static Traits::Coordinates convertCoordinates(int x, int y) 
+    { 
+        return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y } }; 
+    }
 public:
     Gameplay() = default;
 
