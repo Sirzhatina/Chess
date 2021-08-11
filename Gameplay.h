@@ -15,8 +15,11 @@ class Gameplay
 
     bool whiteMove{ true };
 
-    bool isPossibleMove() const;
-    bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
+    bool isPossibleMove(Piece* who, Traits::Coordinates from, Traits::Coordinates to) const;
 public:
     Gameplay() = default;
+
+    bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
+
+    int start();
 };
