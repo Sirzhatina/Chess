@@ -10,17 +10,18 @@
 class Piece;
 class Square
 {
-    Coordinates coord;
-    Color color;
+    const Traits::Coordinates coord;
+    const Traits::Color color;
     Piece* piece;
 public:
-    Square(Horizontal X, Vertical Y, Color c, Piece* p = nullptr)
-    :
-    coord{ X, Y }
+    Square(Traits::Horizontal X, Traits::Vertical Y, Traits::Color c, Piece* p = nullptr)
+    : coord{ X, Y }
     , color{ c }
-    , piece{ p } { }
+    , piece{ p }
+    { }
 
     void setPiece(Piece* p) { piece = p; }
+    void removePiece() { piece = nullptr; }
 };
 
 
