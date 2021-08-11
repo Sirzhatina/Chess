@@ -5,17 +5,17 @@
 #ifndef CHESS_PIECE_H
 #define CHESS_PIECE_H
 
-#include "..\Square.h"
 #include "..\Traits.h"
 
+class Square;
 class Player;
 
 class Piece {
+    const Player* player;
+    const Traits::Color color;
     Square* currentSqr;
-    Player* player;
-    Color col;
 public:
-    explicit Piece(Player* p, Color c, Square* sqr);
+    Piece(const Player* p, Traits::Color c, Square* sqr);
 
     virtual ~Piece() = 0;
 
@@ -27,7 +27,7 @@ public:
 class Pawn: public Piece {
     bool firstMove{ true };
 public:
-    Pawn(Square c);
+    Pawn(Player* p, Traits::Color c, Square* sqr): Piece(p, c, sqr) { }
 
     void Move() final;
 };
@@ -35,27 +35,27 @@ public:
 
 class Knight: public Piece {
 public:
-    explicit Knight(Square c);
+    Knight(Player* p, Traits::Color c, Square* sqr);
 };
 
 class Bishop: public Piece {
 public:
-    explicit Bishop(Square c);
+    Bishop(Player* p, Traits::Color c, Square* sqr);
 };
 
 class Rook: public Piece {
 public:
-    explicit Rook(Square c);
+    Rook(Player* , Traits::Color c, Square* sqr);
 };
 
 class Queen: public Piece {
 public:
-    explicit Queen(Square c);
+    Queen(Player* p, Traits::Color c, Square* sqr);
 };
 
 class King: public Piece {
 public:
-    explicit King(Square c);
+    King(Player* p, Traits::Color c, Square* sqr);
 };
 
 
