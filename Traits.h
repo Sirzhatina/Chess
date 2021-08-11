@@ -4,12 +4,22 @@
 
 #ifndef CHESS_TRAITS_H
 #define CHESS_TRAITS_H
+namespace Traits
+{
+enum class Horizontal {
+    A, B, C, D, E, F, G, H
+};
+enum class Vertical {
+    one, two, three, four, five, six, seven, eight
+};
 
-enum class Horizontal { A, B, C, D, E, F, G, H };
-enum class Vertical { one, two, three, four, five, six, seven, eight };
+struct Coordinates {
+    Horizontal h;
+    Vertical v;
+};
 
-struct Coordinates { Horizontal h; Vertical v; };
-
-enum class Color { BLACK, WHITE };
-
+enum class Color {
+    BLACK, WHITE
+};
+}
 #endif //CHESS_TRAITS_H
