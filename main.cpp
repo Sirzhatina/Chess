@@ -1,6 +1,7 @@
 #include "Game_basics.h"
 
-int main() {
+int main()
+{
     return Game_basics::run();
 }
 
