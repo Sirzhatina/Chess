@@ -16,14 +16,13 @@ class Gameplay
     bool whiteMove{ true };
 
     bool isPossibleMove(Traits::Coordinates from, Traits::Coordinates to) const;
+    bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
     static Traits::Coordinates convertCoordinates(int x, int y) 
     { 
         return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y } }; 
     }
 public:
     Gameplay() = default;
-
-    bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
 
     int start();
 };
