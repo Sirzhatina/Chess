@@ -5,7 +5,6 @@
 #ifndef CHESS_PLAYER_H
 #define CHESS_PLAYER_H
 
-#include <memory>
 #include "Traits.h"
 
 class Board;
