@@ -7,18 +7,21 @@
 
 #include <memory>
 #include "Traits.h"
-#include "Piece/Piece.h"
-#include "Board.h"
+
+class Board;
+class Piece;
 
 class Player {
 
     static constexpr auto PAWNS = 8;
     static constexpr auto PAIR_PIECES = 2;
 
-    Color pieceClr;
+    const Traits::Color color;
 
     bool check{ false };
     bool checkmate{ false };
+
+    Board* board;
 
     Piece* pawn[PAWNS];
 
@@ -30,11 +33,11 @@ class Player {
     Piece* king;
 
 public:
-    Player(Board& b, Color c);
+    Player(Board* b, Traits::Color c);
 
-    bool move(Square from, Square to);
+    bool move(Traits::Coordinates from, Traits::Coordinates to);
 
-    Color getColor() const { return pieceClr; }
+    Traits::Color getColor() const { return color; }
 
     bool isCheck() const { return check; }
     bool isCheckmate() const { return checkmate; }

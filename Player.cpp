@@ -3,31 +3,40 @@
 //
 
 #include "Player.h"
+#include "Piece\Piece.h"
+#include "Board.h"
 #include "Square.h"
 
 
-Player::Player(color c): pieceClr(c) {
+Player::Player(Board* b, Traits::Color c)
+: board(b)
+, color(c)
+{
+    board->addPlayer(this);
 
+    Traits::Vertical startOfPawns = color == Traits::Color::WHITE ? Traits::Vertical::two : Traits::Vertical::seven;
+    Traits::Vertical startOfOthers = color == Traits::Color::WHITE ? Traits::Vertical::one : Traits::Vertical::eight;
 
-    Vertical startOfPawns = pieceClr == color::WHITE ? Vertical::two : Vertical::seven;
-    Vertical startOfOthers = pieceClr == color::WHITE ? Vertical::one : Vertical::eight;
-
-    unsigned alongLine = 1;
-    for (auto& pwn: pawn) {
-        pwn = std::make_shared<Pawn>( Square{ Horizontal(alongLine++), startOfPawns, pwn } );
+    unsigned alongLine = 0;
+    for (auto& pwn: pawn)
+    {
+        pwn = new Pawn{this, color, &board->getSquare(Traits::Horizontal(alongLine++), startOfPawns) };
     }
 
     alongLine = 0;
-    for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++, alongLine += 6, inc *= -1) {
-
-        rook[i] = std::make_shared<Rook>( Square{ Horizontal(alongLine += inc), startOfOthers, rook[i] } );
-        knight[i] = std::make_shared<Knight>( Square{ Horizontal(alongLine += inc), startOfOthers, knight[i] } );
-        bishop[i] = std::make_shared<Bishop>( Square{ Horizontal(alongLine += inc), startOfOthers, bishop[i] } );
+    for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++, alongLine += 6, inc *= -1)
+    {
+        rook[i] = new Rook{ this, color, &board->getSquare(Traits::Horizontal(alongLine += inc), startOfOthers) };
+        knight[i] = new Knight{ this, color, &board->getSquare(Traits::Horizontal(alongLine += inc), startOfOthers) };
+        bishop[i] = new Bishop{ this, color, &board->getSquare(Traits::Horizontal(alongLine += inc), startOfOthers) };
     }
 
     // Queen prefers corresponding color
-    queen = std::make_shared<Queen>( Square{ Horizontal::D, startOfOthers, queen } );
-    king = std::make_shared<King>( Square{ Horizontal::E, startOfOthers, king } );
+    queen = new Queen{ this, color, &board->getSquare(Traits::Horizontal::D, startOfOthers) };
+    king = new King{ this, color, &board->getSquare(Traits::Horizontal::E, startOfOthers) };
+}
 
+bool Player::move(Traits::Coordinates from, Traits::Coordinates to)
+{
 
 }
