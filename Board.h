@@ -22,8 +22,8 @@ public:
     ~Board();
 
     void addPlayer(Player* pl);
-    inline void setPiece(Piece* p, Traits::Horizontal x, Traits::Vertical y);
-    inline Square& getSquare(Traits::Horizontal x, Traits::Vertical y);
+    inline void setPiece(Piece* p, Traits::Coordinates coord);
+    inline Square& getSquare(Traits::Coordinates coord);
 };
 
 #endif //CHESS_BOARD_H

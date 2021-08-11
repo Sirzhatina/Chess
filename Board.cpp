@@ -18,9 +18,9 @@ Board::Board()
         {
             board[i][j] = new Square
                     {
-                    Traits::Horizontal{ j },
-                    Traits::Vertical{ (SIZE - 1) - i },
-                    Traits::Color{ color }
+                        Traits::Horizontal{ j },
+                        Traits::Vertical{ (SIZE - 1) - i },
+                        Traits::Color{ color }
                     };
             color = !color;
         }
@@ -55,6 +55,6 @@ void Board::addPlayer(Player *pl)
     }
 }
 
-void Board::setPiece(Piece *p, Traits::Horizontal x, Traits::Vertical y) { board[SIZE - int(y) - 1][int(x)]->setPiece(p); }
+void Board::setPiece(Piece *p, Traits::Coordinates coord) { board[SIZE - int(coord.v) - 1][int(coord.h)]->setPiece(p); }
 
-Square& Board::getSquare(Traits::Horizontal x, Traits::Vertical y) { return *board[SIZE - int(y)][int(x)]; }
+Square& Board::getSquare(Traits::Coordinates coord) { return *board[SIZE - int(coord.v)][int(coord.h)]; }
