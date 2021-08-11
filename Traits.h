@@ -4,6 +4,7 @@
 
 #ifndef CHESS_TRAITS_H
 #define CHESS_TRAITS_H
+
 namespace Traits
 {
 enum class Horizontal {
@@ -22,4 +23,5 @@ enum class Color {
     BLACK, WHITE
 };
 }
+
 #endif //CHESS_TRAITS_H
