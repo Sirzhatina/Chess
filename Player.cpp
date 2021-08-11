@@ -20,20 +20,20 @@ Player::Player(Board* b, Traits::Color c)
     unsigned alongLine = 0;
     for (auto& pwn: pawn)
     {
-        pwn = new Pawn{this, color, &board->getSquare(Traits::Horizontal(alongLine++), startOfPawns) };
+        pwn = new Pawn{this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal(alongLine++), startOfPawns }) };
     }
 
     alongLine = 0;
     for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++, alongLine += 6, inc *= -1)
     {
-        rook[i] = new Rook{ this, color, &board->getSquare(Traits::Horizontal(alongLine += inc), startOfOthers) };
-        knight[i] = new Knight{ this, color, &board->getSquare(Traits::Horizontal(alongLine += inc), startOfOthers) };
-        bishop[i] = new Bishop{ this, color, &board->getSquare(Traits::Horizontal(alongLine += inc), startOfOthers) };
+        rook[i] = new Rook{ this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal(alongLine += inc), startOfOthers }) };
+        knight[i] = new Knight{ this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal(alongLine += inc), startOfOthers }) };
+        bishop[i] = new Bishop{ this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal(alongLine += inc), startOfOthers }) };
     }
 
     // Queen prefers corresponding color
-    queen = new Queen{ this, color, &board->getSquare(Traits::Horizontal::D, startOfOthers) };
-    king = new King{ this, color, &board->getSquare(Traits::Horizontal::E, startOfOthers) };
+    queen = new Queen{ this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal::D, startOfOthers }) };
+    king = new King{ this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal::E, startOfOthers }) };
 }
 
 bool Player::move(Traits::Coordinates from, Traits::Coordinates to)
