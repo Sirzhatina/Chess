@@ -7,20 +7,23 @@
 
 #include <array>
 #include "Traits.h"
-#include "Square.h"
 
 class Player;
+class Piece;
+class Square;
 
 class Board {
     static constexpr auto SIZE = 8;
-
     std::array<std::array<Square*, SIZE>, SIZE> board;
+
+    Player* players[2]{ nullptr, nullptr };
 public:
     Board();
     ~Board();
-    void setPieces(const Player& pl);
 
-    const Square* getSquare(int i, int j) { return board[i][j]; }
+    void addPlayer(Player* pl);
+    inline void setPiece(Piece* p, Traits::Horizontal x, Traits::Vertical y);
+    inline Square& getSquare(Traits::Horizontal x, Traits::Vertical y);
 };
 
 #endif //CHESS_BOARD_H
