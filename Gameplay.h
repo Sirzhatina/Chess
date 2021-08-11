@@ -16,8 +16,7 @@ class Gameplay
     bool whiteMove{ true };
 
     bool isPossibleMove() const;
+    bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
 public:
     Gameplay() = default;
-
-    bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
 };
