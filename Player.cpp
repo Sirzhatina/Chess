@@ -39,4 +39,10 @@ Player::Player(Board* b, Traits::Color c)
 void Player::move(Traits::Coordinates from, Traits::Coordinates to)
 {
     auto fromSquare = &board->getSquare(from);
+    auto piece = &fromSquare->getPiece();
+
+    if (this == piece->getPlayer())
+    {
+        piece->move(to);
+    }
 }
