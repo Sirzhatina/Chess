@@ -20,6 +20,7 @@ public:
     , piece{ p }
     { }
 
+    Piece& getPiece() { return *piece; }
     void setPiece(Piece* p) { piece = p; }
     void removePiece() { piece = nullptr; }
 };
