@@ -34,7 +34,7 @@ class Player {
 public:
     Player(Board* b, Traits::Color c);
 
-    bool move(Traits::Coordinates from, Traits::Coordinates to);
+    void move(Traits::Coordinates from, Traits::Coordinates to);
 
     Traits::Color getColor() const { return color; }
 

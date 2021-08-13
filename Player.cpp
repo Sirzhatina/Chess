@@ -36,7 +36,7 @@ Player::Player(Board* b, Traits::Color c)
     king = new King{ this, color, &board->getSquare(Traits::Coordinates{ Traits::Horizontal::E, startOfOthers }) };
 }
 
-bool Player::move(Traits::Coordinates from, Traits::Coordinates to)
+void Player::move(Traits::Coordinates from, Traits::Coordinates to)
 {
-
+    auto fromSquare = &board->getSquare(from);
 }
