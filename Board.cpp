@@ -47,6 +47,10 @@ void Board::addPlayer(Player *pl)
     }
     else if (players[1])
     {
+        if (players[0]->getColor() == pl->getColor())
+        {
+            throw std::runtime_error{ "Players have the same color" };
+        }
         players[1] = pl;
     }
     else
