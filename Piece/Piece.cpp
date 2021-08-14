@@ -3,7 +3,6 @@
 //
 
 #include "Piece.h"
-#include "..\Player.h"
 
 
 Piece::Piece(const Player* p, Traits::Color c, Square* sqr)
