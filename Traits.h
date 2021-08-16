@@ -5,8 +5,13 @@
 #ifndef CHESS_TRAITS_H
 #define CHESS_TRAITS_H
 
+class Piece;
+
 namespace Traits
 {
+
+constexpr auto boardSize = 8;
+
 enum class Horizontal {
     A, B, C, D, E, F, G, H
 };
@@ -17,6 +22,12 @@ enum class Vertical {
 struct Coordinates {
     Horizontal h;
     Vertical v;
+};
+
+struct Square
+{
+    const Coordinates coord;
+    Piece* piece{ nullptr };
 };
 
 enum class Color {
