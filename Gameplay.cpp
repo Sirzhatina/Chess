@@ -1,5 +1,6 @@
 #include "Gameplay.h"
 #include <iostream>
+#include <cstdlib>
 
 
 bool Gameplay::isPossibleMove(Traits::Coordinates from, Traits::Coordinates to) const
@@ -19,7 +20,7 @@ int Gameplay::start()
 
     while (showGoesOn())
     {
-        std::cout << "Enter coordinates to move from and to: ";
+        std::cout << "Enter coordinates to move from and to (e.g. e2 e4): ";
         std::cin.get(xFrom).get(yFrom);
         std::cin.get(); // eats ' '
         std::cin.get(xTo).get(yTo);
@@ -27,9 +28,15 @@ int Gameplay::start()
         from = convertCoordinates(xFrom - 'a', yFrom - '1');
         to = convertCoordinates(xTo - 'a', yTo - '1');
 
-        if (isPossibleMove(from, to))
+        try 
         {
             moves->move(from, to);
+            std::swap(moves, notMoves);
+        }
+        catch (const std::runtime_error& err)
+        {
+            std::cout << err.what() << std::endl;
+            continue;
         }
 
         whiteMove = !whiteMove;
