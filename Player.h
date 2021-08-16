@@ -38,6 +38,10 @@ public:
 
     Traits::Color getColor() const { return color; }
 
+    Board* getBoard() const { return board; }
+
+    void setCheck(bool ch) { check = ch; }
+
     bool isCheck() const { return check; }
     bool isCheckmate() const { return checkmate; }
 
