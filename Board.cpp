@@ -6,25 +6,20 @@
 #include "Board.h"
 #include "Player.h"
 #include "Square.h"
+#include "Piece/Piece.h"
 
 
 Board::Board()
 {
-    bool color = false;
-
     for (int i = 0; i < board.size(); i++)
     {
         for (int j = 0; j < board[i].size(); j++)
         {
-            board[i][j] = new Square
+            board[i][j] = new Traits::Square
                     {
-                        Traits::Horizontal{ j },
-                        Traits::Vertical{ (SIZE - 1) - i },
-                        Traits::Color{ color }
+                        Traits::Coordinates { Traits::Horizontal{ j }, Traits::Vertical{ (Traits::boardSize - 1) - i } }
                     };
-            color = !color;
         }
-        color = !color;
     }
 }
 
@@ -59,6 +54,10 @@ void Board::addPlayer(Player *pl)
     }
 }
 
-void Board::setPiece(Piece *p, Traits::Coordinates coord) { board[SIZE - int(coord.v) - 1][int(coord.h)]->setPiece(p); }
-
-Square& Board::getSquare(Traits::Coordinates coord) { return *board[SIZE - int(coord.v)][int(coord.h)]; }
+void Board::setPiece(Piece *p, Traits::Coordinates coord)
+{
+    if (p->getPlayer() == players[0] || p->getPlayer() == players[1])
+    {
+        getSquare(coord)->piece = p;
+    }  
+}

@@ -10,11 +10,9 @@
 
 class Player;
 class Piece;
-class Square;
 
 class Board {
-    static constexpr auto SIZE = 8;
-    std::array<std::array<Square*, SIZE>, SIZE> board;
+    std::array<std::array<Traits::Square*, Traits::boardSize>, Traits::boardSize> board;
 
     Player* players[2]{ nullptr, nullptr };
 public:
@@ -22,8 +20,14 @@ public:
     ~Board();
 
     void addPlayer(Player* pl);
-    inline void setPiece(Piece* p, Traits::Coordinates coord);
-    inline Square& getSquare(Traits::Coordinates coord);
+
+    void setPiece(Piece* p, Traits::Coordinates coord);
+
+    inline const Piece* getPiece(Traits::Coordinates coord);
+    inline Traits::Square* getSquare(Traits::Coordinates coord);
 };
+
+Traits::Square* Board::getSquare(Traits::Coordinates coord) { return board[Traits::boardSize - int(coord.v) - 1][int(coord.h)]; }
+const Piece* Board::getPiece(Traits::Coordinates coord) { return board[Traits::boardSize - int(coord.v) - 1][int(coord.h)]->piece; }
 
 #endif //CHESS_BOARD_H
