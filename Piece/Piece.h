@@ -32,6 +32,7 @@ public:
     virtual bool possibleMove(Traits::Coordinates to) = 0;
 
     const Player* getPlayer() const { return player; }
+    Board* getBoard() const { return board; }
     Traits::Color getColor() const { return color; }
     Traits::Coordinates getCoord() const { return currentCoord; }
 };
