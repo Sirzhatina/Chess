@@ -12,6 +12,7 @@ std::string Piece::errMsg = "Impossible to move";
 
 Piece::Piece(const Player* p, Traits::Coordinates coord)
 : player(p)
+, board(player->getBoard())
 , color(p->getColor())
 , currentCoord(coord)
 { }

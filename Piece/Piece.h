@@ -20,6 +20,7 @@ protected:
 
 private:
     const Player* player;
+    Board* board;
     const Traits::Color color;
     Coordinates currentCoord;
 
