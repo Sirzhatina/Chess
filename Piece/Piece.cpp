@@ -42,8 +42,8 @@ bool Pawn::possibleMove(Traits::Coordinates to)
 bool Knight::possibleMove(Coordinates to)
 {
     auto from = getCoord();
-    if (!(int(from.y) - int(to.y) == std::abs(2) && int(from.x) - int(to.x) == std::abs(1)) ||
-        !(int(from.x) - int(to.x) == std::abs(2) && int(from.y) - int(to.y) == std::abs(1)))
+    if (!(std::abs(int(from.y) - int(to.y)) == 2 && std::abs(int(from.x) - int(to.x)) == 1) ||
+        !(std::abs(int(from.x) - int(to.x)) == 2 && std::abs(int(from.y) - int(to.y)) == 1))
     {
         return false;
     }
