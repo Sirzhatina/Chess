@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Piece\Piece.h"
 #include "Board.h"
-#include "Square.h"
 #include <typeinfo>
 
 
@@ -28,14 +27,14 @@ Player::Player(Board* b, Traits::Color c)
     alongLine = -1;
     for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++)
     {
-        rook[i] = new Rook{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers } };
-        board->setPiece(rook[i], Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers} );
+        rook[i] = new Rook{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        board->setPiece(rook[i], Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers} );
 
-        knight[i] = new Knight{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers } };
-        board->setPiece(knight[i], Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers });
+        knight[i] = new Knight{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        board->setPiece(knight[i], Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers });
 
-        bishop[i] = new Bishop{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers } };
-        board->setPiece(bishop[i], Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers });
+        bishop[i] = new Bishop{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        board->setPiece(bishop[i], Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers });
 
         inc *= -1;
         alongLine += 6;
