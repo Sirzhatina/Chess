@@ -21,7 +21,7 @@ Piece::Piece(const Player* p, Traits::Coordinates coord)
 bool Pawn::possibleMove(Traits::Coordinates to)
 {
     auto from = getCoord();
-    if (getPlayer()->getBoard()->getPiece(to) != nullptr)
+    if (getBoard()->getPiece(to) != nullptr)
     {
         if (getColor() != Traits::Color::WHITE && whiteAttack(from, to) ||
             getColor() != Traits::Color::BLACK && blackAttack(from, to) ||
