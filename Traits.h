@@ -20,8 +20,8 @@ enum class Vertical {
 };
 
 struct Coordinates {
-    Horizontal h;
-    Vertical v;
+    Horizontal x;
+    Vertical y;
 };
 
 struct Square

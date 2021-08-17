@@ -27,7 +27,7 @@ public:
     inline Traits::Square* getSquare(Traits::Coordinates coord);
 };
 
-Traits::Square* Board::getSquare(Traits::Coordinates coord) { return board[Traits::boardSize - int(coord.v) - 1][int(coord.h)]; }
-const Piece* Board::getPiece(Traits::Coordinates coord) { return board[Traits::boardSize - int(coord.v) - 1][int(coord.h)]->piece; }
+Traits::Square* Board::getSquare(Traits::Coordinates coord) { return board[Traits::boardSize - int(coord.y) - 1][int(coord.x)]; }
+const Piece* Board::getPiece(Traits::Coordinates coord) { return board[Traits::boardSize - int(coord.y) - 1][int(coord.x)]->piece; }
 
 #endif //CHESS_BOARD_H

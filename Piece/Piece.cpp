@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include "Piece.h"
 #include "..\Player.h"
-#include "..\Square.h"
 #include "Board.h"
 
 std::string Piece::errMsg = "Impossible to move";
@@ -30,9 +29,9 @@ bool Pawn::possibleMove(Traits::Coordinates to)
             return false;
         }
     }
-    else if (firstMove && int(to.v) - int(from.v) > std::abs(2) ||
-            int(to.v) - int(from.v) > std::abs(1)               ||
-            to.h != from.h)
+    else if (firstMove && int(to.y) - int(from.y) > std::abs(2) ||
+            int(to.y) - int(from.y) > std::abs(1)               ||
+            to.x != from.x)
     {
         return false;
     }
@@ -43,8 +42,8 @@ bool Pawn::possibleMove(Traits::Coordinates to)
 bool Knight::possibleMove(Coordinates to)
 {
     auto from = getCoord();
-    if (!(int(from.v) - int(to.v) == std::abs(2) && int(from.h) - int(to.h) == std::abs(1)) ||
-        !(int(from.h) - int(to.h) == std::abs(2) && int(from.v) - int(to.v) == std::abs(1)))
+    if (!(int(from.y) - int(to.y) == std::abs(2) && int(from.x) - int(to.x) == std::abs(1)) ||
+        !(int(from.x) - int(to.x) == std::abs(2) && int(from.y) - int(to.y) == std::abs(1)))
     {
         return false;
     }
@@ -55,7 +54,7 @@ bool Knight::possibleMove(Coordinates to)
 bool Bishop::possibleMove(Coordinates to)
 {
     auto from = getCoord();
-    if (std::abs(int(to.h) - int(from.h)) != std::abs(int(to.v) - int(from.v)))
+    if (std::abs(int(to.x) - int(from.x)) != std::abs(int(to.y) - int(from.y)))
     {
         return false;
     }
@@ -66,7 +65,7 @@ bool Bishop::possibleMove(Coordinates to)
 bool Rook::possibleMove(Coordinates to)
 {
     auto from = getCoord();
-    if (from.h != to.h && from.v != to.v)
+    if (from.x != to.x && from.y != to.y)
     {
         return false;
     }
@@ -77,8 +76,8 @@ bool Rook::possibleMove(Coordinates to)
 bool Queen::possibleMove(Coordinates to)
 {
     auto from = getCoord();
-    if (from.h != to.h && from.v != to.v ||
-        std::abs(int(to.h) - int(from.h)) != std::abs(int(to.v) - int(from.v)))
+    if (from.x != to.x && from.x != to.x ||
+        std::abs(int(to.x) - int(from.x)) != std::abs(int(to.y) - int(from.y)))
     {
         return false;
     }
@@ -89,7 +88,7 @@ bool Queen::possibleMove(Coordinates to)
 bool King::possibleMove(Coordinates to)
 {
     auto from = getCoord();
-    if (std::abs(int(to.h) - int(from.h)) > 1 || std::abs(int(to.v) - int(from.v)) > 1)
+    if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
     {
         return false;
     }

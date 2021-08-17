@@ -38,8 +38,8 @@ public:
 class Pawn: public Piece {
     bool firstMove{ true };
 
-    bool whiteAttack(Coordinates from, Coordinates to) const { return int(to.v) - int(from.v) == abs(int(to.h) - int(from.h)); }
-    bool blackAttack(Coordinates from, Coordinates to) const { return int(from.v) - int(to.v) == abs(int(to.h) - int(from.h)); }
+    bool whiteAttack(Coordinates from, Coordinates to) const { return int(to.y) - int(from.y) == abs(int(to.x) - int(from.x)); }
+    bool blackAttack(Coordinates from, Coordinates to) const { return int(from.y) - int(to.y) == abs(int(to.x) - int(from.x)); }
 public:
     Pawn(Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
