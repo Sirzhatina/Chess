@@ -40,8 +40,7 @@ public:
 class Pawn: public Piece {
     bool firstMove{ true };
 
-    bool whiteAttack(Coordinates from, Coordinates to) const { return int(to.y) - int(from.y) == 1 && std::abs(int(to.x) - int(from.x)) == 1; }
-    bool blackAttack(Coordinates from, Coordinates to) const { return int(from.y) - int(to.y) == 1 && std::abs(int(to.x) - int(from.x)) == 1; }
+    bool possibleAttack(Coordinates to) const;
 public:
     Pawn(Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 

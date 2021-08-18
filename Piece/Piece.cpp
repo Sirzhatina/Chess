@@ -21,22 +21,26 @@ Piece::Piece(const Player* p, Traits::Coordinates coord)
 bool Pawn::possibleMove(Traits::Coordinates to) const
 {
     auto from = getCoord();
-    if (getBoard()->getPiece(to) != nullptr)
+
+    if (firstMove && int(to.y) - int(from.y) > std::abs(2) ||
+        !firstMove && int(to.y) - int(from.y) > std::abs(1) ||
+        to.x != from.x)
     {
-        if (getColor() != Traits::Color::WHITE && whiteAttack(from, to) ||
-            getColor() != Traits::Color::BLACK && blackAttack(from, to) ||
-            !whiteAttack(from, to) && !blackAttack(from, to))
+        if (!possibleAttack(to))
         {
             return false;
         }
     }
-    else if (firstMove && int(to.y) - int(from.y) > std::abs(2) ||
-            int(to.y) - int(from.y) > std::abs(1)               ||
-            to.x != from.x)
-    {
-        return false;
-    }
     return true;
+}
+
+bool Pawn::possibleAttack(Coordinates to) const 
+{
+    auto from = getCoord();
+    int move = int(to.y) - int(from.y);
+    return (getColor() == Traits::Color::BLACK ? move == -1 : move == 1) && 
+                                 std::abs(int(to.x) - int(from.x)) == 1  && 
+                                    getBoard()->getPiece(to) != nullptr; 
 }
 
 bool Knight::possibleMove(Coordinates to) const
