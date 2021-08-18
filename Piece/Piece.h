@@ -29,7 +29,7 @@ public:
 
     virtual ~Piece() = default;
 
-    virtual bool possibleMove(Traits::Coordinates to) = 0;
+    virtual bool possibleMove(Traits::Coordinates to) const = 0;
 
     const Player* getPlayer() const { return player; }
     Board* getBoard() const { return board; }
@@ -45,7 +45,7 @@ class Pawn: public Piece {
 public:
     Pawn(Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
-    bool possibleMove(Traits::Coordinates to) override;
+    bool possibleMove(Traits::Coordinates to) const override;
 };
 
 
@@ -53,35 +53,35 @@ class Knight: public Piece {
 public:
     Knight(Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) override;
+    bool possibleMove(Traits::Coordinates to) const override;
 };
 
 class Bishop: public Piece {
 public:
     Bishop(Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) override;
+    bool possibleMove(Traits::Coordinates to) const override;
 };
 
 class Rook: public Piece {
 public:
     Rook(Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) override;
+    bool possibleMove(Traits::Coordinates to) const override;
 };
 
 class Queen: public Piece {
 public:
     Queen(Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) override;
+    bool possibleMove(Traits::Coordinates to) const override;
 };
 
 class King: public Piece {
 public:
     King(Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) override;
+    bool possibleMove(Traits::Coordinates to) const override;
 };
 
 #endif //CHESS_PIECE_H

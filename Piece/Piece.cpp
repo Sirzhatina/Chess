@@ -12,13 +12,13 @@ std::string Piece::errMsg = "Impossible to move";
 
 Piece::Piece(const Player* p, Traits::Coordinates coord)
 : player(p)
-, board(player->getBoard())
+, board(p->getBoard())
 , color(p->getColor())
 , currentCoord(coord)
 { }
 
 
-bool Pawn::possibleMove(Traits::Coordinates to)
+bool Pawn::possibleMove(Traits::Coordinates to) const
 {
     auto from = getCoord();
     if (getBoard()->getPiece(to) != nullptr)
@@ -36,11 +36,10 @@ bool Pawn::possibleMove(Traits::Coordinates to)
     {
         return false;
     }
-    firstMove = false;
     return true;
 }
 
-bool Knight::possibleMove(Coordinates to)
+bool Knight::possibleMove(Coordinates to) const
 {
     auto from = getCoord();
     if (!(std::abs(int(from.y) - int(to.y)) == 2 && std::abs(int(from.x) - int(to.x)) == 1) ||
@@ -52,7 +51,7 @@ bool Knight::possibleMove(Coordinates to)
     return true;
 }
 
-bool Bishop::possibleMove(Coordinates to)
+bool Bishop::possibleMove(Coordinates to) const
 {
     auto from = getCoord();
     if (std::abs(int(to.x) - int(from.x)) != std::abs(int(to.y) - int(from.y)))
@@ -63,7 +62,7 @@ bool Bishop::possibleMove(Coordinates to)
     return true;
 }
 
-bool Rook::possibleMove(Coordinates to)
+bool Rook::possibleMove(Coordinates to) const
 {
     auto from = getCoord();
     if (from.x != to.x && from.y != to.y)
@@ -74,7 +73,7 @@ bool Rook::possibleMove(Coordinates to)
     return true;
 }
 
-bool Queen::possibleMove(Coordinates to)
+bool Queen::possibleMove(Coordinates to) const
 {
     auto from = getCoord();
     if (from.x != to.x && from.x != to.x ||
@@ -86,7 +85,7 @@ bool Queen::possibleMove(Coordinates to)
 }
 
 
-bool King::possibleMove(Coordinates to)
+bool King::possibleMove(Coordinates to) const
 {
     auto from = getCoord();
     if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
