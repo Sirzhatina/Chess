@@ -24,12 +24,6 @@ struct Coordinates {
     Vertical y;
 };
 
-struct Square
-{
-    const Coordinates coord;
-    Piece* piece{ nullptr };
-};
-
 enum class Color {
     BLACK, WHITE
 };

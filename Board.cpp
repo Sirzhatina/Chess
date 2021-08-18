@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include "Board.h"
 #include "Player.h"
-#include "Square.h"
 #include "Piece/Piece.h"
 
 
@@ -15,7 +14,7 @@ Board::Board()
     {
         for (int j = 0; j < board[i].size(); j++)
         {
-            board[i][j] = new Traits::Square
+            board[i][j] = new Square
                     {
                         Traits::Coordinates { Traits::Horizontal{ j }, Traits::Vertical{ (Traits::boardSize - 1) - i } }
                     };
