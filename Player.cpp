@@ -50,7 +50,7 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
     auto piece = board->getPiece(from);
     if (this == piece->getPlayer())
     {
-        if (board->getSquare(to)->piece->getPlayer() != this)
+        if (board->getPiece(to)->getPlayer() != this)
         {
             // instead of searching for pointer with corresponding address inside of Player, we use const_cast<>()
             board->setPiece(const_cast<Piece*>(piece), to);
