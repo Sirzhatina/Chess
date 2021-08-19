@@ -83,7 +83,7 @@ bool Rook::possibleMove(Coordinates to) const
 
 bool Queen::possibleMove(Coordinates to) const
 {
-    if (getCoord().x != to.x && getCoord().x != to.x ||
+    if (getCoord().x != to.x && getCoord().y != to.y &&
         std::abs(int(to.x) - int(getCoord().x)) != std::abs(int(to.y) - int(getCoord().y)))
     {
         return false;
