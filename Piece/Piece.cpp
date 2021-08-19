@@ -60,12 +60,17 @@ bool Bishop::possibleMove(Traits::Coordinates to) const
     {
         return false;
     }
-    int incX = diffX > 0 ? 1 : -1;
-    int incY = diffY > 0 ? 1 : -1;
+    int incX = (diffX > 0) ? 1 : -1;
+    int incY = (diffY > 0) ? 1 : -1;
 
-    for (Traits::Coordinates coor = getCoord(); coor != to; diffX += incX, diffY += diffY)
+    for (Traits::Coordinates coor = getCoord(); coor != to; )
     {
-        
+        if (getBoard()->getPiece(coor) != nullptr)
+        {
+            return false;
+        }
+        coor.x = Traits::Horizontal(int(coor.x) + incX); 
+        coor.y = Traits::Vertical(int(coor.y) + incY);
     }
 
     return true;
