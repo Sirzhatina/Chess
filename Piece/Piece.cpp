@@ -20,11 +20,9 @@ Piece::Piece(const Player* p, Traits::Coordinates coord)
 
 bool Pawn::possibleMove(Traits::Coordinates to) const
 {
-    auto from = getCoord();
-
-    if (firstMove && int(to.y) - int(from.y) > std::abs(2) ||
-        !firstMove && int(to.y) - int(from.y) > std::abs(1) ||
-        to.x != from.x)
+    if (firstMove && int(to.y) - int(getCoord().y) > std::abs(2) ||
+        !firstMove && int(to.y) - int(getCoord().y) > std::abs(1) ||
+        to.x != getCoord().x)
     {
         if (!possibleAttack(to))
         {
@@ -36,18 +34,16 @@ bool Pawn::possibleMove(Traits::Coordinates to) const
 
 bool Pawn::possibleAttack(Coordinates to) const 
 {
-    auto from = getCoord();
-    int move = int(to.y) - int(from.y);
+    int move = int(to.y) - int(getCoord().y);
     return (getColor() == Traits::Color::BLACK ? move == -1 : move == 1) && 
-                                 std::abs(int(to.x) - int(from.x)) == 1  && 
+                                 std::abs(int(to.x) - int(getCoord().x)) == 1  && 
                                     getBoard()->getPiece(to) != nullptr; 
 }
 
 bool Knight::possibleMove(Coordinates to) const
 {
-    auto from = getCoord();
-    if (!(std::abs(int(from.y) - int(to.y)) == 2 && std::abs(int(from.x) - int(to.x)) == 1) ||
-        !(std::abs(int(from.x) - int(to.x)) == 2 && std::abs(int(from.y) - int(to.y)) == 1))
+    if (!(std::abs(int(getCoord().y) - int(to.y)) == 2 && std::abs(int(getCoord().x) - int(to.x)) == 1) ||
+        !(std::abs(int(getCoord().x) - int(to.x)) == 2 && std::abs(int(getCoord().y) - int(to.y)) == 1))
     {
         return false;
     }
@@ -55,12 +51,21 @@ bool Knight::possibleMove(Coordinates to) const
     return true;
 }
 
-bool Bishop::possibleMove(Coordinates to) const
+bool Bishop::possibleMove(Traits::Coordinates to) const
 {
-    auto from = getCoord();
-    if (std::abs(int(to.x) - int(from.x)) != std::abs(int(to.y) - int(from.y)))
+    int diffX = int(to.x) - int(getCoord().x);
+    int diffY = int(to.y) - int(getCoord().y);
+
+    if (std::abs(diffX) != std::abs(diffY))
     {
         return false;
+    }
+    int incX = diffX > 0 ? 1 : -1;
+    int incY = diffY > 0 ? 1 : -1;
+
+    for (Traits::Coordinates coor = getCoord(); coor != to; diffX += incX, diffY += diffY)
+    {
+        
     }
 
     return true;
@@ -68,8 +73,7 @@ bool Bishop::possibleMove(Coordinates to) const
 
 bool Rook::possibleMove(Coordinates to) const
 {
-    auto from = getCoord();
-    if (from.x != to.x && from.y != to.y)
+    if (getCoord().x != to.x && getCoord().y != to.y)
     {
         return false;
     }
@@ -79,9 +83,8 @@ bool Rook::possibleMove(Coordinates to) const
 
 bool Queen::possibleMove(Coordinates to) const
 {
-    auto from = getCoord();
-    if (from.x != to.x && from.x != to.x ||
-        std::abs(int(to.x) - int(from.x)) != std::abs(int(to.y) - int(from.y)))
+    if (getCoord().x != to.x && getCoord().x != to.x ||
+        std::abs(int(to.x) - int(getCoord().x)) != std::abs(int(to.y) - int(getCoord().y)))
     {
         return false;
     }
@@ -91,8 +94,7 @@ bool Queen::possibleMove(Coordinates to) const
 
 bool King::possibleMove(Coordinates to) const
 {
-    auto from = getCoord();
-    if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
+    if (std::abs(int(to.x) - int(getCoord().x)) > 1 || std::abs(int(to.y) - int(getCoord().y)) > 1)
     {
         return false;
     }
