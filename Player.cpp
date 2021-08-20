@@ -21,20 +21,20 @@ Player::Player(Board* b, Traits::Color c)
     for (auto& pwn: pawn)
     {
         pwn = new Pawn{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfPawns } };
-        board->setPiece(pwn, Traits::Coordinates{ Traits::Horizontal{ alongLine++ }, startOfPawns });
+        board->setPiece(pwn, pwn->getCoord());
     }
 
     alongLine = -1;
     for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++)
     {
         rook[i] = new Rook{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
-        board->setPiece(rook[i], Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers} );
+        board->setPiece(rook[i], rook[i]->getCoord());
 
         knight[i] = new Knight{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
-        board->setPiece(knight[i], Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers });
+        board->setPiece(knight[i], knight[i]->getCoord());
 
         bishop[i] = new Bishop{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
-        board->setPiece(bishop[i], Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfOthers });
+        board->setPiece(bishop[i], bishop[i]->getCoord());
 
         inc *= -1;
         alongLine += 6;
@@ -42,7 +42,10 @@ Player::Player(Board* b, Traits::Color c)
 
     // Queen prefers corresponding color
     queen = new Queen{ this, Traits::Coordinates{ Traits::Horizontal::D, startOfOthers } };
+    board->setPiece(queen, queen->getCoord());
+
     king = new King{ this, Traits::Coordinates{ Traits::Horizontal::E, startOfOthers } };
+    board->setPiece(king, king->getCoord());
 }
 
 void Player::move(Traits::Coordinates from, Traits::Coordinates to)
