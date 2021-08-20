@@ -39,6 +39,7 @@ public:
     Traits::Color getColor() const { return color; }
 
     Board* getBoard() const { return board; }
+    Traits::Coordinates getKingCoord() const { king->getCoord(); }
 
     void setCheck(bool ch) { check = ch; }
 
