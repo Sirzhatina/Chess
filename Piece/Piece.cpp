@@ -63,14 +63,14 @@ bool Bishop::possibleMove(Traits::Coordinates to) const
     int incX = (diffX > 0) ? 1 : -1;
     int incY = (diffY > 0) ? 1 : -1;
 
-    for (Traits::Coordinates coor = getCoord(); coor != to; )
+    for (auto coor = getCoord(); coor != to; )
     {
+        coor.x = Traits::Horizontal(int(coor.x) + incX); 
+        coor.y = Traits::Vertical(int(coor.y) + incY);
         if (getBoard()->getPiece(coor) != nullptr)
         {
             return false;
         }
-        coor.x = Traits::Horizontal(int(coor.x) + incX); 
-        coor.y = Traits::Vertical(int(coor.y) + incY);
     }
 
     return true;
@@ -83,13 +83,38 @@ bool Rook::possibleMove(Coordinates to) const
         return false;
     }
 
+    if (getCoord().x != to.x)
+    {
+        int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
+        for (auto coor = getCoord(); coor != to; )
+        {
+            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            if (getBoard()->getPiece(coor) != nullptr)
+            {
+                return false;
+            }
+        }
+    }
+    else
+    {
+        int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
+        for (auto coor = getCoord(); coor != to; )
+        {
+            coor.y = Traits::Vertical(int(coor.y) + incY);
+            if (getBoard()->getPiece(to) != nullptr)
+            {
+                return false;
+            }
+        }
+    }
+
     return true;
 }
 
 bool Queen::possibleMove(Coordinates to) const
 {
-    if (getCoord().x != to.x && getCoord().y != to.y &&
-        std::abs(int(to.x) - int(getCoord().x)) != std::abs(int(to.y) - int(getCoord().y)))
+    if (!Bishop{ const_cast<Player*>(getPlayer()), getCoord() }.possibleMove(to) ||
+        !Rook  { const_cast<Player*>(getPlayer()), getCoord() }.possibleMove(to))
     {
         return false;
     }
