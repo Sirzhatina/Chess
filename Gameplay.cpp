@@ -3,10 +3,7 @@
 #include <cstdlib>
 
 
-bool Gameplay::isPossibleMove(Traits::Coordinates from, Traits::Coordinates to) const
-{
-    
-}
+
 
 int Gameplay::start()
 {
