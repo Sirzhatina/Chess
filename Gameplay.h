@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Traits.h"
-#include "Square.h"
 #include "Piece/Piece.h"
 #include "Player.h"
 #include "Board.h"
@@ -15,7 +14,6 @@ class Gameplay
 
     bool whiteMove{ true };
 
-    bool isPossibleMove(Traits::Coordinates from, Traits::Coordinates to) const;
     bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
     static Traits::Coordinates convertCoordinates(int x, int y) 
     { 
