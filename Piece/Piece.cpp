@@ -113,10 +113,58 @@ bool Rook::possibleMove(Coordinates to) const
 
 bool Queen::possibleMove(Coordinates to) const
 {
-    if (!Bishop{ const_cast<Player*>(getPlayer()), getCoord() }.possibleMove(to) ||
-        !Rook  { const_cast<Player*>(getPlayer()), getCoord() }.possibleMove(to))
+    if (getCoord().x != to.x && getCoord().y != to.y)   // if true, we deal with not rook - meaning, of course, bishop
     {
-        return false;
+        int diffX = int(to.x) - int(getCoord().x);
+        int diffY = int(to.y) - int(getCoord().y);
+
+        if (std::abs(diffX) != std::abs(diffY))
+        {
+            return false;   // if not rook and not bishop, we return false
+        }
+
+        int incX = (diffX > 0) ? 1 : -1;
+        int incY = (diffY > 0) ? 1 : -1;
+
+        Traits::Coordinates coor{ Traits::Horizontal(int(getCoord().x) + incX), Traits::Vertical(int(getCoord().y) + incY) };
+        while (coor != to)
+        {
+            if (getBoard()->getPiece(coor) != nullptr) 
+            {
+                return false;
+            }
+            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            coor.y = Traits::Vertical(int(coor.y) + incY);
+        }
+    }
+    else // consequently, here we deal with rook
+    {
+        int inc = (getCoord().x != to.x) ? ((int(to.x) - int(getCoord().x) > 0) ? 1 : -1) : 
+                                           ((int(to.y) - int(getCoord().y) > 0) ? 1 : -1);
+        if (getCoord().x != to.x)
+        {
+            Traits::Coordinates coor{ Traits::Horizontal(int(getCoord().x) + inc), getCoord().y };
+            while (coor != to)
+            {
+                if (getBoard()->getPiece(coor) != nullptr)
+                {
+                    return false;
+                }
+                coor.x = Traits::Horizontal(int(coor.x) + inc);
+            }
+        }
+        else
+        {
+            Traits::Coordinates coor{ getCoord().x, Traits::Vertical(int(getCoord().y) + inc) };
+            while (coor != to)
+            {
+                if (getBoard()->getPiece(coor) != nullptr)
+                {
+                    return false;
+                }
+                coor.y = Traits::Vertical(int(coor.y) + inc);
+            }
+        }
     }
     return true;
 }
