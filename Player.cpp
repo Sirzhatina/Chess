@@ -56,7 +56,7 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
         if (board->getPiece(to)->getPlayer() != this)
         {
             // instead of searching for pointer with corresponding address inside of Player, we use const_cast<>()
-            board->setPiece(const_cast<Piece*>(piece), to);
+            const_cast<Piece*>(piece)->move(to);
         }
     }
 }
