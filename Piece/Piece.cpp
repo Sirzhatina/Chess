@@ -32,7 +32,7 @@ bool Pawn::possibleMove(Traits::Coordinates to) const
     return true;
 }
 
-bool Pawn::possibleAttack(Coordinates to) const 
+bool Pawn::possibleAttack(Traits::Coordinates to) const 
 {
     int move = int(to.y) - int(getCoord().y);
     return (getColor() == Traits::Color::BLACK ? move == -1 : move == 1) && 
@@ -40,7 +40,17 @@ bool Pawn::possibleAttack(Coordinates to) const
                                     getBoard()->getPiece(to) != nullptr; 
 }
 
-bool Knight::possibleMove(Coordinates to) const
+void Pawn::move(Traits::Coordinates to)
+{
+    if (!possibleMove(to))
+    {
+        throw std::runtime_error{ errMsg };
+    }
+    setCoordinates(to);
+    getBoard()->setPiece(this, to);
+}
+
+bool Knight::possibleMove(Traits::Coordinates to) const
 {
     if (!(std::abs(int(getCoord().y) - int(to.y)) == 2 && std::abs(int(getCoord().x) - int(to.x)) == 1) ||
         !(std::abs(int(getCoord().x) - int(to.x)) == 2 && std::abs(int(getCoord().y) - int(to.y)) == 1))
@@ -49,6 +59,16 @@ bool Knight::possibleMove(Coordinates to) const
     }
 
     return true;
+}
+
+void Knight::move(Traits::Coordinates to)
+{
+    if (!possibleMove(to))
+    {
+        throw std::runtime_error{ errMsg };
+    }
+    setCoordinates(to);
+    getBoard()->setPiece(this, to);
 }
 
 bool Bishop::possibleMove(Traits::Coordinates to) const
@@ -76,7 +96,17 @@ bool Bishop::possibleMove(Traits::Coordinates to) const
     return true;
 }
 
-bool Rook::possibleMove(Coordinates to) const
+void Bishop::move(Traits::Coordinates to)
+{
+    if (!possibleMove(to))
+    {
+        throw std::runtime_error{ errMsg };
+    }
+    setCoordinates(to);
+    getBoard()->setPiece(this, to);
+}
+
+bool Rook::possibleMove(Traits::Coordinates to) const
 {
     if (getCoord().x != to.x && getCoord().y != to.y)
     {
@@ -111,7 +141,17 @@ bool Rook::possibleMove(Coordinates to) const
     return true;
 }
 
-bool Queen::possibleMove(Coordinates to) const
+void Rook::move(Traits::Coordinates to)
+{
+    if (!possibleMove(to))
+    {
+        throw std::runtime_error{ errMsg };
+    }
+    setCoordinates(to);
+    getBoard()->setPiece(this, to);
+}
+
+bool Queen::possibleMove(Traits::Coordinates to) const
 {
     if (getCoord().x != to.x && getCoord().y != to.y)   // if true, we deal with not rook - meaning, of course, bishop
     {
@@ -169,12 +209,32 @@ bool Queen::possibleMove(Coordinates to) const
     return true;
 }
 
+void Queen::move(Traits::Coordinates to)
+{
+    if (!possibleMove(to))
+    {
+        throw std::runtime_error{ errMsg };
+    }
+    setCoordinates(to);
+    getBoard()->setPiece(this, to);
+}
 
-bool King::possibleMove(Coordinates to) const
+
+bool King::possibleMove(Traits::Coordinates to) const
 {
     if (std::abs(int(to.x) - int(getCoord().x)) > 1 || std::abs(int(to.y) - int(getCoord().y)) > 1)
     {
         return false;
     }
     return true;
+}
+
+void King::move(Traits::Coordinates to)
+{
+    if (!possibleMove(to))
+    {
+        throw std::runtime_error{ errMsg };
+    }
+    setCoordinates(to);
+    getBoard()->setPiece(this, to);
 }
