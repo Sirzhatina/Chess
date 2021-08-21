@@ -48,15 +48,34 @@ Player::Player(Board* b, Traits::Color c)
     board->setPiece(king, king->getCoord());
 }
 
+bool Player::accessToSquare(Traits::Coordinates to) const
+{
+    for (const auto p : pawn)
+    {
+        if (p->possibleMove(to))
+        {
+            return true;
+        }
+    }
+    if (rook[0]->possibleMove(to)   || rook[1]->possibleMove(to)   ||
+        knight[0]->possibleMove(to) || knight[1]->possibleMove(to) ||
+        bishop[0]->possibleMove(to) || bishop[1]->possibleMove(to) ||
+        queen->possibleMove(to))
+    {
+        return true;   
+    }
+    return false;
+}
+
 void Player::move(Traits::Coordinates from, Traits::Coordinates to)
 {
-    auto piece = board->getPiece(from);
+    auto piece = const_cast<Piece*>(board->getPiece(from));
     if (this == piece->getPlayer())
     {
-        if (board->getPiece(to)->getPlayer() != this)
+        if (board->getPiece(to)->getPlayer() != this && piece->possibleMove(to))
         {
-            // instead of searching for pointer with corresponding address inside of Player, we use const_cast<>()
-            const_cast<Piece*>(piece)->move(to);
+            piece->setCoordinates(to);
+            board->setPiece(piece, to);   
         }
     }
 }

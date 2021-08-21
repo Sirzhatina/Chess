@@ -41,6 +41,7 @@ public:
     Board* getBoard() const { return board; }
     Traits::Coordinates getKingCoord() const { king->getCoord(); }
 
+    bool accessToSquare(Traits::Coordinates to) const;
     void setCheck(bool ch) { check = ch; }
 
     bool isCheck() const { return check; }
