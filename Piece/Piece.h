@@ -86,7 +86,7 @@ public:
     King(const Player* p, Traits::Coordinates coord);
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to); }
-    static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b = nullptr);
+    static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);
 };
 
 #endif //CHESS_PIECE_H

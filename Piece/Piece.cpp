@@ -123,7 +123,7 @@ bool Queen::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const
     return Bishop::correctRoute(from, to, b) || Rook::correctRoute(from, to, b);
 }
 
-bool King::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
+bool King::correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to)
 {
     if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
     {
