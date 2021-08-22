@@ -74,8 +74,23 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
     {
         if (board->getPiece(to)->getPlayer() != this && piece->possibleMove(to))
         {
+            if (piece == king && king->isFirstMove())
+            {
+                if (to.x == Traits::Horizontal::G && rook[1]->isFirstMove())
+                {
+                    Traits::Coordinates coor{ Traits::Horizontal::F, rook[1]->getCoord().y };
+                    rook[1]->setCoordinates(coor);
+                    board->setPiece(rook[1], coor);
+                }
+                else if (to.x == Traits::Horizontal::C && rook[0]->isFirstMove())
+                {
+                    Traits::Coordinates coor{ Traits::Horizontal::D, rook[0]->getCoord().y };
+                    rook[1]->setCoordinates(coor);
+                    board->setPiece(rook[0], coor);
+                }
+            }
             piece->setCoordinates(to);
-            board->setPiece(piece, to);   
+            board->setPiece(piece, to);
         }
     }
 }
