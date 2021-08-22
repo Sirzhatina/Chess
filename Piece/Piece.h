@@ -65,6 +65,7 @@ public:
 };
 
 class Rook: public Piece {
+    bool firstMove{ true };
 public:
     Rook(const Player* p, Traits::Coordinates coord);
 
