@@ -29,7 +29,7 @@ public:
 
     virtual bool possibleMove(Traits::Coordinates to) const = 0;
     
-    void setCoordinates(Traits::Coordinates coord) { currentCoord = coord; }
+    void setCoordinates(Traits::Coordinates to);
 
     const Player*       getPlayer()   const { return player; }
     Board*              getBoard()    const { return board; }
