@@ -20,6 +20,8 @@ class Player {
     bool check{ false };
     bool checkmate{ false };
 
+    bool castling{ true };
+
     Board* board;
 
     Piece* pawn[PAWNS];
