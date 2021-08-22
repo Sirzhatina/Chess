@@ -31,7 +31,7 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
     int move = int(to.y) - int(p.getCoord().y);
     bool correctDirection = (move > 0) ? p.getColor() == Traits::Color::WHITE : p.getColor() == Traits::Color::BLACK;
 
-    if ((p.firstMove ? std::abs(move) <= 2 : std::abs(move) <= 1) && 
+    if ((p.isFirstMove() ? std::abs(move) <= 2 : std::abs(move) <= 1) && 
          to.x == p.getCoord().x                                   &&
          correctDirection)
     {
@@ -125,7 +125,7 @@ bool Queen::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const
 
 bool King::possibleCastling(Traits::Coordinates to) const
 {
-    if (firstMove)
+    if (isFirstMove())
     {
         if (to.y == getCoord().y)
         {

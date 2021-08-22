@@ -21,6 +21,7 @@ private:
     Board*              board;
     const Traits::Color color;
     Traits::Coordinates currentCoord;
+    bool                firstMove{ true };
 
 public:
     Piece(const Player* p, Traits::Coordinates coord);
@@ -30,14 +31,14 @@ public:
     
     void setCoordinates(Traits::Coordinates coord) { currentCoord = coord; }
 
-    const Player*       getPlayer() const { return player; }
-    Board*              getBoard()  const { return board; }
-    Traits::Color       getColor()  const { return color; }
-    Traits::Coordinates getCoord()  const { return currentCoord; }
+    const Player*       getPlayer()   const { return player; }
+    Board*              getBoard()    const { return board; }
+    Traits::Color       getColor()    const { return color; }
+    Traits::Coordinates getCoord()    const { return currentCoord; }
+    bool                isFirstMove() const { return firstMove; }
 };
 
 class Pawn: public Piece {
-    bool firstMove{ true };
     bool possibleAttack(Traits::Coordinates to) const;
 
 public:
@@ -65,7 +66,6 @@ public:
 };
 
 class Rook: public Piece {
-    bool firstMove{ true };
 public:
     Rook(const Player* p, Traits::Coordinates coord);
 
@@ -82,12 +82,10 @@ public:
 };
 
 class King: public Piece {
-    bool firstMove{ true };
-
 public:
     King(const Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
+    bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to) || possibleCastling(to); }
     static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);
 
     bool possibleCastling(Traits::Coordinates to) const;
