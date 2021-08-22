@@ -4,12 +4,28 @@
 
 
 
-
-int Gameplay::start()
+void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const
 {
     char xFrom, yFrom;
     char xTo, yTo;
 
+    std::cout << "Enter coordinates to move from and to (e.g. e2 e4): ";
+    std::cin.get(xFrom).get(yFrom);
+    std::cin.get();                   // eats ' '
+    std::cin.get(xTo).get(yTo).get(); // eats '\n' in the end
+
+    if (xFrom < 'a' || xFrom > 'h' || xTo < 'a' || xTo > 'h' ||
+        yFrom < '1' || yFrom > '8' || yTo < '1' || yTo > '8')
+    {
+        throw std::runtime_error{ "Invalid input!" };
+    }
+    
+    from = convertCoordinates(xFrom - 'a', yFrom - '1');
+    to = convertCoordinates(xTo - 'a', yTo - '1');
+}
+
+int Gameplay::start()
+{
     Traits::Coordinates from, to;
 
     auto moves = &white;
@@ -17,16 +33,13 @@ int Gameplay::start()
 
     while (showGoesOn())
     {
-        std::cout << "Enter coordinates to move from and to (e.g. e2 e4): ";
-        std::cin.get(xFrom).get(yFrom);
-        std::cin.get(); // eats ' '
-        std::cin.get(xTo).get(yTo);
-
-        from = convertCoordinates(xFrom - 'a', yFrom - '1');
-        to = convertCoordinates(xTo - 'a', yTo - '1');
-
         try 
         {
+            inputToMove(from, to);
+            if (from == to)
+            {
+                continue;
+            }
             moves->move(from, to);
             std::swap(moves, notMoves);
         }
