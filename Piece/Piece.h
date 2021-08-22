@@ -85,7 +85,7 @@ class King: public Piece {
 public:
     King(const Player* p, Traits::Coordinates coord);
 
-    bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to); }
+    bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
     static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);
 };
 
