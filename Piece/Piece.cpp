@@ -123,6 +123,34 @@ bool Queen::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const
     return Bishop::correctRoute(from, to, b) || Rook::correctRoute(from, to, b);
 }
 
+bool King::possibleCastling(Traits::Coordinates to) const
+{
+    if (firstMove)
+    {
+        if (to.y == getCoord().y)
+        {
+            if (to.x == Traits::Horizontal::G)
+            {
+                if (getBoard()->getPiece({ Traits::Horizontal::F, to.y }) == nullptr &&
+                    getBoard()->getPiece({ Traits::Horizontal::G, to.y }) == nullptr)
+                {
+                    return true;
+                }
+            }
+            if (to.x == Traits::Horizontal::C)
+            {
+                if (getBoard()->getPiece({ Traits::Horizontal::D, to.y }) == nullptr &&
+                    getBoard()->getPiece({ Traits::Horizontal::C, to.y }) == nullptr &&
+                    getBoard()->getPiece({ Traits::Horizontal::B, to.y }) == nullptr)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 bool King::correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to)
 {
     if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
