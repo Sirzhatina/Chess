@@ -81,6 +81,7 @@ public:
 };
 
 class King: public Piece {
+    bool firstMove{ true };
 public:
     King(const Player* p, Traits::Coordinates coord);
 
