@@ -17,6 +17,11 @@ Piece::Piece(const Player* p, Traits::Coordinates coord)
 , currentCoord(coord)
 { }
 
+void Piece::setCoordinates(Traits::Coordinates to)
+{
+    firstMove = false;
+    currentCoord = to;
+}
 
 bool Pawn::possibleAttack(Traits::Coordinates to) const 
 {
