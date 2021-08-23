@@ -48,6 +48,19 @@ Player::Player(Board* b, Traits::Color c)
     board->setPiece(king, king->getCoord());
 }
 
+bool Player::possibleCastling(Traits::Coordinates to) const
+{
+    if (king->isFirstMove())
+    {
+        int diffX = int(to.y) - int(king->getCoord().y);
+
+        // 2 means king moves on 2 squares left and -2 - two squares right
+        return diffX ==  2 &&  !board->getPiece({ Traits::Horizontal::G, king->getCoord().y }) && rook[1]->isFirstMove() ||
+               diffX == -2 &&  !board->getPiece({ Traits::Horizontal::C, king->getCoord().y }) && rook[0]->isFirstMove();
+    }
+    return false;
+}
+
 bool Player::accessToSquare(Traits::Coordinates to) const
 {
     for (const auto p : pawn)
@@ -91,6 +104,6 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
             }
             piece->setCoordinates(to);
             board->setPiece(piece, to);
-        }
+        } 
     }
 }

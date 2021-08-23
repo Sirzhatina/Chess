@@ -33,6 +33,8 @@ class Player {
     Piece* queen;
     Piece* king;
 
+    bool possibleCastling(Traits::Coordinates to) const;
+
 public:
     Player(Board* b, Traits::Color c);
 
