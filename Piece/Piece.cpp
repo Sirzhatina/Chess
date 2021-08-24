@@ -51,7 +51,7 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
                 return true;
             }
         }
-        else
+        else if (p.getBoard()->getPiece(to) == nullptr)
         {
             return true;
         }
