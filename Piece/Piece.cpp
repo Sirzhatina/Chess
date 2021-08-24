@@ -41,7 +41,8 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
 
     if ((p.isFirstMove() ? std::abs(move) <= 2 : std::abs(move) <= 1) && 
          to.x == p.getCoord().x                                       &&
-         correctDirection)
+         correctDirection                                             &&
+         p.getBoard()->getPiece(to) == nullptr)
     {
         if (std::abs(move) == 2)
         {
@@ -51,7 +52,7 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
                 return true;
             }
         }
-        else if (p.getBoard()->getPiece(to) == nullptr)
+        else
         {
             return true;
         }
