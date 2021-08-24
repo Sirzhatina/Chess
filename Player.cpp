@@ -76,6 +76,18 @@ bool Player::possibleCastling(Traits::Coordinates to) const
     return false;
 }
 
+void Player::castling(Traits::Coordinates to)
+{
+    board->setPiece(king, to);
+    king->setCoordinates(to);
+
+    auto rk = (to.x == Traits::Horizontal::C) ? rook[0] : rook[1];
+    Traits::Coordinates rkDest{ (rk == rook[0]) ? Traits::Horizontal::D : Traits::Horizontal::F, to.y };
+
+    board->setPiece(rk, rkDest);
+    rk->setCoordinates(rkDest);
+}
+
 bool Player::accessToSquare(Traits::Coordinates to) const
 {
     for (const auto p : pawn)
@@ -98,20 +110,16 @@ bool Player::accessToSquare(Traits::Coordinates to) const
 void Player::move(Traits::Coordinates from, Traits::Coordinates to)
 {
     auto piece = const_cast<Piece*>(board->getPiece(from));
-    if (this == piece->getPlayer())
+    if (isOwner(piece) && !friendlySquare(to))
     {
-        if (board->getPiece(to)->getPlayer() != this && piece->possibleMove(to))
+        if (piece == king && possibleCastling(to))
         {
-            if (piece == king && possibleCastling(to))
-            {
-                auto r = (to.x == Traits::Horizontal::G) ? rook[1] : rook[0];
-                Traits::Coordinates coor = { (to.x == Traits::Horizontal::G) ? Traits::Horizontal::F : Traits::Horizontal::D, to.y };
-
-                r->setCoordinates(coor);
-                board->setPiece(r, coor);            
-            }
+            castling(to); 
+        }
+        else if (piece->possibleMove(to))
+        {
             piece->setCoordinates(to);
             board->setPiece(piece, to);
-        } 
+        }
     }
 }

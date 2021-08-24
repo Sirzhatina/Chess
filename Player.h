@@ -20,8 +20,6 @@ class Player {
     bool check{ false };
     bool checkmate{ false };
 
-    bool castling{ true };
-
     Board* board;
 
     Piece* pawn[PAWNS];
@@ -34,6 +32,10 @@ class Player {
     Piece* king;
 
     bool possibleCastling(Traits::Coordinates to) const;
+    void castling(Traits::Coordinates to);
+
+    bool isOwner(const Piece* piece) const { return piece->getPlayer() == this; }
+    bool friendlySquare(Traits::Coordinates to) const { return board->getPiece(to) ? board->getPiece(to)->getPlayer() == this : false; }
 
 public:
     Player(Board* b, Traits::Color c);
