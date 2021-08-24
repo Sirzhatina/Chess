@@ -26,9 +26,12 @@ void Piece::setCoordinates(Traits::Coordinates to)
 bool Pawn::possibleAttack(Traits::Coordinates to) const 
 {
     int move = int(to.y) - int(getCoord().y);
+    auto piece = getBoard()->getPiece(to);
+
     return (getColor() == Traits::Color::BLACK ? move == -1 : move == 1) && 
             std::abs(int(to.x) - int(getCoord().x)) == 1                 && 
-            getBoard()->getPiece(to) != nullptr; 
+            piece != nullptr                                             &&
+            piece->getColor() != getColor(); 
 }
 
 bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
@@ -37,7 +40,7 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
     bool correctDirection = (move > 0) ? p.getColor() == Traits::Color::WHITE : p.getColor() == Traits::Color::BLACK;
 
     if ((p.isFirstMove() ? std::abs(move) <= 2 : std::abs(move) <= 1) && 
-         to.x == p.getCoord().x                                   &&
+         to.x == p.getCoord().x                                       &&
          correctDirection)
     {
         if (std::abs(move) == 2)
