@@ -14,26 +14,26 @@ Player::Player(Board* b, Traits::Color c)
 {
     board->addPlayer(this);
 
-    Traits::Vertical startOfPawns = (color == Traits::Color::WHITE) ? Traits::Vertical::two : Traits::Vertical::seven;
-    Traits::Vertical startOfOthers = (color == Traits::Color::WHITE) ? Traits::Vertical::one : Traits::Vertical::eight;
+    auto startOfPawns = (color == Traits::Color::WHITE) ? Traits::Vertical::two : Traits::Vertical::seven;
+    auto startOfOthers = (color == Traits::Color::WHITE) ? Traits::Vertical::one : Traits::Vertical::eight;
 
     unsigned alongLine = 0;
     for (auto& pwn: pawn)
     {
-        pwn = new Pawn{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine }, startOfPawns } };
+        pwn = new Pawn{ this, { Traits::Horizontal{ alongLine }, startOfPawns } };
         board->setPiece(pwn, pwn->getCoord());
     }
 
     alongLine = -1;
     for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++)
     {
-        rook[i] = new Rook{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        rook[i] = new Rook{ this, { Traits::Horizontal{ alongLine += inc }, startOfOthers } };
         board->setPiece(rook[i], rook[i]->getCoord());
 
-        knight[i] = new Knight{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        knight[i] = new Knight{ this, { Traits::Horizontal{ alongLine += inc }, startOfOthers } };
         board->setPiece(knight[i], knight[i]->getCoord());
 
-        bishop[i] = new Bishop{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        bishop[i] = new Bishop{ this, { Traits::Horizontal{ alongLine += inc }, startOfOthers } };
         board->setPiece(bishop[i], bishop[i]->getCoord());
 
         inc *= -1;
@@ -41,10 +41,10 @@ Player::Player(Board* b, Traits::Color c)
     }
 
     // Queen prefers corresponding color
-    queen = new Queen{ this, Traits::Coordinates{ Traits::Horizontal::D, startOfOthers } };
+    queen = new Queen{ this, { Traits::Horizontal::D, startOfOthers } };
     board->setPiece(queen, queen->getCoord());
 
-    king = new King{ this, Traits::Coordinates{ Traits::Horizontal::E, startOfOthers } };
+    king = new King{ this, { Traits::Horizontal::E, startOfOthers } };
     board->setPiece(king, king->getCoord());
 }
 
@@ -52,11 +52,26 @@ bool Player::possibleCastling(Traits::Coordinates to) const
 {
     if (king->isFirstMove())
     {
-        int diffX = int(to.y) - int(king->getCoord().y);
-
-        // 2 means king moves on 2 squares left and -2 - two squares right
-        return diffX ==  2 &&  !board->getPiece({ Traits::Horizontal::G, king->getCoord().y }) && rook[1]->isFirstMove() ||
-               diffX == -2 &&  !board->getPiece({ Traits::Horizontal::C, king->getCoord().y }) && rook[0]->isFirstMove();
+        if (to.y == king->getCoord().y)
+        {
+            if (to.x == Traits::Horizontal::G)
+            {
+                if (getBoard()->getPiece({ Traits::Horizontal::F, to.y }) == nullptr &&
+                    getBoard()->getPiece({ Traits::Horizontal::G, to.y }) == nullptr)
+                {
+                    return rook[1]->isFirstMove();
+                }
+            }
+            else if (to.x == Traits::Horizontal::C)
+            {
+                if (getBoard()->getPiece({ Traits::Horizontal::D, to.y }) == nullptr &&
+                    getBoard()->getPiece({ Traits::Horizontal::C, to.y }) == nullptr &&
+                    getBoard()->getPiece({ Traits::Horizontal::B, to.y }) == nullptr)
+                {
+                    return rook[0]->isFirstMove();
+                }
+            }
+        }
     }
     return false;
 }
@@ -87,20 +102,13 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
     {
         if (board->getPiece(to)->getPlayer() != this && piece->possibleMove(to))
         {
-            if (piece == king && king->isFirstMove())
+            if (piece == king && possibleCastling(to))
             {
-                if (to.x == Traits::Horizontal::G && rook[1]->isFirstMove())
-                {
-                    Traits::Coordinates coor{ Traits::Horizontal::F, rook[1]->getCoord().y };
-                    rook[1]->setCoordinates(coor);
-                    board->setPiece(rook[1], coor);
-                }
-                else if (to.x == Traits::Horizontal::C && rook[0]->isFirstMove())
-                {
-                    Traits::Coordinates coor{ Traits::Horizontal::D, rook[0]->getCoord().y };
-                    rook[1]->setCoordinates(coor);
-                    board->setPiece(rook[0], coor);
-                }
+                auto r = (to.x == Traits::Horizontal::G) ? rook[1] : rook[0];
+                Traits::Coordinates coor = { (to.x == Traits::Horizontal::G) ? Traits::Horizontal::F : Traits::Horizontal::D, to.y };
+
+                r->setCoordinates(coor);
+                board->setPiece(r, coor);            
             }
             piece->setCoordinates(to);
             board->setPiece(piece, to);
