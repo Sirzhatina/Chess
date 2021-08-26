@@ -24,6 +24,18 @@ void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) c
     to = convertCoordinates(xTo - 'a', yTo - '1');
 }
 
+bool Gameplay::possibleMove(const Player* moves, const Player* checks, Traits::Coordinates from, Traits::Coordinates to) const
+{
+    if (from == moves->getKingCoord())
+    {
+        return checks->accessToSquare(to);
+    }
+    else
+    {
+        return checks->accessToSquare(from);
+    }
+}
+
 int Gameplay::start()
 {
     Traits::Coordinates from, to;
@@ -39,6 +51,10 @@ int Gameplay::start()
             if (from == to)
             {
                 continue;
+            }
+            else if (!possibleMove(moves, notMoves, from, to))
+            {
+                throw std::runtime_error{ "Impossible move" };
             }
             moves->move(from, to);
             std::swap(moves, notMoves);

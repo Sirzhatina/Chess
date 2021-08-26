@@ -15,8 +15,12 @@ class Gameplay
     bool whiteMove{ true };
 
     bool showGoesOn() { return !white.isCheckmate() && !black.isCheckmate(); }
-    static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y } }; }
     void inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const;
+
+    bool possibleMove(const Player* moves, const Player* checks, Traits::Coordinates from, Traits::Coordinates to) const;
+    
+    static Traits::Coordinates convertCoordinates(int x, int y) { return { Traits::Horizontal{ x }, Traits::Vertical{ y } }; }
+
 public:
     Gameplay() = default;
 
