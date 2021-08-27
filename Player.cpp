@@ -107,7 +107,7 @@ bool Player::accessToSquare(Traits::Coordinates to) const
     return false;
 }
 
-void Player::move(Traits::Coordinates from, Traits::Coordinates to)
+Piece* Player::move(Traits::Coordinates from, Traits::Coordinates to)
 {
     auto piece = const_cast<Piece*>(board->getPiece(from));
     if (isOwner(piece) && !friendlySquare(to))
@@ -119,11 +119,12 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
         else if (piece->possibleMove(to))
         {
             piece->setCoordinates(to);
-            board->setPiece(piece, to);
+            return board->setPiece(piece, to);
         }
         else
         {
             throw std::runtime_error{ "Impossible to move" };
         }
     }
+    return nullptr;
 }

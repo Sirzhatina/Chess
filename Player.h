@@ -40,19 +40,16 @@ class Player {
 public:
     Player(Board* b, Traits::Color c);
 
-    void move(Traits::Coordinates from, Traits::Coordinates to);
-
-    Traits::Color getColor() const { return color; }
-
-    Board* getBoard() const { return board; }
-    Traits::Coordinates getKingCoord() const { king->getCoord(); }
+    Piece* move(Traits::Coordinates from, Traits::Coordinates to);
 
     bool accessToSquare(Traits::Coordinates to) const;
     void setCheck(bool ch) { check = ch; }
 
-    bool isCheck() const { return check; }
-    bool isCheckmate() const { return checkmate; }
-
+    Traits::Color       getColor()     const { return color; }
+    Board*              getBoard()     const { return board; }
+    Traits::Coordinates getKingCoord() const { return king->getCoord(); }
+    bool                isCheck()      const { return check; }
+    bool                isCheckmate()  const { return checkmate; }
 
     Player(const Player&) = delete;
     Player& operator=(const Player&) = delete;
