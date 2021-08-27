@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "Piece\Piece.h"
 #include "Board.h"
-#include <typeinfo>
+#include <stdexcept>
 
 
 Player::Player(Board* b, Traits::Color c)
@@ -120,6 +120,10 @@ void Player::move(Traits::Coordinates from, Traits::Coordinates to)
         {
             piece->setCoordinates(to);
             board->setPiece(piece, to);
+        }
+        else
+        {
+            throw std::runtime_error{ "Impossible to move" };
         }
     }
 }
