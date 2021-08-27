@@ -53,10 +53,10 @@ void Board::addPlayer(Player *pl)
     }
 }
 
-void Board::setPiece(Piece *p, Traits::Coordinates coord)
+Piece* Board::setPiece(Piece *p, Traits::Coordinates coord)
 {
-    if (p->getPlayer() == players[0] || p->getPlayer() == players[1])
-    {
-        (*board)[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
-    }  
+    Piece* previous = (*board)[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece;
+    (*board)[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
+
+    return previous;
 }

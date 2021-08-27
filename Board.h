@@ -20,7 +20,7 @@ public:
 
     void addPlayer(Player* pl);
 
-    void setPiece(Piece* p, Traits::Coordinates coord);
+    Piece* setPiece(Piece* p, Traits::Coordinates coord);
     inline const Piece* getPiece(Traits::Coordinates coord) const;
 
 private:
