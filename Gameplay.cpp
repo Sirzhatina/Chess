@@ -24,16 +24,23 @@ void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) c
     to = convertCoordinates(xTo - 'a', yTo - '1');
 }
 
-bool Gameplay::possibleMove(const Player* moves, const Player* checks, Traits::Coordinates from, Traits::Coordinates to) const
+bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates from, Traits::Coordinates to) const
 {
-    if (from == moves->getKingCoord())
+    Piece* defeated{ nullptr };
+    Piece* piece = const_cast<Piece*>(board->getPiece(from));
+
+    if (piece->possibleMove(to) && piece->getPlayer() == moves)
     {
-        return checks->accessToSquare(to);
+        defeated = board->setPiece(piece, to);
     }
     else
     {
-        return checks->accessToSquare(from);
+        return false;
     }
+    bool result = (from == moves->getKingCoord()) ? checks->accessToSquare(to) : checks->accessToSquare(moves->getKingCoord());
+
+    board->setPiece(board->setPiece(defeated, to), from); // swaps defeated and piece pieces on the board
+    return result;
 }
 
 int Gameplay::start()
@@ -42,6 +49,8 @@ int Gameplay::start()
 
     auto moves = &white;
     auto notMoves = &black;
+
+    Piece* defeated{ nullptr };
 
     while (showGoesOn())
     {
@@ -52,7 +61,7 @@ int Gameplay::start()
             {
                 continue;
             }
-            else if (!possibleMove(moves, notMoves, from, to))
+            if (!possibleMove(moves, notMoves, from, to))
             {
                 throw std::runtime_error{ "Impossible move" };
             }
