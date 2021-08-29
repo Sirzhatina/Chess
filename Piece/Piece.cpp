@@ -38,10 +38,9 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
 {
     int move = int(to.y) - int(p.getCoord().y);
     bool correctDirection = (move > 0) ? p.getColor() == Traits::Color::WHITE : p.getColor() == Traits::Color::BLACK;
-
-    if ((p.isFirstMove() ? std::abs(move) <= 2 : std::abs(move) <= 1) && 
-         to.x == p.getCoord().x                                       &&
-         correctDirection                                             &&
+    if (std::abs(move) <= p.isFirstMove() ? 2 : 1 && 
+         to.x == p.getCoord().x                   &&
+         correctDirection                         &&
          p.getBoard()->getPiece(to) == nullptr)
     {
         if (std::abs(move) == 2)
@@ -131,34 +130,6 @@ bool Queen::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const
 {
     return Bishop::correctRoute(from, to, b) || Rook::correctRoute(from, to, b);
 }
-
-// bool King::possibleCastling(Traits::Coordinates to) const
-// {
-//     if (isFirstMove())
-//     {
-//         if (to.y == getCoord().y)
-//         {
-//             if (to.x == Traits::Horizontal::G)
-//             {
-//                 if (getBoard()->getPiece({ Traits::Horizontal::F, to.y }) == nullptr &&
-//                     getBoard()->getPiece({ Traits::Horizontal::G, to.y }) == nullptr)
-//                 {
-//                     return true;
-//                 }
-//             }
-//             else if (to.x == Traits::Horizontal::C)
-//             {
-//                 if (getBoard()->getPiece({ Traits::Horizontal::D, to.y }) == nullptr &&
-//                     getBoard()->getPiece({ Traits::Horizontal::C, to.y }) == nullptr &&
-//                     getBoard()->getPiece({ Traits::Horizontal::B, to.y }) == nullptr)
-//                 {
-//                     return true;
-//                 }
-//             }
-//         }
-//     }
-//     return false;
-// }
 
 bool King::correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to)
 {

@@ -8,7 +8,7 @@
 #include "..\Traits.h"
 #include <string>
 
-class Square;
+class Board;
 class Player;
 
 
@@ -87,8 +87,6 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
     static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);
-
- //   bool possibleCastling(Traits::Coordinates to) const;
 };
 
 #endif //CHESS_PIECE_H
