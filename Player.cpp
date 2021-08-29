@@ -12,6 +12,10 @@ Player::Player(Board* b, Traits::Color c)
 : board(b)
 , color(c)
 {
+    if (b == nullptr)
+    {
+        throw std::runtime_error{ "Cannot create player without board" };
+    }
     board->addPlayer(this);
 
     auto startOfPawns = (color == Traits::Color::WHITE) ? Traits::Vertical::two : Traits::Vertical::seven;
