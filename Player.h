@@ -5,6 +5,7 @@
 #ifndef CHESS_PLAYER_H
 #define CHESS_PLAYER_H
 
+#include <vector>
 #include "Traits.h"
 
 class Board;
@@ -42,7 +43,7 @@ public:
 
     Piece* move(Traits::Coordinates from, Traits::Coordinates to);
 
-    bool accessToSquare(Traits::Coordinates to) const;
+    std::vector<Piece*> accessToSquare(Traits::Coordinates to) const;
     void setCheck(bool ch) { check = ch; }
 
     Traits::Color       getColor()     const { return color; }

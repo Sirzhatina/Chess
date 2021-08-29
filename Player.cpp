@@ -92,23 +92,25 @@ void Player::castling(Traits::Coordinates to)
     rk->setCoordinates(rkDest);
 }
 
-bool Player::accessToSquare(Traits::Coordinates to) const
+std::vector<Piece*> Player::accessToSquare(Traits::Coordinates to) const
 {
-    for (const auto p : pawn)
+    std::vector<Piece*> result;
+    for (auto p : pawn)
     {
         if (p->possibleMove(to))
         {
-            return true;
+            result.push_back(p);
         }
     }
-    if (rook[0]->possibleMove(to)   || rook[1]->possibleMove(to)   ||
-        knight[0]->possibleMove(to) || knight[1]->possibleMove(to) ||
-        bishop[0]->possibleMove(to) || bishop[1]->possibleMove(to) ||
-        queen->possibleMove(to))
+    Piece* pieces[8] { rook[0], rook[1], knight[0], knight[1], bishop[0], bishop[1], queen, king };
+    for (auto p : pieces)
     {
-        return true;   
+        if (p->possibleMove(to))
+        {
+            result.push_back(p);
+        }
     }
-    return false;
+    return result;
 }
 
 Piece* Player::move(Traits::Coordinates from, Traits::Coordinates to)
