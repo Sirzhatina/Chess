@@ -90,6 +90,33 @@ bool Bishop::correctRoute(Traits::Coordinates from, Traits::Coordinates to, cons
             return false;
         }
     }
+    return true;
+}
+
+std::vector<Traits::Coordinates> Bishop::squaresBefore(Traits::Coordinates to) const
+{
+    int diffX = int(to.x) - int(getCoord().x);
+    int diffY = int(to.y) - int(getCoord().y);
+
+    std::vector<Traits::Coordinates> result{ getCoord() };
+
+    if (std::abs(diffX) == std::abs(diffY))
+    {
+        int incX = (diffX > 0) ? 1 : -1;
+        int incY = (diffY > 0) ? 1 : -1;
+
+        auto coor = getCoord();
+        coor.x = Traits::Horizontal(int(coor.x) + incX); 
+        coor.y = Traits::Vertical(int(coor.y) + incY);
+        while (coor != to)
+        {
+            result.push_back(coor);
+
+            coor.x = Traits::Horizontal(int(coor.x) + incX); 
+            coor.y = Traits::Vertical(int(coor.y) + incY);
+        }
+    }
+    return result;
 }
 
 bool Rook::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
@@ -126,9 +153,90 @@ bool Rook::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const 
     return true;
 }
 
+std::vector<Traits::Coordinates> Rook::squaresBefore(Traits::Coordinates to) const
+{
+    std::vector<Traits::Coordinates> result{ getCoord() };
+
+    if (!(getCoord().x != to.x && getCoord().y != to.y))
+    {
+        auto coor = getCoord();
+        if (getCoord().x != to.x)
+        {
+            int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
+
+            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            while (coor != to)
+            {
+                result.push_back(coor);
+                coor.x = Traits::Horizontal(int(coor.x) + incX);
+            }
+        }
+        else
+        {
+            int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
+
+            coor.y = Traits::Vertical(int(coor.y) + incY);
+            while (coor != to)
+            {
+                result.push_back(coor);
+                coor.y = Traits::Vertical(int(coor.y) + incY);
+            }
+        }
+    }
+    return result;
+}
+
 bool Queen::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
 {
     return Bishop::correctRoute(from, to, b) || Rook::correctRoute(from, to, b);
+}
+
+std::vector<Traits::Coordinates> Queen::squaresBefore(Traits::Coordinates to) const
+{
+    std::vector<Traits::Coordinates> result{ getCoord() };
+
+    int diffX = int(to.x) - int(getCoord().x);
+    int diffY = int(to.y) - int(getCoord().y);
+
+    auto coor = getCoord();
+    if (std::abs(diffX) == std::abs(diffY))
+    {
+        int incX = (diffX > 0) ? 1 : -1;
+        int incY = (diffY > 0) ? 1 : -1;
+
+        coor.x = Traits::Horizontal(int(coor.x) + incX); 
+        coor.y = Traits::Vertical(int(coor.y) + incY);
+        while (coor != to)
+        {
+            result.push_back(coor);
+            coor.x = Traits::Horizontal(int(coor.x) + incX); 
+            coor.y = Traits::Vertical(int(coor.y) + incY);
+        }
+    }
+    else if (!(getCoord().x != to.x && getCoord().y != to.y))
+    {
+        if (getCoord().x != to.x)
+        {
+            int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
+            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            while (coor != to)
+            {
+                result.push_back(coor);
+                coor.x = Traits::Horizontal(int(coor.x) + incX);
+            }
+        }
+        else
+        {
+            int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
+            coor.y = Traits::Vertical(int(coor.y) + incY);
+            while (coor != to)
+            {
+                result.push_back(coor);
+                coor.y = Traits::Vertical(int(coor.y) + incY);
+            }
+        }
+    }
+    return result;
 }
 
 bool King::correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to)

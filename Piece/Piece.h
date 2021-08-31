@@ -28,6 +28,7 @@ public:
     virtual ~Piece() = default;
 
     virtual bool possibleMove(Traits::Coordinates to) const = 0;
+    virtual std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const = 0;
     
     void setCoordinates(Traits::Coordinates to);
 
@@ -46,6 +47,11 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return possibleAttack(to) || correctRoute(*this, to); }
     static bool correctRoute(const Pawn& p, Traits::Coordinates to);
+
+    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override
+    {
+        return std::vector<Traits::Coordinates>{ getCoord() };
+    }
 };
 
 
@@ -55,6 +61,12 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b = nullptr);
+
+
+    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override
+    {
+        return std::vector<Traits::Coordinates>{ getCoord() };
+    }
 };
 
 class Bishop: public Piece {
@@ -63,6 +75,8 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to, getBoard()); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
+
+    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
 };
 
 class Rook: public Piece {
@@ -71,6 +85,8 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to, getBoard()); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
+
+    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
 };
 
 class Queen: public Piece {
@@ -79,6 +95,8 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to, getBoard()); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
+
+    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
 };
 
 class King: public Piece {
@@ -87,6 +105,11 @@ public:
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
     static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);
+
+    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override 
+    { 
+        return std::vector<Traits::Coordinates>{ getCoord() };
+    }
 };
 
 #endif //CHESS_PIECE_H
