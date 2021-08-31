@@ -47,6 +47,7 @@ public:
     bool                isAccessedSquare(Traits::Coordinates to)      const;
     
     void setCheck(bool ch) { check = ch; }
+    void setCheckmate(bool ch) { checkmate = ch; }
 
     Traits::Color       getColor()     const { return color; }
     Board*              getBoard()     const { return board; }
