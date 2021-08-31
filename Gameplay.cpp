@@ -1,5 +1,6 @@
 #include "Gameplay.h"
 #include <iostream>
+#include <vector>
 #include <cstdlib>
 
 
@@ -37,10 +38,64 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
     {
         return false;
     }
-    bool result = (from == moves->getKingCoord()) ? checks->accessToSquare(to) : checks->accessToSquare(moves->getKingCoord());
+    bool result = (from == moves->getKingCoord()) ? checks->isAccessedSquare(to) : checks->isAccessedSquare(moves->getKingCoord());
 
-    board->setPiece(board->setPiece(defeated, to), from); // swaps defeated and piece pieces on the board
+    board->setPiece(board->setPiece(defeated, to), from); // swaps defeated and piece variables on the board
     return result;
+}
+
+bool Gameplay::isCheckmate(Player* checks, Player* inCheck)
+{
+    std::vector<Piece*> checkPieces = checks->piecesAccessingSquare(inCheck->getKingCoord());  // containts 0, 1 or 2 pieces
+    if (checkPieces.empty())
+    {
+        return false;
+    }
+    else
+    {
+        inCheck->setCheck(true);
+    }
+    std::vector<Traits::Coordinates> squaresForKing;
+
+    {
+        const Piece* pieceOnSquare{ nullptr };
+        Traits::Coordinates currentSquare;
+
+        for (int x = int(inCheck->getKingCoord().x) - 1; x < 3; x++)
+        {   
+            for (int y = int(inCheck->getKingCoord().y) - 1; y < 3; y++)
+            {
+                currentSquare = { Traits::Horizontal{x}, Traits::Vertical{y} };
+                pieceOnSquare = board->getPiece(currentSquare);
+
+                if (x > 0 && x < Traits::boardSize && y > 0 && y < Traits::boardSize &&
+                    inCheck->getKingCoord() != currentSquare)
+                {
+                    if (pieceOnSquare && pieceOnSquare->getColor() != inCheck->getColor() &&
+                        !checks->isAccessedSquare(currentSquare))
+                    {
+                        squaresForKing.push_back(currentSquare);
+                    }
+                }
+            }
+        }
+    }
+    if (checkPieces.size() > 1 && squaresForKing.empty())
+    {
+        return true;
+    }
+
+    std::vector<Traits::Coordinates> allCheckSquares = checkPieces[0]->squaresBefore(inCheck->getKingCoord());
+
+    const Piece* king = board->getPiece(inCheck->getKingCoord());
+    for (const auto sqr : allCheckSquares)
+    {
+        if (inCheck->isAccessedSquare(sqr) && !king->possibleMove(sqr))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 int Gameplay::start()
@@ -66,6 +121,10 @@ int Gameplay::start()
                 throw std::runtime_error{ "Impossible move" };
             }
             moves->move(from, to);
+            if (isCheckmate(moves, notMoves))
+            {
+                notMoves->setCheckmate(true);
+            }
             std::swap(moves, notMoves);
         }
         catch (const std::runtime_error& err)

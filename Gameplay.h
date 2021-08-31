@@ -18,6 +18,7 @@ class Gameplay
     void inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const;
 
     bool possibleMove(Player* moves, Player* checks, Traits::Coordinates from, Traits::Coordinates to) const;
+    bool isCheckmate(Player* checks, Player* inCheck);
     
     static Traits::Coordinates convertCoordinates(int x, int y) { return { Traits::Horizontal{ x }, Traits::Vertical{ y } }; }
 
