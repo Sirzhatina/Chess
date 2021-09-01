@@ -11,16 +11,17 @@ namespace Traits
 constexpr auto boardSize = 8;
 
 enum class Horizontal {
-    A, B, C, D, E, F, G, H
+    A, B, C, D, E, F, G, H, NPOS
 };
 enum class Vertical {
-    one, two, three, four, five, six, seven, eight
+    one, two, three, four, five, six, seven, eight, NPOS
 };
 
 struct Coordinates {
     Horizontal x;
     Vertical y;
 };
+constexpr Coordinates NULLPOS{ Traits::Horizontal::NPOS, Traits::Vertical::NPOS };
 bool operator==(const Coordinates& c1, const Coordinates& c2) { return c1.x == c2.x && c1.y == c2.y; }
 bool operator!=(const Coordinates& c1, const Coordinates& c2) { return !(c1 == c2); }
 
