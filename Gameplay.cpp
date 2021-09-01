@@ -34,6 +34,12 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
     {
         defeated = board->setPiece(piece, to);
     }
+    else if (piece->getCoord() == moves->getKingCoord() && piece->isFirstMove() && std::abs(int(to.x) - int(from.x)) == 2) // is castling
+    {
+        Traits::Coordinates mid{ Traits::Horizontal(int(from.x) + (int(to.x) > int(from.x)) ? 1 : -1), from.y };
+
+        return moves->isAccessedSquare(mid) && moves->isAccessedSquare(to);
+    }
     else
     {
         return false;
@@ -104,8 +110,6 @@ int Gameplay::start()
 
     auto moves = &white;
     auto notMoves = &black;
-
-    Piece* defeated{ nullptr };
 
     while (showGoesOn())
     {
