@@ -38,16 +38,16 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
     {
         Traits::Coordinates mid{ Traits::Horizontal(int(from.x) + (int(to.x) > int(from.x)) ? 1 : -1), from.y };
 
-        return moves->isAccessedSquare(mid) && moves->isAccessedSquare(to);
+        return !checks->isAccessedSquare(mid) && !checks->isAccessedSquare(to) && !checks->isAccessedSquare(from);
     }
     else
     {
         return false;
     }
-    bool result = (from == moves->getKingCoord()) ? checks->isAccessedSquare(to) : checks->isAccessedSquare(moves->getKingCoord());
+    bool result = (from == moves->getKingCoord()) ? !checks->isAccessedSquare(to) : !checks->isAccessedSquare(moves->getKingCoord());
 
     board->setPiece(board->setPiece(defeated, to), from); // swaps back defeated and piece variables on the board
-    return !result;
+    return result;
 }
 
 bool Gameplay::isCheckmate(Player* checks, Player* inCheck) const
