@@ -46,8 +46,8 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
     }
     bool result = (from == moves->getKingCoord()) ? checks->isAccessedSquare(to) : checks->isAccessedSquare(moves->getKingCoord());
 
-    board->setPiece(board->setPiece(defeated, to), from); // swaps defeated and piece variables on the board
-    return result;
+    board->setPiece(board->setPiece(defeated, to), from); // swaps back defeated and piece variables on the board
+    return !result;
 }
 
 bool Gameplay::isCheckmate(Player* checks, Player* inCheck) const
