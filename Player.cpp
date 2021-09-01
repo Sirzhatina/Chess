@@ -102,7 +102,7 @@ std::vector<Piece*> Player::piecesAccessingSquare(Traits::Coordinates to) const
             result.push_back(p);
         }
     }
-    Piece* pieces[8] { rook[0], rook[1], knight[0], knight[1], bishop[0], bishop[1], queen, king };
+    Piece* pieces[7] { rook[0], rook[1], knight[0], knight[1], bishop[0], bishop[1], queen };
     for (auto p : pieces)
     {
         if (p->possibleMove(to))
@@ -125,9 +125,43 @@ bool Player::isAccessedSquare(Traits::Coordinates to) const
     if (rook[0]  ->possibleMove(to) || rook[1]  ->possibleMove(to) ||
         knight[0]->possibleMove(to) || knight[1]->possibleMove(to) ||
         bishop[0]->possibleMove(to) || bishop[1]->possibleMove(to) ||
-        queen    ->possibleMove(to) || king     ->possibleMove(to))
+        queen    ->possibleMove(to))
     {
         return true;
+    }
+    return false;
+}
+
+bool Player::isAbleToMove() const
+{
+    Piece* pieces[7]{ rook[0], rook[1], knight[0], knight[1], bishop[0], bishop[1], queen };
+
+    for (const auto p : pieces)
+    {
+        if (p->getCoord() != Traits::NULLPOS)
+        {
+            return true;
+        }
+    }
+    Traits::Coordinates sqrToMove;
+    for (const auto p : pawn)
+    {
+        if (p->getCoord() != Traits::NULLPOS) 
+        {
+            sqrToMove.y = Traits::Vertical(int(p->getCoord().y) + (color == Traits::Color::WHITE) ? 1 : -1);
+
+            for (int x = int(p->getCoord().x) - 1, lim = x + 3; x < lim; x++)
+            {
+                if (x > 0 && x < Traits::boardSize)
+                {
+                    sqrToMove.x = Traits::Horizontal{x};
+                    if (sqrToMove != Traits::NULLPOS && p->possibleMove(sqrToMove))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
     }
     return false;
 }

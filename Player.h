@@ -49,6 +49,8 @@ public:
     void setCheck(bool ch) { check = ch; }
     void setCheckmate(bool ch) { checkmate = ch; }
 
+    bool isAbleToMove() const;
+
     Traits::Color       getColor()     const { return color; }
     Board*              getBoard()     const { return board; }
     Traits::Coordinates getKingCoord() const { return king->getCoord(); }
