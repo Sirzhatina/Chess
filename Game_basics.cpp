@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Board.h"
 #include "Traits.h"
+#include <typeinfo>
 #include <iostream>
 
 
@@ -17,7 +18,7 @@ int Game_basics::run()
         system("cls");
 
         std::cout << "1 -- play\n"
-                     "2 -- quit";
+                     "2 -- quit\n";
         (std::cin >> choice).get();
 
         switch (choice)
@@ -38,44 +39,42 @@ int Game_basics::run()
 
 void Game_basics::play()
 {
-    game.start();
     draw();
 }
 
 void Game_basics::draw()
 {
-    auto definePiece = [](const Piece* p) -> char
+    char piece;
+    auto definePiece = [&piece](const Piece* p)
     {
-        char result;
         if (typeid(p) == typeid(Pawn))
         {
-            result = 'p';
+            piece = 'p';
         }
         else if (typeid(p) == typeid(Knight))
         {
-            result = 'n';
+            piece = 'n';
         }
         else if (typeid(p) == typeid(Bishop))
         {
-            result = 'b';
+            piece = 'b';
         }
         else if (typeid(p) == typeid(Rook))
         {
-            result = 'r';
+            piece = 'r';
         }
         else if (typeid(p) == typeid(Queen))
         {
-            result = 'q';
+            piece = 'q';
         }
         else if (typeid(p) == typeid(King))
         {
-            result = 'k';
+            piece = 'k';
         }
         if (p->getColor() == Traits::Color::WHITE)
         {
-            result = toupper(result);
+            piece = toupper(piece);
         }
-        return result;
     };
     auto print = [=]() 
     {
@@ -91,11 +90,12 @@ void Game_basics::draw()
         std::cout << "* " << Traits::boardSize - i << ' ';
         for (int j = 0; j < Traits::boardSize; j++)
         {
-            colorSign = ((i + j) % 2) ? '_' : ' ';
+            colorSign = ((i + j) % 2) ? '_' : 'F';
             coor.x = Traits::Horizontal{j};
             coor.y = Traits::Vertical{ Traits::boardSize - i - 1 };
             
-            std::cout << '|' << colorSign << definePiece(game.getBoard()->getPiece(coor)) << colorSign;
+            definePiece(game.getBoard()->getPiece(coor));
+            std::cout << '|' << colorSign << piece << colorSign;
         }
         std::cout << "| *" << std::endl;
     }
