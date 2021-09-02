@@ -34,6 +34,7 @@ private:
     std::array<std::array<Square, Traits::boardSize>, Traits::boardSize> board;
     Player* players[2]{ nullptr, nullptr };
 
+    // restricted instantiation
     Board();
 
     Board(const Board&) = delete;
