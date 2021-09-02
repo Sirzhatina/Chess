@@ -22,11 +22,11 @@ Board::Board()
 
 void Board::addPlayer(Player *pl)
 {
-    if (players[0])
+    if (!players[0])
     {
         players[0] = pl;
     }
-    else if (players[1])
+    else if (!players[1])
     {
         if (players[0]->getColor() == pl->getColor())
         {
