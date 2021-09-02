@@ -6,9 +6,7 @@
 #include <cstdlib>
 #include "Piece.h"
 #include "..\Player.h"
-#include "Board.h"
-
-std::string Piece::errMsg = "Impossible to move";
+#include "..\Board.h"
 
 Piece::Piece(const Player* p, Traits::Coordinates coord)
 : player(p)
@@ -38,10 +36,10 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
 {
     int move = int(to.y) - int(p.getCoord().y);
     bool correctDirection = (move > 0) ? p.getColor() == Traits::Color::WHITE : p.getColor() == Traits::Color::BLACK;
-    if (std::abs(move) <= p.isFirstMove() ? 2 : 1 && 
-         to.x == p.getCoord().x                   &&
-         correctDirection                         &&
-         p.getBoard()->getPiece(to) == nullptr)
+    if (std::abs(move) <= (p.isFirstMove() ? 2 : 1) && 
+        to.x == p.getCoord().x                      &&
+        correctDirection                            &&
+        p.getBoard()->getPiece(to) == nullptr)
     {
         if (std::abs(move) == 2)
         {

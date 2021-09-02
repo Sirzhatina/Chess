@@ -28,7 +28,7 @@ class Gameplay
     std::vector<Traits::Coordinates> allSquaresForKing(const Player* moves, const Player* notMoves) const;
     bool kingCanMove(const Player* moves, const Player* notMoves) const;
 
-    static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y } }; }
+    static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y }}; }
 
     // implementing observer pattern
     std::list<IObserver*> observers;

@@ -21,23 +21,23 @@ Player::Player(Board* b, Traits::Color c)
     auto startOfPawns = (color == Traits::Color::WHITE) ? Traits::Vertical::two : Traits::Vertical::seven;
     auto startOfOthers = (color == Traits::Color::WHITE) ? Traits::Vertical::one : Traits::Vertical::eight;
 
-    unsigned alongLine = 0;
+    int alongLine = 0;
     for (auto& pwn: pawn)
     {
-        pwn = new Pawn{ this, { Traits::Horizontal{ alongLine }, startOfPawns } };
+        pwn = new Pawn{ this, Traits::Coordinates{ Traits::Horizontal(alongLine), startOfPawns } };
         board->setPiece(pwn, pwn->getCoord());
     }
 
     alongLine = -1;
-    for (unsigned i = 0, inc = 1; i < PAIR_PIECES; i++)
+    for (int i = 0, inc = 1; i < PAIR_PIECES; i++)
     {
-        rook[i] = new Rook{ this, { Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        rook[i] = new Rook{ this, Traits::Coordinates{ Traits::Horizontal(alongLine += inc), startOfOthers } };
         board->setPiece(rook[i], rook[i]->getCoord());
 
-        knight[i] = new Knight{ this, { Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        knight[i] = new Knight{ this, Traits::Coordinates{ Traits::Horizontal(alongLine += inc), startOfOthers } };
         board->setPiece(knight[i], knight[i]->getCoord());
 
-        bishop[i] = new Bishop{ this, { Traits::Horizontal{ alongLine += inc }, startOfOthers } };
+        bishop[i] = new Bishop{ this, Traits::Coordinates{ Traits::Horizontal{ alongLine += inc }, startOfOthers } };
         board->setPiece(bishop[i], bishop[i]->getCoord());
 
         inc *= -1;

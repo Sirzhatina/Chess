@@ -7,16 +7,13 @@
 
 #include "..\Traits.h"
 #include <string>
+#include <vector>
 
 class Board;
 class Player;
 
 
 class Piece {
-protected:
-    static std::string errMsg;
-
-private:
     const Player*       player;
     Board*              board;
     const Traits::Color color;
@@ -57,7 +54,7 @@ public:
 
 class Knight: public Piece {
 public:
-    Knight(const Player* p, Traits::Coordinates coord);
+    Knight(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b = nullptr);
@@ -71,7 +68,7 @@ public:
 
 class Bishop: public Piece {
 public:
-    Bishop(const Player* p, Traits::Coordinates coord);
+    Bishop(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to, getBoard()); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
@@ -81,7 +78,7 @@ public:
 
 class Rook: public Piece {
 public:
-    Rook(const Player* p, Traits::Coordinates coord);
+    Rook(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to, getBoard()); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
@@ -91,7 +88,7 @@ public:
 
 class Queen: public Piece {
 public:
-    Queen(const Player* p, Traits::Coordinates coord);
+    Queen(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(getCoord(), to, getBoard()); }
     static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
@@ -101,7 +98,7 @@ public:
 
 class King: public Piece {
 public:
-    King(const Player* p, Traits::Coordinates coord);
+    King(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
 
     bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
     static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);

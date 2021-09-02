@@ -7,6 +7,8 @@
 
 #include <vector>
 #include "Traits.h"
+#include "Piece/Piece.h"
+#include "Board.h"
 
 class Board;
 class Piece;
