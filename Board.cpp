@@ -9,28 +9,15 @@
 
 
 Board::Board()
-{
-    using x = Traits::Horizontal;
-    using y = Traits::Vertical;
-    using s = Square;
-    using a = std::array<s, Traits::boardSize>;
-    
-    board = new std::array<a, Traits::boardSize>
+{    
+    for (int i = 0; i < board.size(); i++)
     {
-        a{ s{{ x::A, y{7} }}, s{{ x::B, y{7} }}, s{{ x::C, y{7} }}, s{{ x::D, y{7} }}, s{{ x::E, y{7} }}, s{{ x::F, y{7} }}, s{{ x::G, y{7} }}, s{{ x::H, y{7} }} },
-        a{ s{{ x::A, y{6} }}, s{{ x::B, y{6} }}, s{{ x::C, y{6} }}, s{{ x::D, y{6} }}, s{{ x::E, y{6} }}, s{{ x::F, y{6} }}, s{{ x::G, y{6} }}, s{{ x::H, y{6} }} },
-        a{ s{{ x::A, y{5} }}, s{{ x::B, y{5} }}, s{{ x::C, y{5} }}, s{{ x::D, y{5} }}, s{{ x::E, y{5} }}, s{{ x::F, y{5} }}, s{{ x::G, y{5} }}, s{{ x::H, y{5} }} },
-        a{ s{{ x::A, y{4} }}, s{{ x::B, y{4} }}, s{{ x::C, y{4} }}, s{{ x::D, y{4} }}, s{{ x::E, y{4} }}, s{{ x::F, y{4} }}, s{{ x::G, y{4} }}, s{{ x::H, y{4} }} },
-        a{ s{{ x::A, y{3} }}, s{{ x::B, y{3} }}, s{{ x::C, y{3} }}, s{{ x::D, y{3} }}, s{{ x::E, y{3} }}, s{{ x::F, y{3} }}, s{{ x::G, y{3} }}, s{{ x::H, y{3} }} },
-        a{ s{{ x::A, y{2} }}, s{{ x::B, y{2} }}, s{{ x::C, y{2} }}, s{{ x::D, y{2} }}, s{{ x::E, y{2} }}, s{{ x::F, y{2} }}, s{{ x::G, y{2} }}, s{{ x::H, y{2} }} },
-        a{ s{{ x::A, y{1} }}, s{{ x::B, y{1} }}, s{{ x::C, y{1} }}, s{{ x::D, y{1} }}, s{{ x::E, y{1} }}, s{{ x::F, y{1} }}, s{{ x::G, y{1} }}, s{{ x::H, y{1} }} },
-        a{ s{{ x::A, y{0} }}, s{{ x::B, y{0} }}, s{{ x::C, y{0} }}, s{{ x::D, y{0} }}, s{{ x::E, y{0} }}, s{{ x::F, y{0} }}, s{{ x::G, y{0} }}, s{{ x::H, y{0} }} }
-    };
-}
-
-Board::~Board()
-{
-    delete board;
+        for (int j = 0; j < board[i].size(); j++)
+        {
+            board[i][j].coord.x = Traits::Horizontal{ j };
+            board[i][j].coord.y = Traits::Vertical{ Traits::boardSize - i - 1 };
+        }
+    }
 }
 
 void Board::addPlayer(Player *pl)
@@ -55,9 +42,10 @@ void Board::addPlayer(Player *pl)
 
 Piece* Board::setPiece(Piece *p, Traits::Coordinates coord)
 {
-    Piece* previous = (*board)[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece;
+    Piece* previous = board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece;
     
-    (*board)[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
-    (*board)[Traits::boardSize - int(p->getCoord().y) - 1][int(p->getCoord().x)].piece = nullptr;
+    board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
+    board[Traits::boardSize - int(p->getCoord().y) - 1][int(p->getCoord().x)].piece = nullptr;
+
     return previous;
 }

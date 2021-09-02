@@ -11,12 +11,19 @@
 class Player;
 class Piece;
 
+// Mayer's singleton
 class Board {
 public:
-    struct Square { const Traits::Coordinates coord; Piece* piece{ nullptr }; };
+    struct Square { Traits::Coordinates coord; Piece* piece{ nullptr }; };
 
-    Board();
-    ~Board();
+    // only one instance
+    static Board& getInstance()
+    {
+        static Board b;
+        return b;
+    }
+
+    ~Board() = default;
 
     void addPlayer(Player* pl);
 
@@ -24,13 +31,17 @@ public:
     inline const Piece* getPiece(Traits::Coordinates coord) const;
 
 private:
-    std::array<std::array<Square, Traits::boardSize>, Traits::boardSize>* board{};
+    std::array<std::array<Square, Traits::boardSize>, Traits::boardSize> board;
     Player* players[2]{ nullptr, nullptr };
 
+    Board();
+
     Board(const Board&) = delete;
+    Board(Board&&) = delete;
     Board& operator=(const Board&) = delete;
+    Board& operator=(Board&&) = delete;
 };
 
-const Piece* Board::getPiece(Traits::Coordinates coord) const { return (*board)[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece; }
+const Piece* Board::getPiece(Traits::Coordinates coord) const { return board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece; }
 
 #endif //CHESS_BOARD_H
