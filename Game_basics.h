@@ -5,12 +5,22 @@
 #ifndef CHESS_GAME_BASICS_H
 #define CHESS_GAME_BASICS_H
 
+#include "Gameplay.h"
+#include "IObserver.h"
 
-class Game_basics {
-    static void draw();
-    static void play();
+// concrete observer
+class Game_basics : public IObserver {
+
+    Gameplay game;
+
+    void draw();
+    void play();
+
 public:
-    static int run();
+    Game_basics() { game.addObserver(this); }
+    int run();
+
+    void handleEvent(const Gameplay* observed) override;
 };
 
 

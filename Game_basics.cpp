@@ -22,7 +22,9 @@ int Game_basics::run()
 
         switch (choice)
         {
-            case '1': play();
+            case '1':
+                system("cls"); 
+                play();
                 break;
             case '2':
                 system("pause");
@@ -36,33 +38,79 @@ int Game_basics::run()
 
 void Game_basics::play()
 {
+    game.start();
+    draw();
+}
 
-    while (!white->isCheckmate() && !black->isCheckmate())
+void Game_basics::draw()
+{
+    auto definePiece = [](const Piece* p) -> char
     {
-        std::cout << "From: ";
-        std::cin.get(xFrom).get(yFrom);
-
-        std::cout << "To: ";
-        std::cin.get(xTo).get(yTo);
-
-        if (!from.setCoord(xFrom, yFrom) || !to.setCoord(xTo, yTo))
+        char result;
+        if (typeid(p) == typeid(Pawn))
         {
-            continue;
+            result = 'p';
         }
-
-        if (whiteMove)
+        else if (typeid(p) == typeid(Knight))
         {
-            if (!white->Move(from, to))
-            {
-                std::cout << "Wrong move\n";
-                continue;
-            }
+            result = 'n';
         }
-        else {
+        else if (typeid(p) == typeid(Bishop))
+        {
+            result = 'b';
+        }
+        else if (typeid(p) == typeid(Rook))
+        {
+            result = 'r';
+        }
+        else if (typeid(p) == typeid(Queen))
+        {
+            result = 'q';
+        }
+        else if (typeid(p) == typeid(King))
+        {
+            result = 'k';
+        }
+        if (p->getColor() == Traits::Color::WHITE)
+        {
+            result = toupper(result);
+        }
+        return result;
+    };
+    auto print = [=]() 
+    {
+        for (int i = 0; i < 20; i++) std::cout << "* ";
+        std::cout << std::endl;
+    };
 
+    print();
+    char colorSign; // ' ' for white squares and '_' for black ones
+    Traits::Coordinates coor;
+    for (int i = 0; i < Traits::boardSize; i++)
+    {
+        std::cout << "* " << Traits::boardSize - i << ' ';
+        for (int j = 0; j < Traits::boardSize; j++)
+        {
+            colorSign = ((i + j) % 2) ? '_' : ' ';
+            coor.x = Traits::Horizontal{j};
+            coor.y = Traits::Vertical{ Traits::boardSize - i - 1 };
+            
+            std::cout << '|' << colorSign << definePiece(game.getBoard()->getPiece(coor)) << colorSign;
         }
-        whiteMove = !whiteMove;
+        std::cout << "| *" << std::endl;
     }
 
-    std::cout << (white->isCheckMate() ? "\nBlack win" : "\nWhite win") << std::endl;
+    std::cout << "*   ";
+    for (char i = 'a'; i - 'a' < Traits::boardSize; i++)
+    {
+        std::cout << ' ' << i;
+    }
+    std::cout << "   *" << std::endl;
+    print();
+
+}
+
+void Game_basics::handleEvent(const Gameplay* observed)
+{
+    draw();
 }
