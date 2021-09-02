@@ -1,14 +1,15 @@
 #pragma once
 
+#include <list>
 #include "Traits.h"
 #include "Piece/Piece.h"
 #include "Player.h"
 #include "Board.h"
-
+#include "IObserver.h"
 
 class Gameplay
 {
-    Board* board;
+    Board* board{ &Board::getInstance() };
     Player white{ board, Traits::Color::WHITE };
     Player black{ board, Traits::Color::BLACK };
 
@@ -29,8 +30,18 @@ class Gameplay
 
     static Traits::Coordinates convertCoordinates(int x, int y) { return { Traits::Horizontal{ x }, Traits::Vertical{ y } }; }
 
+    // implementing observer pattern
+    std::list<IObserver*> observers;
+    void Notify() const;
+
 public:
-    Gameplay(Board* b);
+    Gameplay() = default;
+    ~Gameplay() = default;
+
+    void addObserver(IObserver* ob) { observers.push_back(ob); }
+    void removeObserver(IObserver* ob) { observers.remove(ob); }
+
+    const Board* getBoard() const { return board; }
 
     int start();
 };

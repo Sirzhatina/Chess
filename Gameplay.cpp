@@ -3,8 +3,6 @@
 #include <vector>
 #include <cstdlib>
 
-
-
 void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const
 {
     char xFrom, yFrom;
@@ -47,6 +45,11 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
     bool result = (from == moves->getKingCoord()) ? !checks->isAccessedSquare(to) : !checks->isAccessedSquare(moves->getKingCoord());
 
     board->setPiece(board->setPiece(defeated, to), from); // swaps back defeated and piece variables on the board
+
+    if (result)
+    {
+        Notify();
+    }
     return result;
 }
 
@@ -205,5 +208,13 @@ void Gameplay::endgame() const
     else
     {
         std::cout << "Oops, it seems to be draw.";
+    }
+}
+
+void Gameplay::Notify() const
+{
+    for (auto ob : observers)
+    {
+        ob->handleEvent(this);
     }
 }
