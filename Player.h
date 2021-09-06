@@ -18,12 +18,11 @@ class Player {
     static constexpr auto PAWNS = 8;
     static constexpr auto PAIR_PIECES = 2;
 
-    const Traits::Color color;
-
     bool check{ false };
     bool checkmate{ false };
 
     Board* board;
+    const Traits::Color color;
 
     Piece* pawn[PAWNS];
 
