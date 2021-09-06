@@ -24,7 +24,7 @@ Player::Player(Board* b, Traits::Color c)
     int alongLine = 0;
     for (auto& pwn: pawn)
     {
-        pwn = new Pawn{ this, Traits::Coordinates{ Traits::Horizontal(alongLine), startOfPawns } };
+        pwn = new Pawn{ this, Traits::Coordinates{ Traits::Horizontal(alongLine++), startOfPawns } };
         board->setPiece(pwn, pwn->getCoord());
     }
 
@@ -82,13 +82,13 @@ bool Player::possibleCastling(Traits::Coordinates to) const
 
 void Player::castling(Traits::Coordinates to)
 {
-    board->setPiece(king, to);
+    board->setPiece(board->setPiece(nullptr, king->getCoord()), to);
     king->setCoordinates(to);
 
     auto rk = (to.x == Traits::Horizontal::C) ? rook[0] : rook[1];
     Traits::Coordinates rkDest{ (rk == rook[0]) ? Traits::Horizontal::D : Traits::Horizontal::F, to.y };
 
-    board->setPiece(rk, rkDest);
+    board->setPiece(board->setPiece(nullptr, rk->getCoord()), rkDest);
     rk->setCoordinates(rkDest);
 }
 
@@ -177,6 +177,7 @@ Piece* Player::move(Traits::Coordinates from, Traits::Coordinates to)
         }
         else if (piece->possibleMove(to))
         {
+            board->setPiece(nullptr, from);
             piece->setCoordinates(to);
             return board->setPiece(piece, to);
         }
