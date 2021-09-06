@@ -40,6 +40,7 @@ int Game_basics::run()
 void Game_basics::play()
 {
     draw();
+    game.start();
 }
 
 void Game_basics::draw()
@@ -47,27 +48,27 @@ void Game_basics::draw()
     char piece;
     auto definePiece = [&piece](const Piece* p)
     {
-        if (typeid(p) == typeid(Pawn))
+        if (dynamic_cast<const Pawn*>(p))
         {
             piece = 'p';
         }
-        else if (typeid(p) == typeid(Knight))
+        else if (dynamic_cast<const Knight*>(p))
         {
             piece = 'n';
         }
-        else if (typeid(p) == typeid(Bishop))
+        else if (dynamic_cast<const Bishop*>(p))
         {
             piece = 'b';
         }
-        else if (typeid(p) == typeid(Rook))
+        else if (dynamic_cast<const Rook*>(p))
         {
             piece = 'r';
         }
-        else if (typeid(p) == typeid(Queen))
+        else if (dynamic_cast<const Queen*>(p))
         {
             piece = 'q';
         }
-        else if (typeid(p) == typeid(King))
+        else if (dynamic_cast<const King*>(p))
         {
             piece = 'k';
         }
@@ -90,12 +91,21 @@ void Game_basics::draw()
         std::cout << "* " << Traits::boardSize - i << ' ';
         for (int j = 0; j < Traits::boardSize; j++)
         {
-            colorSign = ((i + j) % 2) ? '_' : 'F';
+            colorSign = ((i + j) % 2) ? '_' : ' ';
             coor.x = Traits::Horizontal{j};
             coor.y = Traits::Vertical{ Traits::boardSize - i - 1 };
             
-            definePiece(game.getBoard()->getPiece(coor));
-            std::cout << '|' << colorSign << piece << colorSign;
+            std::cout << '|' << colorSign;
+            if (game.getBoard()->getPiece(coor))
+            {
+                definePiece(game.getBoard()->getPiece(coor));
+                std::cout << piece;
+            }
+            else
+            {
+                std::cout << ' ';
+            }
+            std::cout << colorSign;
         }
         std::cout << "| *" << std::endl;
     }
@@ -103,9 +113,9 @@ void Game_basics::draw()
     std::cout << "*   ";
     for (char i = 'a'; i - 'a' < Traits::boardSize; i++)
     {
-        std::cout << ' ' << i;
+        std::cout << "  " << i << ' ';
     }
-    std::cout << "   *" << std::endl;
+    std::cout << "  *" << std::endl;
     print();
 
 }
