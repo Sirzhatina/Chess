@@ -16,6 +16,10 @@ class Gameplay
     bool whiteMove{ true };
     bool stalemate{ false };
 
+    // implementing observer pattern
+    std::list<IObserver*> observers;
+    void Notify() const;
+
     bool showGoesOn() const { return !white.isCheckmate() && !black.isCheckmate(); }
     void inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const;
 
@@ -29,10 +33,6 @@ class Gameplay
     bool kingCanMove(const Player* moves, const Player* notMoves) const;
 
     static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y }}; }
-
-    // implementing observer pattern
-    std::list<IObserver*> observers;
-    void Notify() const;
 
 public:
     Gameplay() = default;
