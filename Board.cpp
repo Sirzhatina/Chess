@@ -43,9 +43,7 @@ void Board::addPlayer(Player *pl)
 Piece* Board::setPiece(Piece *p, Traits::Coordinates coord)
 {
     Piece* previous = board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece;
-    
     board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
-    board[Traits::boardSize - int(p->getCoord().y) - 1][int(p->getCoord().x)].piece = nullptr;
 
     return previous;
 }
