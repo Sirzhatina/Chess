@@ -79,14 +79,15 @@ bool Bishop::correctRoute(Traits::Coordinates from, Traits::Coordinates to, cons
     int incX = (diffX > 0) ? 1 : -1;
     int incY = (diffY > 0) ? 1 : -1;
 
-    for (auto coor = from; coor != to; )
+    Traits::Coordinates coor{ Traits::Horizontal(int(from.x) + incX), Traits::Vertical(int(from.y) + incY) };
+    while (coor != to)
     {
-        coor.x = Traits::Horizontal(int(coor.x) + incX); 
-        coor.y = Traits::Vertical(int(coor.y) + incY);
         if (b->getPiece(coor) != nullptr)
         {
             return false;
         }
+        coor.x = Traits::Horizontal(int(coor.x) + incX); 
+        coor.y = Traits::Vertical(int(coor.y) + incY);
     }
     return true;
 }
@@ -127,25 +128,27 @@ bool Rook::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const 
     if (from.x != to.x)
     {
         int incX = int(to.x) - int(from.x) > 0 ? 1 : -1;
-        for (auto coor = from; coor != to; )
+        Traits::Coordinates coor{ Traits::Horizontal(int(from.x) + incX), from.y };
+        while (coor != to)
         {
-            coor.x = Traits::Horizontal(int(coor.x) + incX);
             if (b->getPiece(coor) != nullptr)
             {
                 return false;
             }
+            coor.x = Traits::Horizontal(int(coor.x) + incX);
         }
     }
     else
     {
         int incY = int(to.y) - int(from.y) > 0 ? 1 : -1;
-        for (auto coor = from; coor != to; )
+        Traits::Coordinates coor{ from.x, Traits::Vertical(int(from.y) + incY) };
+        while (coor != to)
         {
-            coor.y = Traits::Vertical(int(coor.y) + incY);
-            if (b->getPiece(to) != nullptr)
+            if (b->getPiece(coor) != nullptr)
             {
                 return false;
             }
+            coor.y = Traits::Vertical(int(coor.y) + incY);
         }
     }
     return true;
