@@ -1,40 +1,27 @@
 #include "Gameplay.h"
+#include "Logger.h"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <regex>
 
 void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const
 {
-    char xFrom, yFrom;
-    char xTo, yTo;
+    std::string coord;
+    std::regex pattern(R"([a-h][1-8] [a-h][1-8])");
 
     std::cout << "Enter coordinates to move from and to (e.g. e2 e4): ";
-    if (std::cin.peek() == 'q')
+    std::getline(std::cin, coord);
+    if (coord == Gameplay::quitCommand)
     {
-        std::string quit;
-        std::cin >> quit;
-        if (quit == "quit")
-        {
-            std::cout << "Bye";
-            std::exit(EXIT_SUCCESS);
-        }
+        throw ExitExcep{ "Bye" };
     }
-    else
-    {
-        std::cin.get(xFrom).get(yFrom);
-        std::cin.get();                   // eats ' '
-        std::cin.get(xTo).get(yTo);
-    }
-    while (std::cin.get() != '\n') { }
-
-    if (xFrom < 'a' || xFrom > 'h' || xTo < 'a' || xTo > 'h' ||
-        yFrom < '1' || yFrom > '8' || yTo < '1' || yTo > '8')
+    else if (!std::regex_match(coord, pattern))
     {
         throw std::runtime_error{ "Invalid input!" };
-    }
-    
-    from = convertCoordinates(xFrom - 'a', yFrom - '1');
-    to = convertCoordinates(xTo - 'a', yTo - '1');
+    }    
+    from = convertCoordinates(coord[0] - 'a', coord[1] - '1');
+    to = convertCoordinates(coord[3] - 'a', coord[4] - '1');
 }
 
 bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates from, Traits::Coordinates to) const
@@ -182,6 +169,11 @@ int Gameplay::start()
             std::cout << err.what() << std::endl;
             continue;
         }
+        catch (const ExitExcep& err)
+        {
+            std::cout << err.what() << std::endl;
+            return EXIT_SUCCESS;
+        }
         catch (...)
         {
             std::cerr << "Something went wrong.";
@@ -203,7 +195,7 @@ void Gameplay::movingProccess(Traits::Coordinates from, Traits::Coordinates to)
     {
         throw std::runtime_error{ "Impossible move" };
     }
-    defeated = moves->move(from, to);
+    defeated = moves->move(from, to);   // returns defeated piece or nullptr if to-square is empty
     Notify();
     if (defeated)
     { 
@@ -219,7 +211,6 @@ void Gameplay::movingProccess(Traits::Coordinates from, Traits::Coordinates to)
     {
         return;
     }
-    std::swap(moves, notMoves);
     whiteMove = !whiteMove;
 }
 
