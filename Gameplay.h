@@ -34,6 +34,13 @@ class Gameplay
 
     static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y }}; }
 
+    class ExitExcep : public std::exception { 
+    public:
+        explicit ExitExcep(char* byeMsg): std::exception(byeMsg) { }
+    };
+
+    static constexpr char defaultLogFile[] = "logs.txt";
+    static constexpr char quitCommand[] = "quit";
 public:
     Gameplay() = default;
     ~Gameplay() = default;
