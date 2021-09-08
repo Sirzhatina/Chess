@@ -51,7 +51,7 @@ public:
         return std::vector<Traits::Coordinates>{ getCoord() };
     }
 };
-bool Pawn::possibleMove(Traits::Coordinates to) const { return (possibleAttack(to) || correctRoute(*this, to)) && !Piece::possibleMove(to); }
+bool Pawn::possibleMove(Traits::Coordinates to) const { return (possibleAttack(to) || correctRoute(*this, to)) && Piece::possibleMove(to); }
 
 
 class Knight: public Piece {
@@ -67,7 +67,7 @@ public:
         return std::vector<Traits::Coordinates>{ getCoord() };
     }
 };
-bool Knight::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to) && !Piece::possibleMove(to); }
+bool Knight::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to) && Piece::possibleMove(to); }
 
 class Bishop: public Piece {
 public:
@@ -78,7 +78,7 @@ public:
 
     std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
 };
-bool Bishop::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && !Piece::possibleMove(to); }
+bool Bishop::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
 class Rook: public Piece {
 public:
@@ -89,7 +89,7 @@ public:
 
     std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
 };
-bool Rook::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && !Piece::possibleMove(to); }
+bool Rook::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
 class Queen: public Piece {
 public:
@@ -100,7 +100,7 @@ public:
 
     std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
 };
-bool Queen::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && !Piece::possibleMove(to); }
+bool Queen::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
 class King: public Piece {
 public:
