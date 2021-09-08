@@ -122,5 +122,6 @@ void Game_basics::draw()
 
 void Game_basics::handleEvent(const Gameplay* observed)
 {
+    system("cls");
     draw();
 }
