@@ -12,6 +12,7 @@ void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) c
 
     std::cout << "Enter coordinates to move from and to (e.g. e2 e4): ";
     std::getline(std::cin, coord);
+    Logger::getLogger(defaultLogFile).write(coord);
     if (coord == Gameplay::quitCommand)
     {
         throw ExitExcep{ "Bye" };
@@ -167,16 +168,18 @@ int Gameplay::start()
         catch (const std::runtime_error& err)
         {
             std::cout << err.what() << std::endl;
+            Logger::getLogger().write(err.what());
             continue;
         }
         catch (const ExitExcep& err)
         {
             std::cout << err.what() << std::endl;
+            Logger::getLogger().write(err.what());
             return EXIT_SUCCESS;
         }
         catch (...)
         {
-            std::cerr << "Something went wrong.";
+            Logger::getLogger().write("Something went wrong.");
             return EXIT_FAILURE;
         }
     }
@@ -218,11 +221,13 @@ void Gameplay::endgame() const
 {
     if (!showGoesOn())
     {
-        std::cout << "Congrats, " << (white.isCheckmate() ? "black" : "white") << " player wins.";
+        std::cout << winMessage();
+        Logger::getLogger().write(winMessage());
     }
     else
     {
-        std::cout << "Oops, it seems to be draw.";
+        std::cout << drawMessage;
+        Logger::getLogger().write(winMessage());
     }
     system("pause");
 }
