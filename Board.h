@@ -34,13 +34,11 @@ private:
     std::array<std::array<Square, Traits::boardSize>, Traits::boardSize> board;
     Player* players[2]{ nullptr, nullptr };
 
-    // restricted instantiation
+    // forbidden instantiation
     Board();
 
     Board(const Board&) = delete;
-    Board(Board&&) = delete;
     Board& operator=(const Board&) = delete;
-    Board& operator=(Board&&) = delete;
 };
 
 const Piece* Board::getPiece(Traits::Coordinates coord) const { return board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece; }
