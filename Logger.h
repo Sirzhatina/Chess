@@ -9,7 +9,7 @@ class Logger
 {
     std::ofstream eventLog;
 
-    Logger(std::string filename): eventLog(std::move(filename))
+    Logger(std::string filename): eventLog(std::move(filename), std::ios_base::app)
     {
         if (!eventLog.is_open())
         {
