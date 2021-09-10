@@ -15,7 +15,7 @@ void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) c
     Logger::getLogger(defaultLogFile).write(coord);
     if (coord == Gameplay::quitCommand)
     {
-        throw ExitExcep{ "Bye" };
+        throw ExitExcep{ "Bye\n" };
     }
     else if (!std::regex_match(coord, pattern))
     {
@@ -36,7 +36,7 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
 
     if (piece->possibleMove(to) && piece->getPlayer() == moves)
     {
-        defeated = board->setPiece(piece, to);
+        defeated = board->setPiece(board->setPiece(nullptr, from), to);
     }
     else if (piece->getCoord() == moves->getKingCoord() && piece->isFirstMove() && std::abs(int(to.x) - int(from.x)) == 2) // is castling
     {
