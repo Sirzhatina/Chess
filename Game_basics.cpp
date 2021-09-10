@@ -46,39 +46,25 @@ void Game_basics::play()
 void Game_basics::draw()
 {
     char piece;
-    auto definePiece = [&piece](const Piece* p)
-    {
-        if (dynamic_cast<const Pawn*>(p))
-        {
+    auto definePiece = [&piece](const Piece* p) {
+        if (dynamic_cast<const Pawn*>(p)) {
             piece = 'p';
-        }
-        else if (dynamic_cast<const Knight*>(p))
-        {
+        } else if (dynamic_cast<const Knight*>(p)) {
             piece = 'n';
-        }
-        else if (dynamic_cast<const Bishop*>(p))
-        {
+        } else if (dynamic_cast<const Bishop*>(p)) {
             piece = 'b';
-        }
-        else if (dynamic_cast<const Rook*>(p))
-        {
+        } else if (dynamic_cast<const Rook*>(p)) {
             piece = 'r';
-        }
-        else if (dynamic_cast<const Queen*>(p))
-        {
+        } else if (dynamic_cast<const Queen*>(p)) {
             piece = 'q';
-        }
-        else if (dynamic_cast<const King*>(p))
-        {
+        } else if (dynamic_cast<const King*>(p)) {
             piece = 'k';
         }
-        if (p->getColor() == Traits::Color::WHITE)
-        {
+        if (p->getColor() == Traits::Color::WHITE) {
             piece = toupper(piece);
         }
     };
-    auto print = [=]() 
-    {
+    auto print = [=]()  {
         for (int i = 0; i < 20; i++) std::cout << "* ";
         std::cout << std::endl;
     };
@@ -91,7 +77,7 @@ void Game_basics::draw()
         std::cout << "* " << Traits::boardSize - i << ' ';
         for (int j = 0; j < Traits::boardSize; j++)
         {
-            colorSign = ((i + j) % 2) ? '_' : ' ';
+            colorSign = ((i + j) % 2) ? '\xDB' : ' ';
             coor.x = Traits::Horizontal{j};
             coor.y = Traits::Vertical{ Traits::boardSize - i - 1 };
             
@@ -103,7 +89,7 @@ void Game_basics::draw()
             }
             else
             {
-                std::cout << ' ';
+                std::cout << colorSign;
             }
             std::cout << colorSign;
         }
