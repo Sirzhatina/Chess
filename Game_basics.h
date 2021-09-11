@@ -13,11 +13,16 @@ class Game_basics : public IObserver {
 
     Gameplay game;
 
-    void draw();
+    void draw() const;
+
+    char getPieceKind(const Piece*) const;
+    void drawLine(Traits::Vertical line) const;
+    void drawReversedLine(Traits::Vertical line) const;
+    
     void play();
 
 public:
-    Game_basics() { game.addObserver(this); }
+    Game_basics();
     int run();
 
     void handleEvent(const Gameplay* observed) override;

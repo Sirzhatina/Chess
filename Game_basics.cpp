@@ -6,9 +6,15 @@
 #include "Player.h"
 #include "Board.h"
 #include "Traits.h"
+#include "Msoftcon.h"
 #include <typeinfo>
 #include <iostream>
 
+Game_basics::Game_basics()
+{
+    game.addObserver(this);
+    init_graphics();
+}
 
 int Game_basics::run()
 {
@@ -43,57 +49,123 @@ void Game_basics::play()
     game.start();
 }
 
-void Game_basics::draw()
+char Game_basics::getPieceKind(const Piece* p) const
 {
-    char piece;
-    auto definePiece = [&piece](const Piece* p) {
-        if (dynamic_cast<const Pawn*>(p)) {
-            piece = 'p';
-        } else if (dynamic_cast<const Knight*>(p)) {
-            piece = 'n';
-        } else if (dynamic_cast<const Bishop*>(p)) {
-            piece = 'b';
-        } else if (dynamic_cast<const Rook*>(p)) {
-            piece = 'r';
-        } else if (dynamic_cast<const Queen*>(p)) {
-            piece = 'q';
-        } else if (dynamic_cast<const King*>(p)) {
-            piece = 'k';
-        }
-        if (p->getColor() == Traits::Color::WHITE) {
-            piece = toupper(piece);
-        }
-    };
-    auto print = [=]()  {
-        for (int i = 0; i < 20; i++) std::cout << "* ";
-        std::cout << std::endl;
-    };
+    char result;
+    if (dynamic_cast<const Pawn*>(p)) {
+        result = 'p';
+    } else if (dynamic_cast<const Knight*>(p)) {
+        result = 'n';
+    } else if (dynamic_cast<const Bishop*>(p)) {
+        result = 'b';
+    } else if (dynamic_cast<const Rook*>(p)) {
+        result = 'r';
+    } else if (dynamic_cast<const Queen*>(p)) {
+        result = 'q';
+    } else if (dynamic_cast<const King*>(p)) {
+        result = 'k';
+    }
+    if (p->getColor() == Traits::Color::WHITE) {
+        result = toupper(result);
+    }
+    return result;
+}
 
-    print();
-    char colorSign; // ' ' for white squares and '_' for black ones
-    Traits::Coordinates coor;
+void Game_basics::drawLine(Traits::Vertical line) const
+{
+    std::cout << "* " << int(line) + 1 << ' ';
+
+    color front = cWHITE;
+    color back = cBLACK;
+
+    Traits::Coordinates coor{ Traits::Horizontal::A, line };
     for (int i = 0; i < Traits::boardSize; i++)
     {
-        std::cout << "* " << Traits::boardSize - i << ' ';
-        for (int j = 0; j < Traits::boardSize; j++)
+        std::cout << '|';
+        
+        back = !((i + int(line)) % 2) ? cDARK_GREEN : cDARK_GRAY;
+        set_color(front, back);
+        std::cout << ' ';
+
+        coor.x = Traits::Horizontal(i);
+        if (Board::getInstance().getPiece(coor) != nullptr)
         {
-            colorSign = ((i + j) % 2) ? '\xDB' : ' ';
-            coor.x = Traits::Horizontal{j};
-            coor.y = Traits::Vertical{ Traits::boardSize - i - 1 };
-            
-            std::cout << '|' << colorSign;
-            if (game.getBoard()->getPiece(coor))
-            {
-                definePiece(game.getBoard()->getPiece(coor));
-                std::cout << piece;
-            }
-            else
-            {
-                std::cout << colorSign;
-            }
-            std::cout << colorSign;
+            auto p = Board::getInstance().getPiece(coor);
+            char pieceKind = getPieceKind(p);
+
+            front = (p->getColor() == Traits::Color::WHITE) ? cWHITE : cBLACK;
+            set_color(front, back);
+            std::cout << pieceKind;
         }
-        std::cout << "| *" << std::endl;
+        else
+        {
+            std::cout << ' ';
+        }
+        std::cout << ' ';
+        set_color(cWHITE, cBLACK);
+    }
+    std::cout << "| *";
+}
+
+void Game_basics::drawReversedLine(Traits::Vertical line) const
+{
+    std::cout << "* " << int(line) + 1 << ' ';
+
+    color front = cWHITE;
+    color back = cBLACK;
+
+    Traits::Coordinates coor{ Traits::Horizontal::A, line };
+    for (int i = Traits::boardSize - 1; i >= 0; i--)        // the only difference between this method and drawLine() is here
+    {
+        std::cout << '|';
+        
+        back = !((i + int(line)) % 2) ? cDARK_GREEN : cDARK_GRAY;
+        set_color(front, back);
+        std::cout << ' ';
+
+        coor.x = Traits::Horizontal(i);
+        if (Board::getInstance().getPiece(coor) != nullptr)
+        {
+            auto p = Board::getInstance().getPiece(coor);
+            char pieceKind = getPieceKind(p);
+
+            front = (p->getColor() == Traits::Color::WHITE) ? cWHITE : cBLACK;
+            set_color(front, back);
+            std::cout << pieceKind;
+        }
+        else
+        {
+            std::cout << ' ';
+        }
+        std::cout << ' ';
+        set_color(cWHITE, cBLACK);
+    }
+    std::cout << "| *";
+}
+
+void Game_basics::draw() const
+{
+    int line = 5;
+    constexpr auto indentX = 10;
+    set_cursor_pos(indentX, line);
+
+    auto drawBorder = []()
+    {
+        short counter;
+        for (counter = 0; counter < 20; counter++) std::cout << "* ";
+        std::cout << '\t';
+        for (counter = 0; counter < 20; counter++) std::cout << "* ";
+    };
+
+    drawBorder();
+    set_cursor_pos(indentX, ++line);
+
+    for (int i = Traits::boardSize - 1, j = 0; i >= 0 && j < Traits::boardSize; i--, j++)
+    {
+        drawLine(Traits::Vertical{i});
+        std::cout << '\t';
+        drawReversedLine(Traits::Vertical{j});
+        set_cursor_pos(indentX, ++line);
     }
 
     std::cout << "*   ";
@@ -101,9 +173,18 @@ void Game_basics::draw()
     {
         std::cout << "  " << i << ' ';
     }
-    std::cout << "  *" << std::endl;
-    print();
+    std::cout << "  *\t";
 
+    std::cout << "*   ";
+    for (char i = 'a' + Traits::boardSize - 1; i >= 'a'; i--)
+    {
+        std::cout << "  " << i << ' ';
+    }
+    std::cout << "  *";
+    set_cursor_pos(indentX, ++line);
+
+    drawBorder();
+    set_cursor_pos(indentX, ++line);
 }
 
 void Game_basics::handleEvent(const Gameplay* observed)
