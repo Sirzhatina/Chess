@@ -169,6 +169,8 @@ bool Player::isAbleToMove() const
 Piece* Player::move(Traits::Coordinates from, Traits::Coordinates to)
 {
     auto piece = const_cast<Piece*>(board->getPiece(from));
+
+    auto isOwner = [this] (const Piece* p) { return p->getPlayer() == this; };
     if (isOwner(piece) && !friendlySquare(to))
     {
         if (piece == king && possibleCastling(to))

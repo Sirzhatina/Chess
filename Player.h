@@ -36,7 +36,6 @@ class Player {
     bool possibleCastling(Traits::Coordinates to) const;
     void castling(Traits::Coordinates to);
 
-    bool isOwner(const Piece* piece) const { return piece->getPlayer() == this; }
     bool friendlySquare(Traits::Coordinates to) const { return board->getPiece(to) ? board->getPiece(to)->getPlayer() == this : false; }
 
 public:
