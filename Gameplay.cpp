@@ -10,7 +10,7 @@ void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) c
     std::string coord;
     std::regex pattern(R"([a-h][1-8] [a-h][1-8])");
 
-    std::cout << "Enter coordinates to move from and to (e.g. e2 e4): ";
+    std::cout << (whiteMove ? "White" : "Black") << " moves: ";
     std::getline(std::cin, coord);
     Logger::getLogger(defaultLogFile).write(coord);
     if (coord == Gameplay::quitCommand)
@@ -156,7 +156,7 @@ int Gameplay::start()
     Traits::Coordinates from, to;
     while (showGoesOn() && !stalemate)
     {
-        try 
+        try
         {
             inputToMove(from, to);
             if (from == to)

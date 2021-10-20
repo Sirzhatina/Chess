@@ -26,13 +26,16 @@ class Gameplay
     bool possibleMove(Player* moves, Player* checks, Traits::Coordinates from, Traits::Coordinates to) const;
     bool isCheckmate(Player* checks, Player* inCheck) const;
 
-    void endgame() const;
     void movingProccess(Traits::Coordinates from, Traits::Coordinates to);
 
     std::vector<Traits::Coordinates> allSquaresForKing(const Player* moves, const Player* notMoves) const;
     bool kingCanMove(const Player* moves, const Player* notMoves) const;
 
     static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y }}; }
+
+    void endgame() const;
+    std::string winMessage() const { return "Congrats, " + std::string(white.isCheckmate() ? "black" : "white") + " player wins."; }
+    static constexpr char drawMessage[] = "Oops, it seems to be draw.";
 
     class ExitExcep : public std::exception { 
     public:
@@ -41,6 +44,7 @@ class Gameplay
 
     static constexpr char defaultLogFile[] = "logs.txt";
     static constexpr char quitCommand[] = "quit";
+
 public:
     Gameplay() = default;
     ~Gameplay() = default;

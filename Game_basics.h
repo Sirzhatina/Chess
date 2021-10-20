@@ -10,9 +10,6 @@
 
 // concrete observer
 class Game_basics : public IObserver {
-
-    Gameplay game;
-
     void draw() const;
 
     char getPieceKind(const Piece*) const;
@@ -22,7 +19,7 @@ class Game_basics : public IObserver {
     void play();
 
 public:
-    Game_basics();
+    Game_basics() { init_graphics(); }
     int run();
 
     void handleEvent(const Gameplay* observed) override;

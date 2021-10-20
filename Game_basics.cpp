@@ -10,12 +10,6 @@
 #include <typeinfo>
 #include <iostream>
 
-Game_basics::Game_basics()
-{
-    game.addObserver(this);
-    init_graphics();
-}
-
 int Game_basics::run()
 {
     char choice;
@@ -45,6 +39,9 @@ int Game_basics::run()
 
 void Game_basics::play()
 {
+    Gameplay game;
+    game.addObserver(this);
+
     draw();
     game.start();
 }
@@ -152,9 +149,10 @@ void Game_basics::draw() const
     auto drawBorder = []()
     {
         short counter;
-        for (counter = 0; counter < 20; counter++) std::cout << "* ";
+        static constexpr auto limit = 20;
+        for (counter = 0; counter < limit; counter++) std::cout << "* ";
         std::cout << '\t';
-        for (counter = 0; counter < 20; counter++) std::cout << "* ";
+        for (counter = 0; counter < limit; counter++) std::cout << "* ";
     };
 
     drawBorder();
