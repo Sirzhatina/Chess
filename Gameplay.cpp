@@ -15,6 +15,7 @@ void Gameplay::inputToMove(Coordinates& from, Coordinates& to) const
     std::cout << (whiteMove ? "White" : "Black") << " moves: ";
     std::getline(std::cin, coord);
     Logger::getLogger(defaultLogFile).write(coord);
+    
     if (coord == Gameplay::quitCommand)
     {
         throw ExitExcep{ "Bye\n" };

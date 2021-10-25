@@ -5,6 +5,7 @@
 #ifndef CHESS_GAME_BASICS_H
 #define CHESS_GAME_BASICS_H
 
+#include "Msoftcon.h"
 #include "Gameplay.h"
 #include "IObserver.h"
 

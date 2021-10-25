@@ -6,7 +6,6 @@
 #include "Player.h"
 #include "Board.h"
 #include "Traits.h"
-#include "Msoftcon.h"
 #include <typeinfo>
 #include <iostream>
 

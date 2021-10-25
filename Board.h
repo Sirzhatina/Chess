@@ -8,10 +8,11 @@
 #include <array>
 #include "Traits.h"
 
-class Player;
-class Piece;
 namespace Chess 
 {
+class Player;
+class Piece;
+
 // Mayer's singleton
 class Board {
 public:

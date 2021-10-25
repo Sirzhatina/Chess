@@ -5,7 +5,10 @@
         are combined into Observer design pattern
 */
 
-class Chess::Gameplay;
+namespace Chess
+{
+    class Gameplay;
+}
 class IObserver
 {
 public:
