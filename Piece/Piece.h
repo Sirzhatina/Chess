@@ -9,107 +9,108 @@
 #include <string>
 #include <vector>
 
+namespace Chess
+{
 class Board;
 class Player;
 
-
 class Piece {
-    const Player*       player;
-    Board*              board;
-    const Traits::Color color;
-    Traits::Coordinates currentCoord;
-    bool                firstMove{ true };
+    const Player* player;
+    Board*        board;
+    const Color   color;
+    Coordinates   currentCoord;
+    bool          firstMove{ true };
 
 public:
-    Piece(const Player* p, Traits::Coordinates coord);
+    Piece(const Player* p, Coordinates coord);
     virtual ~Piece() = default;
 
-    inline virtual bool possibleMove(Traits::Coordinates to) const = 0;
-    virtual std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const = 0;
+    inline virtual bool possibleMove(Coordinates to) const = 0;
+    virtual std::vector<Coordinates> squaresBefore(Coordinates to) const = 0;
     
-    void setCoordinates(Traits::Coordinates to);
+    void setCoordinates(Coordinates to);
 
-    const Player*       getPlayer()   const { return player; }
-    Board*              getBoard()    const { return board; }
-    Traits::Color       getColor()    const { return color; }
-    Traits::Coordinates getCoord()    const { return currentCoord; }
-    bool                isFirstMove() const { return firstMove; }
+    const Player* getPlayer()   const { return player; }
+    Board*        getBoard()    const { return board; }
+    Color         getColor()    const { return color; }
+    Coordinates   getCoord()    const { return currentCoord; }
+    bool          isFirstMove() const { return firstMove; }
 };
-bool Piece::possibleMove(Traits::Coordinates to) const { return getCoord() != Traits::NULLPOS; }
+bool Piece::possibleMove(Coordinates to) const { return getCoord() != NULLPOS; }
 
 class Pawn: public Piece {
-    bool possibleAttack(Traits::Coordinates to) const;
+    bool possibleAttack(Coordinates to) const;
 
 public:
-    Pawn(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
+    Pawn(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    inline bool possibleMove(Traits::Coordinates to) const override;
-    static bool correctRoute(const Pawn& p, Traits::Coordinates to);
+    inline bool possibleMove(Coordinates to) const override;
+    static bool correctRoute(const Pawn& p, Coordinates to);
 
-    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override
+    std::vector<Coordinates> squaresBefore(Coordinates to) const override
     {
-        return std::vector<Traits::Coordinates>{ getCoord() };
+        return std::vector<Coordinates>{ getCoord() };
     }
 };
-bool Pawn::possibleMove(Traits::Coordinates to) const { return (possibleAttack(to) || correctRoute(*this, to)) && Piece::possibleMove(to); }
+bool Pawn::possibleMove(Coordinates to) const { return (possibleAttack(to) || correctRoute(*this, to)) && Piece::possibleMove(to); }
 
 
 class Knight: public Piece {
 public:
-    Knight(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
+    Knight(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    inline bool possibleMove(Traits::Coordinates to) const override;
-    static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b = nullptr);
+    inline bool possibleMove(Coordinates to) const override;
+    static bool correctRoute(Coordinates from, Coordinates to, const Board* b = nullptr);
 
 
-    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override
+    std::vector<Coordinates> squaresBefore(Coordinates to) const override
     {
-        return std::vector<Traits::Coordinates>{ getCoord() };
+        return std::vector<Coordinates>{ getCoord() };
     }
 };
-bool Knight::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to) && Piece::possibleMove(to); }
+bool Knight::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to) && Piece::possibleMove(to); }
 
 class Bishop: public Piece {
 public:
-    Bishop(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
+    Bishop(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    inline bool possibleMove(Traits::Coordinates to) const override;
-    static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
+    inline bool possibleMove(Coordinates to) const override;
+    static bool correctRoute(Coordinates from, Coordinates to, const Board* b);
 
-    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
+    std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
-bool Bishop::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
+bool Bishop::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
 class Rook: public Piece {
 public:
-    Rook(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
+    Rook(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    inline bool possibleMove(Traits::Coordinates to) const override;
-    static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
+    inline bool possibleMove(Coordinates to) const override;
+    static bool correctRoute(Coordinates from, Coordinates to, const Board* b);
 
-    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
+    std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
-bool Rook::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
+bool Rook::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
 class Queen: public Piece {
 public:
-    Queen(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
+    Queen(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    inline bool possibleMove(Traits::Coordinates to) const override;
-    static bool correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b);
+    inline bool possibleMove(Coordinates to) const override;
+    static bool correctRoute(Coordinates from, Coordinates to, const Board* b);
 
-    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override;
+    std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
-bool Queen::possibleMove(Traits::Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
+bool Queen::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
 class King: public Piece {
 public:
-    King(const Player* p, Traits::Coordinates coord): Piece(p, coord) { }
+    King(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    bool possibleMove(Traits::Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
-    static bool correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to);
+    bool possibleMove(Coordinates to) const override { return correctRoute(*this, getCoord(), to); }
+    static bool correctRoute(const King& k, Coordinates from, Coordinates to);
 
-    std::vector<Traits::Coordinates> squaresBefore(Traits::Coordinates to) const override { return std::vector<Traits::Coordinates>{ getCoord() }; }
+    std::vector<Coordinates> squaresBefore(Coordinates to) const override { return std::vector<Coordinates>{ getCoord() }; }
 };
-
+} // ends namespace Chess
 #endif //CHESS_PIECE_H

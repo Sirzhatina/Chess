@@ -5,10 +5,10 @@
         are combined into Observer design pattern
 */
 
-class Gameplay;
+class Chess::Gameplay;
 class IObserver
 {
 public:
-    virtual void handleEvent(const Gameplay* observed) = 0;
+    virtual void handleEvent(const Chess::Gameplay* observed) = 0;
     virtual ~IObserver() = default;
 };

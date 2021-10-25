@@ -10,9 +10,8 @@
 #include "Piece/Piece.h"
 #include "Board.h"
 
-class Board;
-class Piece;
-
+namespace Chess 
+{
 class Player {
 
     static constexpr auto PAWNS = 8;
@@ -22,7 +21,7 @@ class Player {
     bool checkmate{ false };
 
     Board* board;
-    const Traits::Color color;
+    const Color color;
 
     Piece* pawn[PAWNS];
 
@@ -33,32 +32,32 @@ class Player {
     Piece* queen;
     Piece* king;
 
-    bool possibleCastling(Traits::Coordinates to) const;
-    void castling(Traits::Coordinates to);
+    bool possibleCastling(Coordinates to) const;
+    void castling(Coordinates to);
 
-    bool friendlySquare(Traits::Coordinates to) const { return board->getPiece(to) ? board->getPiece(to)->getPlayer() == this : false; }
+    bool friendlySquare(Coordinates to) const { return board->getPiece(to) ? board->getPiece(to)->getPlayer() == this : false; }
 
 public:
-    Player(Board* b, Traits::Color c);
+    Player(Board* b, Color c);
 
-    Piece* move(Traits::Coordinates from, Traits::Coordinates to);
+    Piece* move(Coordinates from, Coordinates to);
 
-    std::vector<Piece*> piecesAccessingSquare(Traits::Coordinates to) const;
-    bool                isAccessedSquare(Traits::Coordinates to)      const;
+    std::vector<Piece*> piecesAccessingSquare(Coordinates to) const;
+    bool                isAccessedSquare(Coordinates to)      const;
     
     void setCheck(bool ch) { check = ch; }
     void setCheckmate(bool ch) { checkmate = ch; }
 
     bool isAbleToMove() const;
 
-    Traits::Color       getColor()     const { return color; }
-    Board*              getBoard()     const { return board; }
-    Traits::Coordinates getKingCoord() const { return king->getCoord(); }
-    bool                isCheck()      const { return check; }
-    bool                isCheckmate()  const { return checkmate; }
+    Color       getColor()     const { return color; }
+    Board*      getBoard()     const { return board; }
+    Coordinates getKingCoord() const { return king->getCoord(); }
+    bool        isCheck()      const { return check; }
+    bool        isCheckmate()  const { return checkmate; }
 
     Player(const Player&) = delete;
     Player& operator=(const Player&) = delete;
 };
-
+}
 #endif //CHESS_PLAYER_H

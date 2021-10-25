@@ -7,11 +7,13 @@
 #include "Board.h"
 #include "IObserver.h"
 
+namespace Chess
+{
 class Gameplay
 {
     Board* board{ &Board::getInstance() };
-    Player white{ board, Traits::Color::WHITE };
-    Player black{ board, Traits::Color::BLACK };
+    Player white{ board, Color::WHITE };
+    Player black{ board, Color::BLACK };
 
     bool whiteMove{ true };
     bool stalemate{ false };
@@ -21,17 +23,17 @@ class Gameplay
     void Notify() const;
 
     bool showGoesOn() const { return !white.isCheckmate() && !black.isCheckmate(); }
-    void inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const;
+    void inputToMove(Coordinates& from, Coordinates& to) const;
 
-    bool possibleMove(Player* moves, Player* checks, Traits::Coordinates from, Traits::Coordinates to) const;
+    bool possibleMove(Player* moves, Player* checks, Coordinates from, Coordinates to) const;
     bool isCheckmate(Player* checks, Player* inCheck) const;
 
-    void movingProccess(Traits::Coordinates from, Traits::Coordinates to);
+    void movingProccess(Coordinates from, Coordinates to);
 
-    std::vector<Traits::Coordinates> allSquaresForKing(const Player* moves, const Player* notMoves) const;
+    std::vector<Coordinates> allSquaresForKing(const Player* moves, const Player* notMoves) const;
     bool kingCanMove(const Player* moves, const Player* notMoves) const;
 
-    static Traits::Coordinates convertCoordinates(int x, int y) { return Traits::Coordinates{ Traits::Horizontal{ x }, Traits::Vertical{ y }}; }
+    static Coordinates convertCoordinates(int x, int y) { return Coordinates{ Horizontal{ x }, Vertical{ y }}; }
 
     void endgame() const;
     std::string winMessage() const { return "Congrats, " + std::string(white.isCheckmate() ? "black" : "white") + " player wins."; }
@@ -56,3 +58,4 @@ public:
 
     int start();
 };
+} // ends namespace Chess

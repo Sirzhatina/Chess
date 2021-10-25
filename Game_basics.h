@@ -12,9 +12,9 @@
 class Game_basics : public IObserver {
     void draw() const;
 
-    char getPieceKind(const Piece*) const;
-    void drawLine(Traits::Vertical line) const;
-    void drawReversedLine(Traits::Vertical line) const;
+    char getPieceKind(const Chess::Piece*) const;
+    void drawLine(Chess::Vertical line) const;
+    void drawReversedLine(Chess::Vertical line) const;
     
     void play();
 
@@ -22,7 +22,7 @@ public:
     Game_basics() { init_graphics(); }
     int run();
 
-    void handleEvent(const Gameplay* observed) override;
+    void handleEvent(const Chess::Gameplay* observed) override;
 };
 
 

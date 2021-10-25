@@ -10,11 +10,12 @@
 
 class Player;
 class Piece;
-
+namespace Chess 
+{
 // Mayer's singleton
 class Board {
 public:
-    struct Square { Traits::Coordinates coord; Piece* piece{ nullptr }; };
+    struct Square { Coordinates coord; Piece* piece{ nullptr }; };
 
     // only one instance
     static Board& getInstance()
@@ -27,11 +28,11 @@ public:
 
     void addPlayer(Player* pl);
 
-    Piece* setPiece(Piece* p, Traits::Coordinates coord);
-    inline const Piece* getPiece(Traits::Coordinates coord) const;
+    Piece* setPiece(Piece* p, Coordinates coord);
+    inline const Piece* getPiece(Coordinates coord) const;
 
 private:
-    std::array<std::array<Square, Traits::boardSize>, Traits::boardSize> board;
+    std::array<std::array<Square, boardSize>, boardSize> board;
     Player* players[2]{ nullptr, nullptr };
 
     // forbidden instantiation
@@ -40,7 +41,7 @@ private:
     Board(const Board&) = delete;
     Board& operator=(const Board&) = delete;
 };
-
-const Piece* Board::getPiece(Traits::Coordinates coord) const { return board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece; }
+const Piece* Board::getPiece(Coordinates coord) const { return board[boardSize - int(coord.y) - 1][int(coord.x)].piece; }
+} // ends namespace Chess
 
 #endif //CHESS_BOARD_H

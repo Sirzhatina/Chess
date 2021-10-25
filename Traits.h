@@ -5,7 +5,7 @@
 #ifndef CHESS_TRAITS_H
 #define CHESS_TRAITS_H
 
-namespace Traits
+namespace Chess
 {
 
 constexpr auto boardSize = 8;
@@ -21,7 +21,7 @@ struct Coordinates {
     Horizontal x;
     Vertical y;
 };
-constexpr Coordinates NULLPOS{ Traits::Horizontal::NPOS, Traits::Vertical::NPOS };
+constexpr Coordinates NULLPOS{ Horizontal::NPOS, Vertical::NPOS };
 bool operator==(const Coordinates& c1, const Coordinates& c2);
 bool operator!=(const Coordinates& c1, const Coordinates& c2);
 

@@ -5,7 +5,9 @@
 #include <cstdlib>
 #include <regex>
 
-void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) const
+namespace Chess
+{
+void Gameplay::inputToMove(Coordinates& from, Coordinates& to) const
 {
     std::string coord;
     std::regex pattern(R"([a-h][1-8] [a-h][1-8])");
@@ -25,7 +27,7 @@ void Gameplay::inputToMove(Traits::Coordinates& from, Traits::Coordinates& to) c
     to = convertCoordinates(coord[3] - 'a', coord[4] - '1');
 }
 
-bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates from, Traits::Coordinates to) const
+bool Gameplay::possibleMove(Player* moves, Player* checks, Coordinates from, Coordinates to) const
 {
     if (!board->getPiece(from))
     {
@@ -40,7 +42,7 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
     }
     else if (piece->getCoord() == moves->getKingCoord() && piece->isFirstMove() && std::abs(int(to.x) - int(from.x)) == 2) // is castling
     {
-        Traits::Coordinates mid{ Traits::Horizontal(int(from.x) + (int(to.x) > int(from.x)) ? 1 : -1), from.y };
+        Coordinates mid{ Horizontal(int(from.x) + (int(to.x) > int(from.x)) ? 1 : -1), from.y };
 
         return !checks->isAccessedSquare(mid) && !checks->isAccessedSquare(to) && !checks->isAccessedSquare(from);
     }
@@ -51,7 +53,7 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Traits::Coordinates f
 
     if (defeated)
     {
-        defeated->setCoordinates(Traits::NULLPOS);
+        defeated->setCoordinates(NULLPOS);
     }
     bool result = (from == moves->getKingCoord()) ? !checks->isAccessedSquare(to) : !checks->isAccessedSquare(moves->getKingCoord());
 
@@ -75,13 +77,13 @@ bool Gameplay::isCheckmate(Player* checks, Player* inCheck) const
     {
         inCheck->setCheck(true);
     }
-    std::vector<Traits::Coordinates> availableForKing = allSquaresForKing(inCheck, checks);
+    std::vector<Coordinates> availableForKing = allSquaresForKing(inCheck, checks);
 
     if (checkPieces.size() > 1)
     {
         return availableForKing.empty();
     }
-    std::vector<Traits::Coordinates> allCheckSquares = checkPieces[0]->squaresBefore(inCheck->getKingCoord());
+    std::vector<Coordinates> allCheckSquares = checkPieces[0]->squaresBefore(inCheck->getKingCoord());
 
     const Piece* king = board->getPiece(inCheck->getKingCoord());
     for (const auto sqr : allCheckSquares)
@@ -95,21 +97,21 @@ bool Gameplay::isCheckmate(Player* checks, Player* inCheck) const
     return availableForKing.empty();
 }
 
-std::vector<Traits::Coordinates> Gameplay::allSquaresForKing(const Player* moves, const Player* notMoves) const
+std::vector<Coordinates> Gameplay::allSquaresForKing(const Player* moves, const Player* notMoves) const
 {
-    std::vector<Traits::Coordinates> result;
+    std::vector<Coordinates> result;
 
     const Piece* pieceOnSquare{ nullptr };
-    Traits::Coordinates currentSquare;
+    Coordinates currentSquare;
 
     for (int x = int(moves->getKingCoord().x) - 1, lim = x + 3; x < lim; x++)
     {   
         for (int y = int(moves->getKingCoord().y) - 1, lim = y + 3; y < lim; y++)
         {
-            if (x > 0 && x < Traits::boardSize && y > 0 && y < Traits::boardSize)
+            if (x > 0 && x < boardSize && y > 0 && y < boardSize)
             {
-                currentSquare.x = Traits::Horizontal{x};
-                currentSquare.y = Traits::Vertical{y};
+                currentSquare.x = Horizontal{x};
+                currentSquare.y = Vertical{y};
                 pieceOnSquare = board->getPiece(currentSquare);
 
                 if ((!pieceOnSquare || pieceOnSquare && pieceOnSquare->getColor() != moves->getColor()) &&
@@ -127,16 +129,16 @@ std::vector<Traits::Coordinates> Gameplay::allSquaresForKing(const Player* moves
 bool Gameplay::kingCanMove(const Player* moves, const Player* notMoves) const
 {
     const Piece* pieceOnSquare{ nullptr };
-    Traits::Coordinates currentSquare;
+    Coordinates currentSquare;
 
     for (int x = int(moves->getKingCoord().x) - 1, lim = x + 3; x < lim; x++)
     {   
         for (int y = int(moves->getKingCoord().y) - 1, lim = y + 3; y < lim; y++)
         {
-            if (x > 0 && x < Traits::boardSize && y > 0 && y < Traits::boardSize)
+            if (x > 0 && x < boardSize && y > 0 && y < boardSize)
             {
-                currentSquare.x = Traits::Horizontal{x};
-                currentSquare.y = Traits::Vertical{y};
+                currentSquare.x = Horizontal{x};
+                currentSquare.y = Vertical{y};
                 pieceOnSquare = board->getPiece(currentSquare);
 
                 if ((!pieceOnSquare || pieceOnSquare && pieceOnSquare->getColor() != moves->getColor()) &&
@@ -153,7 +155,7 @@ bool Gameplay::kingCanMove(const Player* moves, const Player* notMoves) const
 
 int Gameplay::start()
 {
-    Traits::Coordinates from, to;
+    Coordinates from, to;
     while (showGoesOn() && !stalemate)
     {
         try
@@ -187,7 +189,7 @@ int Gameplay::start()
     return EXIT_SUCCESS;
 }
 
-void Gameplay::movingProccess(Traits::Coordinates from, Traits::Coordinates to)
+void Gameplay::movingProccess(Coordinates from, Coordinates to)
 {
     auto moves = whiteMove ? &white : &black;
     auto notMoves = whiteMove ? &black : &white;
@@ -202,7 +204,7 @@ void Gameplay::movingProccess(Traits::Coordinates from, Traits::Coordinates to)
     Notify();
     if (defeated)
     { 
-        defeated->setCoordinates(Traits::NULLPOS);
+        defeated->setCoordinates(NULLPOS);
     }
     if (isCheckmate(moves, notMoves))
     {
@@ -239,3 +241,4 @@ void Gameplay::Notify() const
         ob->handleEvent(this);
     }
 }
+} // ends namespace Chess
