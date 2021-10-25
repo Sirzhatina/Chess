@@ -7,7 +7,7 @@ project(${TARGET})
 set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCES
-        Piece\Piece.cpp
+        Piece/Piece.cpp
         Board.cpp
         Game_basics.cpp
         Gameplay.cpp
@@ -17,7 +17,7 @@ set(SOURCES
         Traits.cpp)
 
 set(HEADERS
-        Piece\Piece.h
+        Piece/Piece.h
         Board.h
         Game_basics.h
         Gameplay.h
