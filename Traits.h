@@ -22,8 +22,8 @@ struct Coordinates {
     Vertical y;
 };
 constexpr Coordinates NULLPOS{ Horizontal::NPOS, Vertical::NPOS };
-bool operator==(const Coordinates& c1, const Coordinates& c2);
-bool operator!=(const Coordinates& c1, const Coordinates& c2);
+inline bool operator==(const Coordinates& c1, const Coordinates& c2) { return c1.x == c2.x && c1.y == c2.y; }
+inline bool operator!=(const Coordinates& c1, const Coordinates& c2) { return !(c1 == c2); }
 
 enum class Color {
     BLACK, WHITE
