@@ -7,35 +7,36 @@
 #include "Piece.h"
 #include "..\Player.h"
 #include "..\Board.h"
-
-Piece::Piece(const Player* p, Traits::Coordinates coord)
+namespace Chess
+{
+Piece::Piece(const Player* p, Coordinates coord)
 : player(p)
 , board(p->getBoard())
 , color(p->getColor())
 , currentCoord(coord)
 { }
 
-void Piece::setCoordinates(Traits::Coordinates to)
+void Piece::setCoordinates(Coordinates to)
 {
     firstMove = false;
     currentCoord = to;
 }
 
-bool Pawn::possibleAttack(Traits::Coordinates to) const 
+bool Pawn::possibleAttack(Coordinates to) const 
 {
     int move = int(to.y) - int(getCoord().y);
     auto piece = getBoard()->getPiece(to);
 
-    return (getColor() == Traits::Color::BLACK ? move == -1 : move == 1) && 
+    return (getColor() == Color::BLACK ? move == -1 : move == 1) && 
             std::abs(int(to.x) - int(getCoord().x)) == 1                 && 
             piece != nullptr                                             &&
             piece->getColor() != getColor(); 
 }
 
-bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
+bool Pawn::correctRoute(const Pawn& p, Coordinates to)
 {
     int move = int(to.y) - int(p.getCoord().y);
-    bool correctDirection = (move > 0) ? p.getColor() == Traits::Color::WHITE : p.getColor() == Traits::Color::BLACK;
+    bool correctDirection = (move > 0) ? p.getColor() == Color::WHITE : p.getColor() == Color::BLACK;
     if (std::abs(move) <= (p.isFirstMove() ? 2 : 1) && 
         to.x == p.getCoord().x                      &&
         correctDirection                            &&
@@ -43,7 +44,7 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
     {
         if (std::abs(move) == 2)
         {
-            Traits::Coordinates coor{ to.x, (move > 0) ? Traits::Vertical{ int(to.y) - 1 } : Traits::Vertical{ int(to.y) + 1 } };
+            Coordinates coor{ to.x, (move > 0) ? Vertical{ int(to.y) - 1 } : Vertical{ int(to.y) + 1 } };
             if (p.getBoard()->getPiece(coor) == nullptr)
             {
                 return true;
@@ -57,7 +58,7 @@ bool Pawn::correctRoute(const Pawn& p, Traits::Coordinates to)
     return false;
 }
 
-bool Knight::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
+bool Knight::correctRoute(Coordinates from, Coordinates to, const Board* b)
 {
     if ((std::abs(int(to.y) - int(from.y)) == 2 && std::abs(int(to.x) - int(from.x)) == 1) ||
         (std::abs(int(to.x) - int(from.x)) == 2 && std::abs(int(to.y) - int(from.y)) == 1))
@@ -67,7 +68,7 @@ bool Knight::correctRoute(Traits::Coordinates from, Traits::Coordinates to, cons
     return false;
 }
 
-bool Bishop::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
+bool Bishop::correctRoute(Coordinates from, Coordinates to, const Board* b)
 {
     int diffX = int(to.x) - int(from.x);
     int diffY = int(to.y) - int(from.y);
@@ -79,25 +80,25 @@ bool Bishop::correctRoute(Traits::Coordinates from, Traits::Coordinates to, cons
     int incX = (diffX > 0) ? 1 : -1;
     int incY = (diffY > 0) ? 1 : -1;
 
-    Traits::Coordinates coor{ Traits::Horizontal(int(from.x) + incX), Traits::Vertical(int(from.y) + incY) };
+    Coordinates coor{ Horizontal(int(from.x) + incX), Vertical(int(from.y) + incY) };
     while (coor != to)
     {
         if (b->getPiece(coor) != nullptr)
         {
             return false;
         }
-        coor.x = Traits::Horizontal(int(coor.x) + incX); 
-        coor.y = Traits::Vertical(int(coor.y) + incY);
+        coor.x = Horizontal(int(coor.x) + incX); 
+        coor.y = Vertical(int(coor.y) + incY);
     }
     return true;
 }
 
-std::vector<Traits::Coordinates> Bishop::squaresBefore(Traits::Coordinates to) const
+std::vector<Coordinates> Bishop::squaresBefore(Coordinates to) const
 {
     int diffX = int(to.x) - int(getCoord().x);
     int diffY = int(to.y) - int(getCoord().y);
 
-    std::vector<Traits::Coordinates> result{ getCoord() };
+    std::vector<Coordinates> result{ getCoord() };
 
     if (std::abs(diffX) == std::abs(diffY))
     {
@@ -105,20 +106,20 @@ std::vector<Traits::Coordinates> Bishop::squaresBefore(Traits::Coordinates to) c
         int incY = (diffY > 0) ? 1 : -1;
 
         auto coor = getCoord();
-        coor.x = Traits::Horizontal(int(coor.x) + incX); 
-        coor.y = Traits::Vertical(int(coor.y) + incY);
+        coor.x = Horizontal(int(coor.x) + incX); 
+        coor.y = Vertical(int(coor.y) + incY);
         while (coor != to)
         {
             result.push_back(coor);
 
-            coor.x = Traits::Horizontal(int(coor.x) + incX); 
-            coor.y = Traits::Vertical(int(coor.y) + incY);
+            coor.x = Horizontal(int(coor.x) + incX); 
+            coor.y = Vertical(int(coor.y) + incY);
         }
     }
     return result;
 }
 
-bool Rook::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
+bool Rook::correctRoute(Coordinates from, Coordinates to, const Board* b)
 {
     if (from.x != to.x && from.y != to.y)
     {
@@ -128,35 +129,35 @@ bool Rook::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const 
     if (from.x != to.x)
     {
         int incX = int(to.x) - int(from.x) > 0 ? 1 : -1;
-        Traits::Coordinates coor{ Traits::Horizontal(int(from.x) + incX), from.y };
+        Coordinates coor{ Horizontal(int(from.x) + incX), from.y };
         while (coor != to)
         {
             if (b->getPiece(coor) != nullptr)
             {
                 return false;
             }
-            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            coor.x = Horizontal(int(coor.x) + incX);
         }
     }
     else
     {
         int incY = int(to.y) - int(from.y) > 0 ? 1 : -1;
-        Traits::Coordinates coor{ from.x, Traits::Vertical(int(from.y) + incY) };
+        Coordinates coor{ from.x, Vertical(int(from.y) + incY) };
         while (coor != to)
         {
             if (b->getPiece(coor) != nullptr)
             {
                 return false;
             }
-            coor.y = Traits::Vertical(int(coor.y) + incY);
+            coor.y = Vertical(int(coor.y) + incY);
         }
     }
     return true;
 }
 
-std::vector<Traits::Coordinates> Rook::squaresBefore(Traits::Coordinates to) const
+std::vector<Coordinates> Rook::squaresBefore(Coordinates to) const
 {
-    std::vector<Traits::Coordinates> result{ getCoord() };
+    std::vector<Coordinates> result{ getCoord() };
 
     if (!(getCoord().x != to.x && getCoord().y != to.y))
     {
@@ -165,36 +166,36 @@ std::vector<Traits::Coordinates> Rook::squaresBefore(Traits::Coordinates to) con
         {
             int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
 
-            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            coor.x = Horizontal(int(coor.x) + incX);
             while (coor != to)
             {
                 result.push_back(coor);
-                coor.x = Traits::Horizontal(int(coor.x) + incX);
+                coor.x = Horizontal(int(coor.x) + incX);
             }
         }
         else
         {
             int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
 
-            coor.y = Traits::Vertical(int(coor.y) + incY);
+            coor.y = Vertical(int(coor.y) + incY);
             while (coor != to)
             {
                 result.push_back(coor);
-                coor.y = Traits::Vertical(int(coor.y) + incY);
+                coor.y = Vertical(int(coor.y) + incY);
             }
         }
     }
     return result;
 }
 
-bool Queen::correctRoute(Traits::Coordinates from, Traits::Coordinates to, const Board* b)
+bool Queen::correctRoute(Coordinates from, Coordinates to, const Board* b)
 {
     return Bishop::correctRoute(from, to, b) || Rook::correctRoute(from, to, b);
 }
 
-std::vector<Traits::Coordinates> Queen::squaresBefore(Traits::Coordinates to) const
+std::vector<Coordinates> Queen::squaresBefore(Coordinates to) const
 {
-    std::vector<Traits::Coordinates> result{ getCoord() };
+    std::vector<Coordinates> result{ getCoord() };
 
     int diffX = int(to.x) - int(getCoord().x);
     int diffY = int(to.y) - int(getCoord().y);
@@ -205,13 +206,13 @@ std::vector<Traits::Coordinates> Queen::squaresBefore(Traits::Coordinates to) co
         int incX = (diffX > 0) ? 1 : -1;
         int incY = (diffY > 0) ? 1 : -1;
 
-        coor.x = Traits::Horizontal(int(coor.x) + incX); 
-        coor.y = Traits::Vertical(int(coor.y) + incY);
+        coor.x = Horizontal(int(coor.x) + incX); 
+        coor.y = Vertical(int(coor.y) + incY);
         while (coor != to)
         {
             result.push_back(coor);
-            coor.x = Traits::Horizontal(int(coor.x) + incX); 
-            coor.y = Traits::Vertical(int(coor.y) + incY);
+            coor.x = Horizontal(int(coor.x) + incX); 
+            coor.y = Vertical(int(coor.y) + incY);
         }
     }
     else if (!(getCoord().x != to.x && getCoord().y != to.y))
@@ -219,28 +220,28 @@ std::vector<Traits::Coordinates> Queen::squaresBefore(Traits::Coordinates to) co
         if (getCoord().x != to.x)
         {
             int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
-            coor.x = Traits::Horizontal(int(coor.x) + incX);
+            coor.x = Horizontal(int(coor.x) + incX);
             while (coor != to)
             {
                 result.push_back(coor);
-                coor.x = Traits::Horizontal(int(coor.x) + incX);
+                coor.x = Horizontal(int(coor.x) + incX);
             }
         }
         else
         {
             int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
-            coor.y = Traits::Vertical(int(coor.y) + incY);
+            coor.y = Vertical(int(coor.y) + incY);
             while (coor != to)
             {
                 result.push_back(coor);
-                coor.y = Traits::Vertical(int(coor.y) + incY);
+                coor.y = Vertical(int(coor.y) + incY);
             }
         }
     }
     return result;
 }
 
-bool King::correctRoute(const King& k, Traits::Coordinates from, Traits::Coordinates to)
+bool King::correctRoute(const King& k, Coordinates from, Coordinates to)
 {
     if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
     {
@@ -248,3 +249,4 @@ bool King::correctRoute(const King& k, Traits::Coordinates from, Traits::Coordin
     }
     return true;
 }
+} // namespace Chess

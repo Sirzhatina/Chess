@@ -7,15 +7,16 @@
 #include "Player.h"
 #include "Piece/Piece.h"
 
-
+namespace Chess
+{
 Board::Board()
 {    
     for (int i = 0; i < board.size(); i++)
     {
         for (int j = 0; j < board[i].size(); j++)
         {
-            board[i][j].coord.x = Traits::Horizontal{ j };
-            board[i][j].coord.y = Traits::Vertical{ Traits::boardSize - i - 1 };
+            board[i][j].coord.x = Horizontal{ j };
+            board[i][j].coord.y = Vertical{ boardSize - i - 1 };
         }
     }
 }
@@ -40,10 +41,11 @@ void Board::addPlayer(Player *pl)
     }
 }
 
-Piece* Board::setPiece(Piece *p, Traits::Coordinates coord)
+Piece* Board::setPiece(Piece *p, Coordinates coord)
 {
-    Piece* previous = board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece;
-    board[Traits::boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
+    Piece* previous = board[boardSize - int(coord.y) - 1][int(coord.x)].piece;
+    board[boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
 
     return previous;
 }
+} // namespace Chess
