@@ -6,7 +6,7 @@
 #define CHESS_BOARD_H
 
 #include <array>
-#include "Traits.h"
+#include "Primitives.h"
 
 namespace Chess 
 {

@@ -14,7 +14,7 @@ set(SOURCES
         main.cpp
         Msoftcon.cpp
         Player.cpp
-        Traits.cpp)
+        Primitives.cpp)
 
 set(HEADERS
         Piece/Piece.h
@@ -25,6 +25,6 @@ set(HEADERS
         Logger.h
         Msoftcon.h
         Player.h
-        Traits.h)
+        Primitives.h)
 
 add_executable(${TARGET} ${SOURCES} ${HEADERS})

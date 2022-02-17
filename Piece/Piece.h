@@ -5,7 +5,7 @@
 #ifndef CHESS_PIECE_H
 #define CHESS_PIECE_H
 
-#include "..\Traits.h"
+#include "..\Primitives.h"
 #include <string>
 #include <vector>
 

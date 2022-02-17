@@ -6,7 +6,7 @@
 #define CHESS_PLAYER_H
 
 #include <vector>
-#include "Traits.h"
+#include "Primitives.h"
 #include "Piece/Piece.h"
 #include "Board.h"
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <list>
-#include "Traits.h"
+#include "Primitives.h"
 #include "Piece/Piece.h"
 #include "Player.h"
 #include "Board.h"

@@ -5,7 +5,7 @@
 #include "Game_basics.h"
 #include "Player.h"
 #include "Board.h"
-#include "Traits.h"
+#include "Primitives.h"
 #include <typeinfo>
 #include <iostream>
 
