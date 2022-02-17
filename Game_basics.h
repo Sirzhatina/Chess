@@ -9,7 +9,8 @@
 #include "IObserver.h"
 
 // concrete observer
-class Game_basics : public IObserver {
+class Game_basics : public IObserver 
+{
     void draw() const;
 
     char getPieceKind(const Chess::Piece*) const;

@@ -26,20 +26,20 @@ Player::Player(Board* b, Color c)
     for (auto& pwn: pawn)
     {
         pwn = new Pawn{ this, Coordinates{ Horizontal(alongLine++), startOfPawns } };
-        board->setPiece(pwn, pwn->getCoord());
+        board->setPiece(pwn, pwn->coord());
     }
 
     alongLine = -1;
     for (int i = 0, inc = 1; i < PAIR_PIECES; i++)
     {
         rook[i] = new Rook{ this, Coordinates{ Horizontal(alongLine += inc), startOfOthers } };
-        board->setPiece(rook[i], rook[i]->getCoord());
+        board->setPiece(rook[i], rook[i]->coord());
 
         knight[i] = new Knight{ this, Coordinates{ Horizontal(alongLine += inc), startOfOthers } };
-        board->setPiece(knight[i], knight[i]->getCoord());
+        board->setPiece(knight[i], knight[i]->coord());
 
         bishop[i] = new Bishop{ this, Coordinates{ Horizontal{ alongLine += inc }, startOfOthers } };
-        board->setPiece(bishop[i], bishop[i]->getCoord());
+        board->setPiece(bishop[i], bishop[i]->coord());
 
         inc *= -1;
         alongLine += 6;
@@ -47,17 +47,17 @@ Player::Player(Board* b, Color c)
 
     // Queen prefers corresponding color
     queen = new Queen{ this, { Horizontal::D, startOfOthers } };
-    board->setPiece(queen, queen->getCoord());
+    board->setPiece(queen, queen->coord());
 
     king = new King{ this, { Horizontal::E, startOfOthers } };
-    board->setPiece(king, king->getCoord());
+    board->setPiece(king, king->coord());
 }
 
 bool Player::possibleCastling(Coordinates to) const
 {
     if (king->isFirstMove())
     {
-        if (to.y == king->getCoord().y)
+        if (to.y == king->coord().y)
         {
             if (to.x == Horizontal::G)
             {
@@ -83,13 +83,13 @@ bool Player::possibleCastling(Coordinates to) const
 
 void Player::castling(Coordinates to)
 {
-    board->setPiece(board->setPiece(nullptr, king->getCoord()), to);
+    board->setPiece(board->setPiece(nullptr, king->coord()), to);
     king->setCoordinates(to);
 
     auto rk = (to.x == Horizontal::C) ? rook[0] : rook[1];
     Coordinates rkDest{ (rk == rook[0]) ? Horizontal::D : Horizontal::F, to.y };
 
-    board->setPiece(board->setPiece(nullptr, rk->getCoord()), rkDest);
+    board->setPiece(board->setPiece(nullptr, rk->coord()), rkDest);
     rk->setCoordinates(rkDest);
 }
 
@@ -139,7 +139,7 @@ bool Player::isAbleToMove() const
 
     for (const auto p : pieces)
     {
-        if (p->getCoord() != NULLPOS)
+        if (p->coord() != NULLPOS)
         {
             return true;
         }
@@ -147,11 +147,11 @@ bool Player::isAbleToMove() const
     Coordinates sqrToMove;
     for (const auto p : pawn)
     {
-        if (p->getCoord() != NULLPOS) 
+        if (p->coord() != NULLPOS) 
         {
-            sqrToMove.y = Vertical(int(p->getCoord().y) + (color == Color::WHITE) ? 1 : -1);
+            sqrToMove.y = Vertical(int(p->coord().y) + (color == Color::WHITE) ? 1 : -1);
 
-            for (int x = int(p->getCoord().x) - 1, lim = x + 3; x < lim; x++)
+            for (int x = int(p->coord().x) - 1, lim = x + 3; x < lim; x++)
             {
                 if (x > 0 && x < boardSize)
                 {
@@ -171,7 +171,7 @@ Piece* Player::move(Coordinates from, Coordinates to)
 {
     auto piece = const_cast<Piece*>(board->getPiece(from));
 
-    auto isOwner = [this] (const Piece* p) { return p->getPlayer() == this; };
+    auto isOwner = [this] (const Piece* p) { return p->player() == this; };
     if (isOwner(piece) && !friendlySquare(to))
     {
         if (piece == king && possibleCastling(to))

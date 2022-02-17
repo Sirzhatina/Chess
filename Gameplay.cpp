@@ -37,11 +37,11 @@ bool Gameplay::possibleMove(Player* moves, Player* checks, Coordinates from, Coo
     Piece* defeated{ nullptr };
     Piece* piece = const_cast<Piece*>(board->getPiece(from));
 
-    if (piece->possibleMove(to) && piece->getPlayer() == moves)
+    if (piece->possibleMove(to) && piece->player() == moves)
     {
         defeated = board->setPiece(board->setPiece(nullptr, from), to);
     }
-    else if (piece->getCoord() == moves->getKingCoord() && piece->isFirstMove() && std::abs(int(to.x) - int(from.x)) == 2) // is castling
+    else if (piece->coord() == moves->getKingCoord() && piece->isFirstMove() && std::abs(int(to.x) - int(from.x)) == 2) // is castling
     {
         Coordinates mid{ Horizontal(int(from.x) + (int(to.x) > int(from.x)) ? 1 : -1), from.y };
 
@@ -115,7 +115,7 @@ std::vector<Coordinates> Gameplay::allSquaresForKing(const Player* moves, const 
                 currentSquare.y = Vertical{y};
                 pieceOnSquare = board->getPiece(currentSquare);
 
-                if ((!pieceOnSquare || pieceOnSquare && pieceOnSquare->getColor() != moves->getColor()) &&
+                if ((!pieceOnSquare || pieceOnSquare && pieceOnSquare->player()->getColor() != moves->getColor()) &&
                     moves->getKingCoord() != currentSquare &&
                     !notMoves->isAccessedSquare(currentSquare))
                 {
@@ -142,7 +142,7 @@ bool Gameplay::kingCanMove(const Player* moves, const Player* notMoves) const
                 currentSquare.y = Vertical{y};
                 pieceOnSquare = board->getPiece(currentSquare);
 
-                if ((!pieceOnSquare || pieceOnSquare && pieceOnSquare->getColor() != moves->getColor()) &&
+                if ((!pieceOnSquare || pieceOnSquare && pieceOnSquare->player()->getColor() != moves->getColor()) &&
                     moves->getKingCoord() != currentSquare &&
                     !notMoves->isAccessedSquare(currentSquare))
                 {

@@ -4,7 +4,6 @@
 #include <string>
 #include <stdexcept>
 
-// another Mayer's singleton
 class Logger
 {
     std::ofstream eventLog;

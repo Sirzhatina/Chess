@@ -12,12 +12,11 @@ namespace Chess
 class Player;
 class Piece;
 
-// Mayer's singleton
-class Board {
+class Board 
+{
 public:
     struct Square { Coordinates coord; Piece* piece{ nullptr }; };
 
-    // only one instance
     static Board& getInstance()
     {
         static Board b;
@@ -35,7 +34,6 @@ private:
     std::array<std::array<Square, boardSize>, boardSize> board;
     Player* players[2]{ nullptr, nullptr };
 
-    // forbidden instantiation
     Board();
 
     Board(const Board&) = delete;

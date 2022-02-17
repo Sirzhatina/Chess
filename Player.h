@@ -34,7 +34,7 @@ class Player {
     bool possibleCastling(Coordinates to) const;
     void castling(Coordinates to);
 
-    bool friendlySquare(Coordinates to) const { return board->getPiece(to) ? board->getPiece(to)->getPlayer() == this : false; }
+    bool friendlySquare(Coordinates to) const { return board->getPiece(to) ? board->getPiece(to)->player() == this : false; }
 
 public:
     Player(Board* b, Color c);
@@ -51,7 +51,7 @@ public:
 
     Color       getColor()     const { return color; }
     Board*      getBoard()     const { return board; }
-    Coordinates getKingCoord() const { return king->getCoord(); }
+    Coordinates getKingCoord() const { return king->coord(); }
     bool        isCheck()      const { return check; }
     bool        isCheckmate()  const { return checkmate; }
 

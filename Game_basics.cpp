@@ -61,7 +61,7 @@ char Game_basics::getPieceKind(const Chess::Piece* p) const
     } else if (dynamic_cast<const Chess::King*>(p)) {
         result = 'k';
     }
-    if (p->getColor() == Chess::Color::WHITE) {
+    if (p->player()->getColor() == Chess::Color::WHITE) {
         result = toupper(result);
     }
     return result;
@@ -89,7 +89,7 @@ void Game_basics::drawLine(Chess::Vertical line) const
             auto p = Chess::Board::getInstance().getPiece(coor);
             char pieceKind = getPieceKind(p);
 
-            front = (p->getColor() == Chess::Color::WHITE) ? cWHITE : cBLACK;
+            front = (p->player()->getColor() == Chess::Color::WHITE) ? cWHITE : cBLACK;
             set_color(front, back);
             std::cout << pieceKind;
         }
@@ -125,7 +125,7 @@ void Game_basics::drawReversedLine(Chess::Vertical line) const
             auto p = Chess::Board::getInstance().getPiece(coor);
             char pieceKind = getPieceKind(p);
 
-            front = (p->getColor() == Chess::Color::WHITE) ? cWHITE : cBLACK;
+            front = (p->player()->getColor() == Chess::Color::WHITE) ? cWHITE : cBLACK;
             set_color(front, back);
             std::cout << pieceKind;
         }

@@ -10,42 +10,43 @@
 namespace Chess
 {
 Piece::Piece(const Player* p, Coordinates coord)
-: player(p)
-, board(p->getBoard())
-, color(p->getColor())
-, currentCoord(coord)
+: _player(p)
+, _currentCoord(coord)
 { }
 
 void Piece::setCoordinates(Coordinates to)
 {
-    firstMove = false;
-    currentCoord = to;
+    _firstMove = false;
+    _currentCoord = to;
 }
+
+std::vector<Coordinates> Piece::squaresBefore(Coordinates to) const { return { coord() }; }
+
 
 bool Pawn::possibleAttack(Coordinates to) const 
 {
-    int move = int(to.y) - int(getCoord().y);
-    auto piece = getBoard()->getPiece(to);
+    int move = int(to.y) - int(coord().y);
+    auto piece = player()->getBoard()->getPiece(to);
 
-    return (getColor() == Color::BLACK ? move == -1 : move == 1) && 
-            std::abs(int(to.x) - int(getCoord().x)) == 1                 && 
-            piece != nullptr                                             &&
-            piece->getColor() != getColor(); 
+    return (player()->getColor() == Color::BLACK ? move == -1 : move == 1) && 
+            std::abs(int(to.x) - int(coord().x)) == 1                      && 
+            piece != nullptr                                               &&
+            piece->player()->getColor() != player()->getColor(); 
 }
 
 bool Pawn::correctRoute(const Pawn& p, Coordinates to)
 {
-    int move = int(to.y) - int(p.getCoord().y);
-    bool correctDirection = (move > 0) ? p.getColor() == Color::WHITE : p.getColor() == Color::BLACK;
+    int move = int(to.y) - int(p.coord().y);
+    bool correctDirection = (move > 0) ? p.player()->getColor() == Color::WHITE : p.player()->getColor() == Color::BLACK;
     if (std::abs(move) <= (p.isFirstMove() ? 2 : 1) && 
-        to.x == p.getCoord().x                      &&
+        to.x == p.coord().x                      &&
         correctDirection                            &&
-        p.getBoard()->getPiece(to) == nullptr)
+        p.player()->getBoard()->getPiece(to) == nullptr)
     {
         if (std::abs(move) == 2)
         {
             Coordinates coor{ to.x, (move > 0) ? Vertical{ int(to.y) - 1 } : Vertical{ int(to.y) + 1 } };
-            if (p.getBoard()->getPiece(coor) == nullptr)
+            if (p.player()->getBoard()->getPiece(coor) == nullptr)
             {
                 return true;
             }
@@ -58,6 +59,10 @@ bool Pawn::correctRoute(const Pawn& p, Coordinates to)
     return false;
 }
 
+bool Pawn::possibleMove(Coordinates to) const { return (possibleAttack(to) || correctRoute(*this, to)) && isOnBoard(); }
+
+std::vector<Coordinates> Pawn::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
+
 bool Knight::correctRoute(Coordinates from, Coordinates to, const Board* b)
 {
     if ((std::abs(int(to.y) - int(from.y)) == 2 && std::abs(int(to.x) - int(from.x)) == 1) ||
@@ -67,6 +72,10 @@ bool Knight::correctRoute(Coordinates from, Coordinates to, const Board* b)
     }
     return false;
 }
+
+bool Knight::possibleMove(Coordinates to) const { return correctRoute(coord(), to) && isOnBoard(); }
+
+std::vector<Coordinates> Knight::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
 
 bool Bishop::correctRoute(Coordinates from, Coordinates to, const Board* b)
 {
@@ -93,19 +102,21 @@ bool Bishop::correctRoute(Coordinates from, Coordinates to, const Board* b)
     return true;
 }
 
+bool Bishop::possibleMove(Coordinates to) const { return correctRoute(coord(), to, player()->getBoard()) && isOnBoard(); }
+
 std::vector<Coordinates> Bishop::squaresBefore(Coordinates to) const
 {
-    int diffX = int(to.x) - int(getCoord().x);
-    int diffY = int(to.y) - int(getCoord().y);
+    int diffX = int(to.x) - int(coord().x);
+    int diffY = int(to.y) - int(coord().y);
 
-    std::vector<Coordinates> result{ getCoord() };
+    std::vector<Coordinates> result{ coord() };
 
     if (std::abs(diffX) == std::abs(diffY))
     {
         int incX = (diffX > 0) ? 1 : -1;
         int incY = (diffY > 0) ? 1 : -1;
 
-        auto coor = getCoord();
+        auto coor = coord();
         coor.x = Horizontal(int(coor.x) + incX); 
         coor.y = Vertical(int(coor.y) + incY);
         while (coor != to)
@@ -155,16 +166,18 @@ bool Rook::correctRoute(Coordinates from, Coordinates to, const Board* b)
     return true;
 }
 
+bool Rook::possibleMove(Coordinates to) const { return correctRoute(coord(), to, player()->getBoard()) && isOnBoard(); }
+
 std::vector<Coordinates> Rook::squaresBefore(Coordinates to) const
 {
-    std::vector<Coordinates> result{ getCoord() };
+    std::vector<Coordinates> result{ coord() };
 
-    if (!(getCoord().x != to.x && getCoord().y != to.y))
+    if (!(coord().x != to.x && coord().y != to.y))
     {
-        auto coor = getCoord();
-        if (getCoord().x != to.x)
+        auto coor = coord();
+        if (coord().x != to.x)
         {
-            int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
+            int incX = int(to.x) - int(coord().x) > 0 ? 1 : -1;
 
             coor.x = Horizontal(int(coor.x) + incX);
             while (coor != to)
@@ -175,7 +188,7 @@ std::vector<Coordinates> Rook::squaresBefore(Coordinates to) const
         }
         else
         {
-            int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
+            int incY = int(to.y) - int(coord().y) > 0 ? 1 : -1;
 
             coor.y = Vertical(int(coor.y) + incY);
             while (coor != to)
@@ -193,14 +206,16 @@ bool Queen::correctRoute(Coordinates from, Coordinates to, const Board* b)
     return Bishop::correctRoute(from, to, b) || Rook::correctRoute(from, to, b);
 }
 
+bool Queen::possibleMove(Coordinates to) const { return correctRoute(coord(), to, player()->getBoard()) && isOnBoard(); }
+
 std::vector<Coordinates> Queen::squaresBefore(Coordinates to) const
 {
-    std::vector<Coordinates> result{ getCoord() };
+    std::vector<Coordinates> result{ coord() };
 
-    int diffX = int(to.x) - int(getCoord().x);
-    int diffY = int(to.y) - int(getCoord().y);
+    int diffX = int(to.x) - int(coord().x);
+    int diffY = int(to.y) - int(coord().y);
 
-    auto coor = getCoord();
+    auto coor = coord();
     if (std::abs(diffX) == std::abs(diffY))
     {
         int incX = (diffX > 0) ? 1 : -1;
@@ -215,11 +230,11 @@ std::vector<Coordinates> Queen::squaresBefore(Coordinates to) const
             coor.y = Vertical(int(coor.y) + incY);
         }
     }
-    else if (!(getCoord().x != to.x && getCoord().y != to.y))
+    else if (!(coord().x != to.x && coord().y != to.y))
     {
-        if (getCoord().x != to.x)
+        if (coord().x != to.x)
         {
-            int incX = int(to.x) - int(getCoord().x) > 0 ? 1 : -1;
+            int incX = int(to.x) - int(coord().x) > 0 ? 1 : -1;
             coor.x = Horizontal(int(coor.x) + incX);
             while (coor != to)
             {
@@ -229,7 +244,7 @@ std::vector<Coordinates> Queen::squaresBefore(Coordinates to) const
         }
         else
         {
-            int incY = int(to.y) - int(getCoord().y) > 0 ? 1 : -1;
+            int incY = int(to.y) - int(coord().y) > 0 ? 1 : -1;
             coor.y = Vertical(int(coor.y) + incY);
             while (coor != to)
             {
@@ -241,6 +256,8 @@ std::vector<Coordinates> Queen::squaresBefore(Coordinates to) const
     return result;
 }
 
+bool King::possibleMove(Coordinates to) const { return correctRoute(*this, coord(), to); }
+
 bool King::correctRoute(const King& k, Coordinates from, Coordinates to)
 {
     if (std::abs(int(to.x) - int(from.x)) > 1 || std::abs(int(to.y) - int(from.y)) > 1)
@@ -249,4 +266,7 @@ bool King::correctRoute(const King& k, Coordinates from, Coordinates to)
     }
     return true;
 }
+
+std::vector<Coordinates> King::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
+
 } // namespace Chess
