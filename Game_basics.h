@@ -2,8 +2,7 @@
 // Created by Sirzh on 16.04.2021.
 //
 
-#ifndef CHESS_GAME_BASICS_H
-#define CHESS_GAME_BASICS_H
+#pragma once
 
 #include "Msoftcon.h"
 #include "Gameplay.h"
@@ -25,6 +24,3 @@ public:
 
     void handleEvent(const Chess::Gameplay* observed) override;
 };
-
-
-#endif //CHESS_GAME_BASICS_H

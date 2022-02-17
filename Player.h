@@ -2,8 +2,7 @@
 // Created by Sirzh on 15.04.2021.
 //
 
-#ifndef CHESS_PLAYER_H
-#define CHESS_PLAYER_H
+#pragma once
 
 #include <vector>
 #include "Primitives.h"
@@ -60,4 +59,3 @@ public:
     Player& operator=(const Player&) = delete;
 };
 }
-#endif //CHESS_PLAYER_H

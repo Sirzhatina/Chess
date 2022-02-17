@@ -2,8 +2,7 @@
 // Created by Sirzh on 15.04.2021.
 //
 
-#ifndef CHESS_PIECE_H
-#define CHESS_PIECE_H
+#pragma once
 
 #include "..\Primitives.h"
 #include <string>
@@ -38,6 +37,7 @@ public:
 };
 bool Piece::possibleMove(Coordinates to) const { return getCoord() != NULLPOS; }
 
+
 class Pawn: public Piece {
     bool possibleAttack(Coordinates to) const;
 
@@ -70,6 +70,7 @@ public:
 };
 bool Knight::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to) && Piece::possibleMove(to); }
 
+
 class Bishop: public Piece {
 public:
     Bishop(const Player* p, Coordinates coord): Piece(p, coord) { }
@@ -80,6 +81,7 @@ public:
     std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
 bool Bishop::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
+
 
 class Rook: public Piece {
 public:
@@ -92,6 +94,7 @@ public:
 };
 bool Rook::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
+
 class Queen: public Piece {
 public:
     Queen(const Player* p, Coordinates coord): Piece(p, coord) { }
@@ -103,6 +106,7 @@ public:
 };
 bool Queen::possibleMove(Coordinates to) const { return correctRoute(getCoord(), to, getBoard()) && Piece::possibleMove(to); }
 
+
 class King: public Piece {
 public:
     King(const Player* p, Coordinates coord): Piece(p, coord) { }
@@ -113,4 +117,3 @@ public:
     std::vector<Coordinates> squaresBefore(Coordinates to) const override { return std::vector<Coordinates>{ getCoord() }; }
 };
 } // ends namespace Chess
-#endif //CHESS_PIECE_H

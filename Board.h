@@ -2,8 +2,7 @@
 // Created by Sirzh on 10.05.2021.
 //
 
-#ifndef CHESS_BOARD_H
-#define CHESS_BOARD_H
+#pragma once
 
 #include <array>
 #include "Primitives.h"
@@ -44,5 +43,3 @@ private:
 };
 const Piece* Board::getPiece(Coordinates coord) const { return board[boardSize - int(coord.y) - 1][int(coord.x)].piece; }
 } // ends namespace Chess
-
-#endif //CHESS_BOARD_H
