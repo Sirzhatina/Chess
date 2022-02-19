@@ -10,105 +10,71 @@
 namespace Chess
 {
 Player::Player(Board* b, Color c)
-: board(b)
-, color(c)
+: _board(b)
+, _color(c)
 {
     if (b == nullptr)
     {
-        throw std::runtime_error{ "Cannot create player without board" };
+        throw std::runtime_error{ "Cannot create player without _board" };
     }
-    board->addPlayer(this);
+    _board->addPlayer(this);
 
-    auto startOfPawns = (color == Color::WHITE) ? Vertical::two : Vertical::seven;
-    auto startOfOthers = (color == Color::WHITE) ? Vertical::one : Vertical::eight;
-
-    int alongLine = 0;
-    for (auto& pwn: pawn)
+    auto initPawns = [this]()
     {
-        pwn = new Pawn{ this, Coordinates{ Horizontal(alongLine++), startOfPawns } };
-        board->setPiece(pwn, pwn->coord());
-    }
+        auto startY = (_color == Color::WHITE) ? Vertical::two : Vertical::seven;
 
-    alongLine = -1;
-    for (int i = 0, inc = 1; i < PAIR_PIECES; i++)
-    {
-        rook[i] = new Rook{ this, Coordinates{ Horizontal(alongLine += inc), startOfOthers } };
-        board->setPiece(rook[i], rook[i]->coord());
-
-        knight[i] = new Knight{ this, Coordinates{ Horizontal(alongLine += inc), startOfOthers } };
-        board->setPiece(knight[i], knight[i]->coord());
-
-        bishop[i] = new Bishop{ this, Coordinates{ Horizontal{ alongLine += inc }, startOfOthers } };
-        board->setPiece(bishop[i], bishop[i]->coord());
-
-        inc *= -1;
-        alongLine += 6;
-    }
-
-    // Queen prefers corresponding color
-    queen = new Queen{ this, { Horizontal::D, startOfOthers } };
-    board->setPiece(queen, queen->coord());
-
-    king = new King{ this, { Horizontal::E, startOfOthers } };
-    board->setPiece(king, king->coord());
-}
-
-bool Player::possibleCastling(Coordinates to) const
-{
-    if (king->isFirstMove())
-    {
-        if (to.y == king->coord().y)
+        for (int startX = 0; startX < pawns; startX++)
         {
-            if (to.x == Horizontal::G)
-            {
-                if (getBoard()->getPiece({ Horizontal::F, to.y }) == nullptr &&
-                    getBoard()->getPiece({ Horizontal::G, to.y }) == nullptr)
-                {
-                    return rook[1]->isFirstMove();
-                }
-            }
-            else if (to.x == Horizontal::C)
-            {
-                if (getBoard()->getPiece({ Horizontal::D, to.y }) == nullptr &&
-                    getBoard()->getPiece({ Horizontal::C, to.y }) == nullptr &&
-                    getBoard()->getPiece({ Horizontal::B, to.y }) == nullptr)
-                {
-                    return rook[0]->isFirstMove();
-                }
-            }
+            _pieces[startX] = std::make_shared<Pawn>(this, Coordinates{ Horizontal(startX++), startY });
+            _board->setPiece(_pieces[startX].get(), _pieces[startX]->coord());        
         }
-    }
-    return false;
-}
+    };
 
-void Player::castling(Coordinates to)
-{
-    board->setPiece(board->setPiece(nullptr, king->coord()), to);
-    king->setCoordinates(to);
+    auto initOthers = [this]()
+    {
+        auto startY = (_color == Color::WHITE) ? Vertical::one : Vertical::eight;
+        auto startX = -1;
 
-    auto rk = (to.x == Horizontal::C) ? rook[0] : rook[1];
-    Coordinates rkDest{ (rk == rook[0]) ? Horizontal::D : Horizontal::F, to.y };
+        constexpr auto queen = 1;
+        for (int i = pawns, inc = 1; i < allPiecesExceptKing - queen;)
+        {
+            _pieces[i] = std::make_shared<Rook>(this, Coordinates{ Horizontal{ startX += inc }, startY });
+            _board->setPiece(_pieces[i].get(), _pieces[i]->coord());
+            i++;
 
-    board->setPiece(board->setPiece(nullptr, rk->coord()), rkDest);
-    rk->setCoordinates(rkDest);
+            _pieces[i] = std::make_shared<Knight>(this, Coordinates{ Horizontal{ startX += inc }, startY });
+            _board->setPiece(_pieces[i].get(), _pieces[i]->coord());
+            i++;
+
+            _pieces[i] = std::make_shared<Bishop>(this, Coordinates{ Horizontal{ startX += inc }, startY });
+            _board->setPiece(_pieces[i].get(), _pieces[i]->coord());
+            i++;
+
+            inc *= -1;
+            startX += 6;
+        }
+        leftRook  = _pieces[8];
+        rightRook = _pieces[11];
+
+        _pieces[allPiecesExceptKing - 1] = std::make_shared<Queen>(this, Coordinates{ Horizontal::D, startY });
+        _board->setPiece(_pieces[allPiecesExceptKing - 1].get(), _pieces[allPiecesExceptKing - 1]->coord());
+
+        _king = std::make_shared<King>(this, Coordinates{ Horizontal::E, startY });
+        _board->setPiece(_king.get(), _king->coord()); 
+    };
+
+    initPawns();
+    initOthers();
 }
 
 std::vector<Piece*> Player::piecesAccessingSquare(Coordinates to) const
 {
     std::vector<Piece*> result;
-    for (auto p : pawn)
+    for (auto piece : _pieces)
     {
-        if (p->possibleMove(to))
+        if (piece->isPossibleMove(to))
         {
-            result.push_back(p);
-        }
-    }
-    Piece* pieces[7] { rook[0], rook[1], knight[0], knight[1], bishop[0], bishop[1], queen };
-    for (auto p : pieces)
-    {
-        if (p->possibleMove(to))
-        {
-            result.push_back(p);
+            result.push_back(piece.get());
         }
     }
     return result;
@@ -116,79 +82,121 @@ std::vector<Piece*> Player::piecesAccessingSquare(Coordinates to) const
 
 bool Player::isAccessedSquare(Coordinates to) const
 {
-    for (const auto p : pawn)
+    for (const auto& piece : _pieces)
     {
-        if (p->possibleMove(to))
+        if (piece->isPossibleMove(to))
         {
             return true;
         }
-    }
-    if (rook[0]  ->possibleMove(to) || rook[1]  ->possibleMove(to) ||
-        knight[0]->possibleMove(to) || knight[1]->possibleMove(to) ||
-        bishop[0]->possibleMove(to) || bishop[1]->possibleMove(to) ||
-        queen    ->possibleMove(to))
-    {
-        return true;
     }
     return false;
 }
 
 bool Player::isAbleToMove() const
 {
-    Piece* pieces[7]{ rook[0], rook[1], knight[0], knight[1], bishop[0], bishop[1], queen };
-
-    for (const auto p : pieces)
+    auto isMovablePawns = [this]()
     {
-        if (p->coord() != NULLPOS)
+        Coordinates sqrToMove;
+        for (int i = 0, incY = (_color == Color::WHITE ? 1 : -1); i < pawns; i++)
         {
-            return true;
-        }
-    }
-    Coordinates sqrToMove;
-    for (const auto p : pawn)
-    {
-        if (p->coord() != NULLPOS) 
-        {
-            sqrToMove.y = Vertical(int(p->coord().y) + (color == Color::WHITE) ? 1 : -1);
-
-            for (int x = int(p->coord().x) - 1, lim = x + 3; x < lim; x++)
+            if (_pieces[i])
             {
-                if (x > 0 && x < boardSize)
+                sqrToMove.y = Vertical(int(_pieces[i]->coord().y) + incY);
+                for (int x = int(_pieces[i]->coord().x) - 1, lim = x + 3; x < lim; x++)
                 {
-                    sqrToMove.x = Horizontal{x};
-                    if (sqrToMove != NULLPOS && p->possibleMove(sqrToMove))
+                    if (x > 0 && x < boardSize)
                     {
-                        return true;
+                        sqrToMove.x = Horizontal{x};
+                        if (_pieces[i]->isPossibleMove(sqrToMove))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
         }
-    }
-    return false;
+        return false;
+    };
+
+    auto isMovableOthers = [this]()
+    {
+        for (int i = pawns; i < allPiecesExceptKing; i++)
+        {
+            if (_pieces[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    };
+    return isMovableOthers() || isMovablePawns();
 }
 
-Piece* Player::move(Coordinates from, Coordinates to)
+std::pair<bool, const Piece*> Player::tryMove(Coordinates from, Coordinates to)
 {
-    auto piece = const_cast<Piece*>(board->getPiece(from));
-
-    auto isOwner = [this] (const Piece* p) { return p->player() == this; };
-    if (isOwner(piece) && !friendlySquare(to))
+    auto findPiece = [this](const Piece* p) -> Chess::Piece*
     {
-        if (piece == king && possibleCastling(to))
+        for (auto piece : _pieces)
         {
-            castling(to); 
+            if (piece.get() == p)
+            {
+                return piece.get();
+            }
         }
-        else if (piece->possibleMove(to))
+        return nullptr;
+    };
+
+    auto isValidMove = [this, &findPiece](const Piece* p, Coordinates to)
+    {
+        if (findPiece(p))
         {
-            board->setPiece(nullptr, from);
-            piece->setCoordinates(to);
-            return board->setPiece(piece, to);
+            return p->isPossibleMove(to);
         }
-        else
+        return false;
+    };
+    auto move = [this](Piece* p, Coordinates to)
+    {
+        auto kicked = _board->setPiece(p, to);
+        p->setCoordinates(to);
+
+        return kicked;
+    };
+
+    auto isValidCastling = [this](Coordinates to)
+    {
+        if (_king->isFirstMove() && to.y == _king->coord().y)
         {
-            throw std::runtime_error{ "Impossible to move" };
+            if (to.x == Horizontal::G)
+            {
+                return rightRook->isFirstMove() && rightRook->isPossibleMove({ Horizontal::F, to.y });
+            }
+            if (to.x == Horizontal::C)
+            {
+                return leftRook->isFirstMove() && leftRook->isPossibleMove({ Horizontal::D, to.y });
+            }
         }
+        return false;
+    };
+    auto castling = [this, &move](Coordinates to)
+    {
+        auto rook = (to.x == Horizontal::C) ? leftRook : rightRook;
+        Coordinates rkDest{ (rook == leftRook) ? Horizontal::D : Horizontal::F, to.y };
+
+        move(_king.get(), to);
+        move(rook.get(), rkDest);
+    };
+
+    auto piece = findPiece(_board->getPiece(from));
+    if (isValidMove(piece, to))
+    {
+        return { true, move(piece, to) };
     }
-    return nullptr;
+    if (isValidCastling(to))
+    {
+        castling(to);
+        return { true, nullptr };
+    }
+
+    return { false, nullptr };
 }
 } // ends namespace Chess
