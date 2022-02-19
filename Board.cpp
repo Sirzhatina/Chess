@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "Board.h"
 #include "Player.h"
-#include "Piece/Piece.h"
+#include "Piece/Pieces.hpp"
 
 namespace Chess
 {
@@ -29,7 +29,7 @@ void Board::addPlayer(Player *pl)
     }
     else if (!players[1])
     {
-        if (players[0]->getColor() == pl->getColor())
+        if (players[0]->color() == pl->color())
         {
             throw std::runtime_error{ "Players have the same color" };
         }
@@ -41,11 +41,14 @@ void Board::addPlayer(Player *pl)
     }
 }
 
-Piece* Board::setPiece(Piece *p, Coordinates coord)
+const Piece* Board::setPiece(const Piece *p, Coordinates coord)
 {
-    Piece* previous = board[boardSize - int(coord.y) - 1][int(coord.x)].piece;
+    const Piece* previous = board[boardSize - int(coord.y) - 1][int(coord.x)].piece;
     board[boardSize - int(coord.y) - 1][int(coord.x)].piece = p;
 
     return previous;
 }
+
+const Piece* Board::getPiece(Coordinates coord) const { return board[boardSize - int(coord.y) - 1][int(coord.x)].piece; }
+
 } // namespace Chess

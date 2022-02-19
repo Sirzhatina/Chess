@@ -15,29 +15,21 @@ class Piece;
 class Board 
 {
 public:
-    struct Square { Coordinates coord; Piece* piece{ nullptr }; };
+    struct Square { Coordinates coord; const Piece* piece{ nullptr }; };
 
-    static Board& getInstance()
-    {
-        static Board b;
-        return b;
-    }
-
+    Board();
     ~Board() = default;
 
     void addPlayer(Player* pl);
 
-    Piece* setPiece(Piece* p, Coordinates coord);
-    inline const Piece* getPiece(Coordinates coord) const;
+    const Piece* setPiece(const Piece* p, Coordinates coord);
+    const Piece* getPiece(Coordinates coord) const;
 
 private:
     std::array<std::array<Square, boardSize>, boardSize> board;
     Player* players[2]{ nullptr, nullptr };
 
-    Board();
-
     Board(const Board&) = delete;
     Board& operator=(const Board&) = delete;
 };
-const Piece* Board::getPiece(Coordinates coord) const { return board[boardSize - int(coord.y) - 1][int(coord.x)].piece; }
 } // ends namespace Chess
