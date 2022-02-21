@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 #include <memory>
+#include <optional>
 #include "Primitives.h"
 #include "Piece/Pieces.hpp"
 #include "Board.h"
@@ -18,14 +19,20 @@ class Player
 public:
     Player(Board* b, Color c);
 
-    std::pair<bool, const Piece*> tryMove(Coordinates from, Coordinates to);
+    bool isValidMove(Move m) const;
+    std::optional<const Piece*> move();
 
-    std::vector<Piece*> piecesAccessingSquare(Coordinates to) const;
-    bool                isAccessedSquare(Coordinates to)      const;
-    
+    std::vector<const Piece*> piecesAccessingSquare(Coordinates to) const;
+    bool                      isAccessedSquare(Coordinates to)      const;
+
+    std::vector<const Piece*> piecesAbleToMove()    const;
+    bool                      isAbleToMove()        const;
+    bool                      isMovableKing()       const;
+    std::vector<Coordinates>  kingAccessedSquares() const;
+
+    void removePiece(const Piece* p);
+
     void setCheck(bool ch) { _inCheck = ch; }
-
-    bool isAbleToMove() const;
 
     Coordinates kingCoord() const { return _king->coord(); }
     bool        isInCheck() const { return _inCheck; }
@@ -39,17 +46,24 @@ private:
     bool         _inCheck;
     Board*       _board;
     const Color  _color;
+    bool         _isCastled{ false };
+
+    mutable std::optional<Move> _validatedMove;
+    mutable std::optional<Move> _validatedCastling;
 
     template <std::size_t N>
-    using Pieces = std::array<std::shared_ptr<Piece>, N>;
+    using Pieces = std::array<std::unique_ptr<Piece>, N>;
 
     Pieces<allPiecesExceptKing> _pieces;
-    std::shared_ptr<Piece>      _king;
+    std::unique_ptr<Piece>      _king;
 
-    std::shared_ptr<Piece> leftRook;
-    std::shared_ptr<Piece> rightRook;
+    const Piece* leftRook;
+    const Piece* rightRook;
 
     Player(const Player&) = delete;
     Player& operator=(const Player&) = delete;
+
+    bool isMovablePawns()  const;
+    bool isMovableOthers() const;
 };
 }
