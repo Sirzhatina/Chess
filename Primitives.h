@@ -18,5 +18,14 @@ struct Coordinates
 inline bool operator==(const Coordinates& c1, const Coordinates& c2) { return c1.x == c2.x && c1.y == c2.y; }
 inline bool operator!=(const Coordinates& c1, const Coordinates& c2) { return !(c1 == c2); }
 
+struct Move
+{
+    Coordinates from;
+    Coordinates to;
+
+    Move() = default;
+    Move(const std::pair<Coordinates, Coordinates>& p) : from(p.first), to(p.second) { }
+};
+
 enum class Color { BLACK, WHITE };
 }
