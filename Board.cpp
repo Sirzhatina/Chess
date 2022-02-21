@@ -23,22 +23,25 @@ Board::Board()
 
 void Board::addPlayer(Player *pl)
 {
-    if (!players[0])
+    auto player = (pl->color() == Color::WHITE ? _white : _black);
+    if (player)
     {
-        players[0] = pl;
+        throw std::runtime_error{ "Player with such color is already added!" };
     }
-    else if (!players[1])
+    player = pl;
+}
+
+const Player* Board::enemyOf(const Player* pl) const
+{
+    if (pl == _white)
     {
-        if (players[0]->color() == pl->color())
-        {
-            throw std::runtime_error{ "Players have the same color" };
-        }
-        players[1] = pl;
+        return _black;
     }
-    else
+    if (pl == _black)
     {
-        throw std::runtime_error{ "Players are already added!" };
+        return _white;
     }
+    throw std::runtime_error{ "Player doesn't play on this board" };
 }
 
 const Piece* Board::setPiece(const Piece *p, Coordinates coord)

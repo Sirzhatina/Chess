@@ -22,12 +22,16 @@ public:
 
     void addPlayer(Player* pl);
 
+    const Player* enemyOf(const Player* p) const;
+
     const Piece* setPiece(const Piece* p, Coordinates coord);
     const Piece* getPiece(Coordinates coord) const;
 
 private:
     std::array<std::array<Square, boardSize>, boardSize> board;
-    Player* players[2]{ nullptr, nullptr };
+
+    const Player* _white{ nullptr };
+    const Player* _black{ nullptr };
 
     Board(const Board&) = delete;
     Board& operator=(const Board&) = delete;
