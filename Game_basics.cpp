@@ -2,10 +2,11 @@
 // Created by Sirzh on 16.04.2021.
 //
 
-#include "Game_basics.h"
-#include "Player.h"
-#include "Board.h"
-#include "Primitives.h"
+#include "Game_basics.hpp"
+#include <Core/Player.hpp>
+#include <Core/Board.hpp>
+#include <Core/Primitives.hpp>
+#include <regex>
 #include <typeinfo>
 #include <iostream>
 
@@ -36,13 +37,44 @@ int Game_basics::run()
     }
 }
 
+Chess::Move Game_basics::getMove() const
+{
+    std::string coord;
+    std::regex pattern(R"([a-h][1-8] [a-h][1-8])");
+
+    std::cout << "Move: ";
+    std::getline(std::cin, coord);
+    
+    if (!std::regex_match(coord, pattern))
+    {
+        throw std::runtime_error{ "Invalid input!" };
+    }
+
+    auto convertCoord = [this](int x, int y) -> Chess::Coordinates
+    {
+        return { Chess::Horizontal{ x }, Chess::Vertical{ y } };
+    };
+
+
+    try
+    {
+        Chess::Move result
+        { 
+            convertCoord(coord[0] - 'a', coord[1] - '1'), 
+            convertCoord(coord[3] - 'a', coord[4] - '1') 
+        };
+        return result;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        exit(EXIT_FAILURE);
+    }
+}
+
 void Game_basics::play()
 {
-    Chess::Gameplay game;
-    game.addObserver(this);
-
-    draw();
-    game.start();
+    _gameplay.start();
 }
 
 char Game_basics::getPieceKind(const Chess::Piece* p) const
@@ -61,7 +93,7 @@ char Game_basics::getPieceKind(const Chess::Piece* p) const
     } else if (dynamic_cast<const Chess::King*>(p)) {
         result = 'k';
     }
-    if (p->player()->getColor() == Chess::Color::WHITE) {
+    if (p->player()->color() == Chess::Color::WHITE) {
         result = toupper(result);
     }
     return result;
@@ -84,12 +116,12 @@ void Game_basics::drawLine(Chess::Vertical line) const
         std::cout << ' ';
 
         coor.x = Chess::Horizontal(i);
-        if (Chess::Board::getInstance().getPiece(coor) != nullptr)
+        if (_gameplay.board()->getPiece(coor) != nullptr)
         {
-            auto p = Chess::Board::getInstance().getPiece(coor);
+            auto p = _gameplay.board()->getPiece(coor);
             char pieceKind = getPieceKind(p);
 
-            front = (p->player()->getColor() == Chess::Color::WHITE) ? cWHITE : cBLACK;
+            front = (p->player()->color() == Chess::Color::WHITE) ? cWHITE : cBLACK;
             set_color(front, back);
             std::cout << pieceKind;
         }
@@ -120,12 +152,12 @@ void Game_basics::drawReversedLine(Chess::Vertical line) const
         std::cout << ' ';
 
         coor.x = Chess::Horizontal(i);
-        if (Chess::Board::getInstance().getPiece(coor) != nullptr)
+        if (_gameplay.board()->getPiece(coor) != nullptr)
         {
-            auto p = Chess::Board::getInstance().getPiece(coor);
+            auto p = _gameplay.board()->getPiece(coor);
             char pieceKind = getPieceKind(p);
 
-            front = (p->player()->getColor() == Chess::Color::WHITE) ? cWHITE : cBLACK;
+            front = (p->player()->color() == Chess::Color::WHITE) ? cWHITE : cBLACK;
             set_color(front, back);
             std::cout << pieceKind;
         }
@@ -139,7 +171,7 @@ void Game_basics::drawReversedLine(Chess::Vertical line) const
     std::cout << "| *";
 }
 
-void Game_basics::draw() const
+void Game_basics::drawBoard(const Chess::Board* board)
 {
     int line = 5;
     constexpr auto indentX = 10;
@@ -147,9 +179,9 @@ void Game_basics::draw() const
 
     auto drawBorder = []()
     {
-        short counter;
+        short counter = 0;
         static constexpr auto limit = 20;
-        for (counter = 0; counter < limit; counter++) std::cout << "* ";
+        for (; counter < limit; counter++) std::cout << "* ";
         std::cout << '\t';
         for (counter = 0; counter < limit; counter++) std::cout << "* ";
     };
@@ -182,10 +214,4 @@ void Game_basics::draw() const
 
     drawBorder();
     set_cursor_pos(indentX, ++line);
-}
-
-void Game_basics::handleEvent(const Chess::Gameplay* observed)
-{
-    system("cls");
-    draw();
 }
