@@ -1,9 +1,16 @@
-#include "Game_basics.h"
-
+#include "Game_basics.hpp"
+#include <iostream>
 int main()
 {
     Game_basics launcher;
-    return launcher.run();
+    try
+    {
+        return launcher.run();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 
