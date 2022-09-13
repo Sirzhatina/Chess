@@ -83,8 +83,10 @@ bool Player::isValidMove(Move m) const
 
     auto isInCheck = [this](Move m)
     {
-        auto previous = _board->setPiece(_board->setPiece(nullptr, m.from), m.to);
-        _board->setPiece(_board->setPiece(previous, m.to), m.from);
+        // auto previous = _board->setPiece(_board->setPiece(nullptr, m.from), m.to);
+        // _board->setPiece(_board->setPiece(previous, m.to), m.from);
+
+        auto previous = _board->getPiece(m.to);
 
         auto attackingPieces = _board->enemyOf(this)->piecesAccessingSquare(_king->coord());
 
@@ -150,8 +152,11 @@ std::optional<const Piece*> Player::move()
     {
         alias = _validatedMove.value();
         auto kicked = _board->setPiece(_board->setPiece(nullptr, alias.from), alias.to);
-        const_cast<Piece*>(_board->getPiece(alias.from))->setCoordinates(alias.to);
-        
+
+        if (_board->getPiece(alias.from))
+        {
+            const_cast<Piece*>(_board->getPiece(alias.from))->setCoordinates(alias.to);
+        }
         _validatedMove = { };
 
         return { kicked };
@@ -278,18 +283,18 @@ std::vector<Coordinates> Player::kingsAccessibleSquares() const
 
 void Player::removePiece(const Piece* p)
 {
-    if (!p)
+    if (p)
     {
-        return;
-    }
-    for (auto& piece : _pieces)
-    {
-        if (p == piece.get())
+        for (auto& piece : _pieces)
         {
-            piece.release();
-            return;
+            if (p == piece.get())
+            {
+                piece.release();
+                return;
+            }
         }
     }
+
 }
 
 bool Player::isMovablePawns() const
