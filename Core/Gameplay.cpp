@@ -66,7 +66,6 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
         {
             stalemate = isStalemate(moves, notMoves);
         }
-        _observer->drawBoard(_board.get());
         std::swap(moves, notMoves);
     }
 }

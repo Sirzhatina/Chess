@@ -33,7 +33,6 @@ int Game_basics::run()
             default:
                 continue;
         }
-
     }
 }
 
@@ -183,7 +182,7 @@ void Game_basics::drawBoard(const Chess::Board* board)
         static constexpr auto limit = 20;
         for (; counter < limit; counter++) std::cout << "* ";
         std::cout << '\t';
-        for (counter = 0; counter < limit; counter++) std::cout << "* ";
+        for (; counter > 0; counter--) std::cout << "* ";
     };
 
     drawBorder();

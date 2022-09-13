@@ -83,9 +83,6 @@ bool Player::isValidMove(Move m) const
 
     auto isInCheck = [this](Move m)
     {
-        // auto previous = _board->setPiece(_board->setPiece(nullptr, m.from), m.to);
-        // _board->setPiece(_board->setPiece(previous, m.to), m.from);
-
         auto previous = _board->getPiece(m.to);
 
         auto attackingPieces = _board->enemyOf(this)->piecesAccessingSquare(_king->coord());

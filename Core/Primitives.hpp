@@ -24,6 +24,8 @@ struct Move
 {
     Coordinates from;
     Coordinates to;
+    bool operator==(const Move& m) const { return from == m.from && to == m.to; }
+    bool operator!=(const Move& m) const { return !(*this == m); }
 };
 
 enum class Color { BLACK, WHITE };
