@@ -33,7 +33,7 @@ bool Pawn::isPossibleMove(Coordinates to) const
         return result;  
     };
 
-    int direction = int(to.x) - int(coord().x);
+    int direction = int(to.y) - int(coord().y);
 
     return isValidAttack(direction) || isValidRoute(direction); 
 }
