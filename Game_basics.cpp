@@ -10,6 +10,11 @@
 #include <typeinfo>
 #include <iostream>
 
+Game_basics::Game_basics(std::ostream& drawOutput, std::istream& askInput)
+: _gameplay(this)
+, _drawOutput{drawOutput}
+, _askInput{askInput} { init_graphics(); }
+
 int Game_basics::run()
 {
     char choice;
@@ -17,9 +22,9 @@ int Game_basics::run()
     {
         system("cls");
 
-        std::cout << "1 -- play\n"
+        _drawOutput << "1 -- play\n"
                      "2 -- quit\n";
-        (std::cin >> choice).get();
+        (_askInput >> choice).get();
 
         switch (choice)
         {
@@ -41,8 +46,8 @@ Chess::Move Game_basics::getMove() const
     std::string coord;
     std::regex pattern(R"([a-h][1-8] [a-h][1-8])");
 
-    std::cout << "Move: ";
-    std::getline(std::cin, coord);
+    _drawOutput << "Move: ";
+    std::getline(_askInput, coord);
     
     if (!std::regex_match(coord, pattern))
     {
@@ -100,7 +105,7 @@ char Game_basics::getPieceKind(const Chess::Piece* p) const
 
 void Game_basics::drawLine(Chess::Vertical line) const
 {
-    std::cout << "* " << int(line) + 1 << ' ';
+    _drawOutput << "* " << int(line) + 1 << ' ';
 
     color front = cWHITE;
     color back = cBLACK;
@@ -108,11 +113,11 @@ void Game_basics::drawLine(Chess::Vertical line) const
     Chess::Coordinates coor{ Chess::Horizontal::A, line };
     for (int i = 0; i < Chess::boardSize; i++)
     {
-        std::cout << '|';
+        _drawOutput << '|';
         
         back = !((i + int(line)) % 2) ? cDARK_GREEN : cDARK_GRAY;
         set_color(front, back);
-        std::cout << ' ';
+        _drawOutput << ' ';
 
         coor.x = Chess::Horizontal(i);
         if (_gameplay.board()->getPiece(coor) != nullptr)
@@ -122,21 +127,21 @@ void Game_basics::drawLine(Chess::Vertical line) const
 
             front = (p->player()->color() == Chess::Color::WHITE) ? cWHITE : cBLACK;
             set_color(front, back);
-            std::cout << pieceKind;
+            _drawOutput << pieceKind;
         }
         else
         {
-            std::cout << ' ';
+            _drawOutput << ' ';
         }
-        std::cout << ' ';
+        _drawOutput << ' ';
         set_color(cWHITE, cBLACK);
     }
-    std::cout << "| *";
+    _drawOutput << "| *";
 }
 
 void Game_basics::drawReversedLine(Chess::Vertical line) const
 {
-    std::cout << "* " << int(line) + 1 << ' ';
+    _drawOutput << "* " << int(line) + 1 << ' ';
 
     color front = cWHITE;
     color back = cBLACK;
@@ -144,11 +149,11 @@ void Game_basics::drawReversedLine(Chess::Vertical line) const
     Chess::Coordinates coor{ Chess::Horizontal::A, line };
     for (int i = Chess::boardSize - 1; i >= 0; i--)        // the only difference between this method and drawLine() is here
     {
-        std::cout << '|';
+        _drawOutput << '|';
         
         back = !((i + int(line)) % 2) ? cDARK_GREEN : cDARK_GRAY;
         set_color(front, back);
-        std::cout << ' ';
+        _drawOutput << ' ';
 
         coor.x = Chess::Horizontal(i);
         if (_gameplay.board()->getPiece(coor) != nullptr)
@@ -158,16 +163,16 @@ void Game_basics::drawReversedLine(Chess::Vertical line) const
 
             front = (p->player()->color() == Chess::Color::WHITE) ? cWHITE : cBLACK;
             set_color(front, back);
-            std::cout << pieceKind;
+            _drawOutput << pieceKind;
         }
         else
         {
-            std::cout << ' ';
+            _drawOutput << ' ';
         }
-        std::cout << ' ';
+        _drawOutput << ' ';
         set_color(cWHITE, cBLACK);
     }
-    std::cout << "| *";
+    _drawOutput << "| *";
 }
 
 void Game_basics::drawBoard(const Chess::Board* board)
@@ -176,13 +181,13 @@ void Game_basics::drawBoard(const Chess::Board* board)
     constexpr auto indentX = 10;
     set_cursor_pos(indentX, line);
 
-    auto drawBorder = []()
+    auto drawBorder = [this]()
     {
         short counter = 0;
         static constexpr auto limit = 20;
-        for (; counter < limit; counter++) std::cout << "* ";
-        std::cout << '\t';
-        for (; counter > 0; counter--) std::cout << "* ";
+        for (; counter < limit; counter++) _drawOutput << "* ";
+        _drawOutput << '\t';
+        for (; counter > 0; counter--) _drawOutput << "* ";
     };
 
     drawBorder();
@@ -191,24 +196,24 @@ void Game_basics::drawBoard(const Chess::Board* board)
     for (int i = Chess::boardSize - 1, j = 0; i >= 0 && j < Chess::boardSize; i--, j++)
     {
         drawLine(Chess::Vertical{i});
-        std::cout << '\t';
+        _drawOutput << '\t';
         drawReversedLine(Chess::Vertical{j});
         set_cursor_pos(indentX, ++line);
     }
 
-    std::cout << "*   ";
+    _drawOutput << "*   ";
     for (char i = 'a'; i - 'a' < Chess::boardSize; i++)
     {
-        std::cout << "  " << i << ' ';
+        _drawOutput << "  " << i << ' ';
     }
-    std::cout << "  *\t";
+    _drawOutput << "  *\t";
 
-    std::cout << "*   ";
+    _drawOutput << "*   ";
     for (char i = 'a' + Chess::boardSize - 1; i >= 'a'; i--)
     {
-        std::cout << "  " << i << ' ';
+        _drawOutput << "  " << i << ' ';
     }
-    std::cout << "  *";
+    _drawOutput << "  *";
     set_cursor_pos(indentX, ++line);
 
     drawBorder();
