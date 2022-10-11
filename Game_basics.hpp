@@ -27,7 +27,7 @@ class Game_basics : public IGameplayHandler
     std::istream& _askInput;
 
 public:
-    Game_basics(std::ostream& drawOutput = std::cout, std::istream& askInput = std::cin );
+    Game_basics(std::ostream& drawOutput = std::cout, std::istream& askInput = std::cin);
     int run();
 
     Chess::Move getMove() const override;

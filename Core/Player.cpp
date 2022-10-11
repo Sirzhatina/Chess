@@ -6,6 +6,7 @@
 #include "Piece\Piece.hpp"
 #include "Board.hpp"
 #include <stdexcept>
+#include <iostream>
 
 namespace Chess
 {
@@ -150,9 +151,9 @@ std::optional<const Piece*> Player::move()
         alias = _validatedMove.value();
         auto kicked = _board->setPiece(_board->setPiece(nullptr, alias.from), alias.to);
 
-        if (_board->getPiece(alias.from))
+        if (_board->getPiece(alias.to))
         {
-            const_cast<Piece*>(_board->getPiece(alias.from))->setCoordinates(alias.to);
+            const_cast<Piece*>(_board->getPiece(alias.to))->setCoordinates(alias.to);
         }
         _validatedMove = { };
 

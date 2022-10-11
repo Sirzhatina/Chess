@@ -39,10 +39,9 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
         
         if (!moves->isValidMove(m))
         {
-            std::cout << "Foreign square!" << std::endl;
+            std::cout << "Not your square!" << std::endl;
             continue;
         }
-
         moves->setCheck(false);
 
         kicked = moves->move();
@@ -91,14 +90,16 @@ bool Gameplay::isStalemate(Player* moves, Player* notMoves)
         
         for (const auto& p : piecesMovable)
         {
+            std::cout << "[isStalemate] --------> Here we got\n";
             _board->setPiece(nullptr, p->coord());
             if (!moves->isAccessibleSquare(notMoves->kingCoord()))
             {
+                std::cout << "[isStalemate] --------> And here we got\n";
                 return false;
             }
             _board->setPiece(p, p->coord());
         }
-
+        std::cout << "[isStalemate] --------> I think we don't get here\n";
         auto squaresForKing = notMoves->kingsAccessibleSquares();
 
         for (auto sqr : squaresForKing)

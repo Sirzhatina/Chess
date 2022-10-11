@@ -15,10 +15,12 @@ enum class Vertical   { one, two, three, four, five, six, seven, eight };
 struct Coordinates
 {
     Horizontal x;
-    Vertical y;
+    Vertical   y;
+
+    bool operator==(const Coordinates& c) { return x == c.x && y == c.y; }
+    bool operator!=(const Coordinates& c) { return !(*this == c); }
 };
-inline bool operator==(const Coordinates& c1, const Coordinates& c2) { return c1.x == c2.x && c1.y == c2.y; }
-inline bool operator!=(const Coordinates& c1, const Coordinates& c2) { return !(c1 == c2); }
+
 
 struct Move
 {
@@ -28,5 +30,5 @@ struct Move
     bool operator!=(const Move& m) const { return !(*this == m); }
 };
 
-enum class Color { BLACK, WHITE };
+enum class Color : bool { BLACK, WHITE };
 }

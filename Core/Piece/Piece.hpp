@@ -10,7 +10,6 @@
 
 namespace Chess
 {
-class Board;
 class Player;
 
 class Piece
@@ -28,6 +27,7 @@ public:
     virtual ~Piece() = default;
 
     virtual bool                     isPossibleMove(Coordinates to) const = 0;
+    virtual bool                     isAbleToMove()                 const = 0;
     virtual std::vector<Coordinates> squaresBefore(Coordinates to)  const = 0;
     
     void setCoordinates(Coordinates to);
