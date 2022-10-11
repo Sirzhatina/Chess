@@ -17,8 +17,21 @@ struct Coordinates
     Horizontal x;
     Vertical   y;
 
-    bool operator==(const Coordinates& c) { return x == c.x && y == c.y; }
-    bool operator!=(const Coordinates& c) { return !(*this == c); }
+    bool tryShift(int x_, int y_)
+    {
+        auto isOut = [&](int first, int sec) { return first + sec < 0 || first + sec > boardSize; };
+        if (isOut(int(x), x_) || isOut(int(y), y_))
+        {
+            return false;
+        }
+        x = Horizontal{int(x) + x_};
+        y = Vertical{int(y) + y_};
+
+        return true;
+    }
+
+    bool operator==(const Coordinates& c) const { return x == c.x && y == c.y; }
+    bool operator!=(const Coordinates& c) const { return !(*this == c); }
 };
 
 
