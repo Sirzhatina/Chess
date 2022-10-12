@@ -29,10 +29,12 @@ bool Knight::isAbleToMove() const
     */
 
     auto src = coord();
-    return src.tryShift(1, 2)   && isPossibleMove(src) || src.tryShift(2, 1)   && isPossibleMove(src) ||
-           src.tryShift(2, -1)  && isPossibleMove(src) || src.tryShift(-2, 1)  && isPossibleMove(src) ||
-           src.tryShift(-1, -2) && isPossibleMove(src) || src.tryShift(-2, -1) && isPossibleMove(src) ||
-           src.tryShift(-2, 1)  && isPossibleMove(src) || src.tryShift(2, -1)  && isPossibleMove(src);
+    auto isAbleToSqr = [this, coord()](int x, int y, Coordinates source) { return source.tryShift(x, y) && isPossibleMove(source); };
+    bool result = isAbleToSqr(1, 2, coord()) || isAbleToSqr(2, 1, coord()) ||
+                  isAbleToSqr(2, -1, coord()) || isAbleToSqr(-2, 1, coord()) ||
+                  src.tryShift(-1, -2) && isPossibleMove(src) || src.tryShift(-2, -1) && isPossibleMove(src) ||
+                  src.tryShift(-2, 1)  && isPossibleMove(src) || src.tryShift(2, -1)  && isPossibleMove(src);
+    return result;
 }
 
 std::vector<Coordinates> Knight::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
