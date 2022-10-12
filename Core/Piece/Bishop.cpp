@@ -44,10 +44,11 @@ bool Bishop::isAbleToMove() const
         (-1, -1)   (1, -1)
     */
     auto source = coord();
-    return source.tryShift(1, 1)   && isPossibleMove(source) || 
-           source.tryShift(-1, -1) && isPossibleMove(source) ||
-           source.tryShift(1, -1)  && isPossibleMove(source) ||
-           source.tryShift(-1, 1)  && isPossibleMove(source);
+    bool result = source.tryShift(1, 1)   && isPossibleMove(source) || 
+                  source.tryShift(0, -2) && isPossibleMove(source) ||
+                  source.tryShift(-2, 0)  && isPossibleMove(source) ||
+                  source.tryShift(0, 2)  && isPossibleMove(source);
+    return result;
 }
 
 std::vector<Coordinates> Bishop::squaresBefore(Coordinates to) const

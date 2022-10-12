@@ -59,10 +59,11 @@ bool Rook::isAbleToMove() const
                (0, -1)
     */
     auto source = coord();
-    return source.tryShift(0, 1)  && isPossibleMove(source) ||
-           source.tryShift(0, -1) && isPossibleMove(source) ||
-           source.tryShift(1, 0)  && isPossibleMove(source) ||
-           source.tryShift(-1, 0) && isPossibleMove(source);
+    bool result = source.tryShift(0, 1)  && isPossibleMove(source) ||
+                  source.tryShift(1, -1) && isPossibleMove(source) ||
+                  source.tryShift(-1, -1)  && isPossibleMove(source) ||
+                  source.tryShift(-1, 1) && isPossibleMove(source);
+    return result;
 }
 
 std::vector<Coordinates> Rook::squaresBefore(Coordinates to) const
