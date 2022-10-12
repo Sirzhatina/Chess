@@ -1,5 +1,7 @@
 #include "King.hpp"
 #include "../Player.hpp"
+#include "Bishop.hpp"
+#include "Rook.hpp"
 
 namespace Chess
 {
@@ -15,6 +17,11 @@ bool King::isPossibleMove(Coordinates to) const
         return !isSameSquare(to) && !isFriendlySquare(to);
     };
     return isValidRoute(); 
+}
+
+bool King::isAbleToMove() const
+{
+    return Bishop{player(), coord()}.isAbleToMove() || Rook{player(), coord()}.isAbleToMove();
 }
 
 std::vector<Coordinates> King::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }

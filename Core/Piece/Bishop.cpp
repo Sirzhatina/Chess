@@ -38,13 +38,16 @@ bool Bishop::isPossibleMove(Coordinates to) const
 
 bool Bishop::isAbleToMove() const
 {
-    static constexpr auto directionsForBishop = 4;
-    auto startX = int(coord().x);
-    auto startY = int(coord().y);
-    for (int i = 0; i < directionsForBishop; i++)
-    {
-
-    }
+    /*
+        (-1, 1)    (1, 1)
+                 B
+        (-1, -1)   (1, -1)
+    */
+    auto source = coord();
+    return source.tryShift(1, 1)   && isPossibleMove(source) || 
+           source.tryShift(-1, -1) && isPossibleMove(source) ||
+           source.tryShift(1, -1)  && isPossibleMove(source) ||
+           source.tryShift(-1, 1)  && isPossibleMove(source);
 }
 
 std::vector<Coordinates> Bishop::squaresBefore(Coordinates to) const

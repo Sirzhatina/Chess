@@ -18,5 +18,22 @@ bool Knight::isPossibleMove(Coordinates to) const
     return isValidRoute(to);
 }
 
+bool Knight::isAbleToMove() const
+{
+    /*
+                 (-1, 2)      (1, 2)
+        (-2, 1)                       (2, 1)
+                           N
+        (-2, -1)                      (2, -1)
+                 (-1, -2)     (1, -2)
+    */
+
+    auto src = coord();
+    return src.tryShift(1, 2)   && isPossibleMove(src) || src.tryShift(2, 1)   && isPossibleMove(src) ||
+           src.tryShift(2, -1)  && isPossibleMove(src) || src.tryShift(-2, 1)  && isPossibleMove(src) ||
+           src.tryShift(-1, -2) && isPossibleMove(src) || src.tryShift(-2, -1) && isPossibleMove(src) ||
+           src.tryShift(-2, 1)  && isPossibleMove(src) || src.tryShift(2, -1)  && isPossibleMove(src);
+}
+
 std::vector<Coordinates> Knight::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
 }

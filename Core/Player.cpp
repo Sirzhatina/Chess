@@ -333,7 +333,14 @@ bool Player::isMovableOthers() const
 
 bool Player::isAbleToMove() const
 {
-    return isMovableOthers() || isMovablePawns();
+    for (const auto& p : _pieces)
+    {
+        if (p && p->isAbleToMove())
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // ends namespace Chess
