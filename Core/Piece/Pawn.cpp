@@ -41,12 +41,8 @@ bool Pawn::isPossibleMove(Coordinates to) const
 bool Pawn::isAbleToMove() const
 {
     int incY = (player()->color() == Color::WHITE ? 1 : -1);
-    auto src = coord();
-
-    bool result = src.tryShift(-1, incY) && isPossibleMove(src) ||
-                  src.tryShift(1, 0)  && isPossibleMove(src) ||
-                  src.tryShift(1, 0)  && isPossibleMove(src);
-    return result;
+    
+    return isAbleToSqr(coord(), -1, incY) || isAbleToSqr(coord(), 0, incY) || isAbleToSqr(coord(), 1, incY);
 }
 
 std::vector<Coordinates> Pawn::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }

@@ -28,12 +28,10 @@ bool Knight::isAbleToMove() const
                  (-1, -2)     (1, -2)
     */
 
-    auto src = coord();
-    auto isAbleToSqr = [this, coord()](int x, int y, Coordinates source) { return source.tryShift(x, y) && isPossibleMove(source); };
-    bool result = isAbleToSqr(1, 2, coord()) || isAbleToSqr(2, 1, coord()) ||
-                  isAbleToSqr(2, -1, coord()) || isAbleToSqr(-2, 1, coord()) ||
-                  src.tryShift(-1, -2) && isPossibleMove(src) || src.tryShift(-2, -1) && isPossibleMove(src) ||
-                  src.tryShift(-2, 1)  && isPossibleMove(src) || src.tryShift(2, -1)  && isPossibleMove(src);
+    bool result = isAbleToSqr(coord(), 1, 2)   || isAbleToSqr(coord(), 2, 1)   ||
+                  isAbleToSqr(coord(), 2, -1)  || isAbleToSqr(coord(), 1, -2)  ||
+                  isAbleToSqr(coord(), -1, -2) || isAbleToSqr(coord(), -2, -1) ||
+                  isAbleToSqr(coord(), -2, 1)  || isAbleToSqr(coord(), -1, 2);
     return result;
 }
 

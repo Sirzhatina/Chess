@@ -43,11 +43,8 @@ bool Bishop::isAbleToMove() const
                  B
         (-1, -1)   (1, -1)
     */
-    auto source = coord();
-    bool result = source.tryShift(1, 1)   && isPossibleMove(source) || 
-                  source.tryShift(0, -2) && isPossibleMove(source) ||
-                  source.tryShift(-2, 0)  && isPossibleMove(source) ||
-                  source.tryShift(0, 2)  && isPossibleMove(source);
+    bool result = isAbleToSqr(coord(), 1, 1)   || isAbleToSqr(coord(), 1, -1) ||
+                  isAbleToSqr(coord(), -1, -1) || isAbleToSqr(coord(), -1, 1);
     return result;
 }
 

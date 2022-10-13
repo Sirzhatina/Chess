@@ -58,11 +58,10 @@ bool Rook::isAbleToMove() const
         (-1, 0)   R   (1, 0)
                (0, -1)
     */
-    auto source = coord();
-    bool result = source.tryShift(0, 1)  && isPossibleMove(source) ||
-                  source.tryShift(1, -1) && isPossibleMove(source) ||
-                  source.tryShift(-1, -1)  && isPossibleMove(source) ||
-                  source.tryShift(-1, 1) && isPossibleMove(source);
+    bool result = isAbleToSqr(coord(), 0, 1)  || 
+                  isAbleToSqr(coord(), 1, 0)  ||
+                  isAbleToSqr(coord(), 0, -1) || 
+                  isAbleToSqr(coord(), -1, 0);
     return result;
 }
 
