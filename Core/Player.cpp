@@ -36,8 +36,7 @@ Player::Player(Board* b, Color c)
         auto startY = (_color == Color::WHITE) ? Vertical::one : Vertical::eight;
         auto startX = -1;
 
-        constexpr auto queen = 1;
-        for (int i = pawns, inc = 1; i < allPiecesExceptKing - queen;)
+        for (int i = pawns, inc = 1; i < allPiecesExceptKing - 1 /* last position is for queen*/;)
         {
             _pieces[i] = std::make_unique<Rook>(this, Coordinates{ Horizontal{ startX += inc }, startY });
             _board->setPiece(_pieces[i].get(), _pieces[i]->coord());
