@@ -30,9 +30,9 @@ set(SOURCES
 
 add_subdirectory(Core)
 add_subdirectory(Logger)
-add_subdirectory(Drawer)
+add_subdirectory(CLI)
 
 add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} PUBLIC Chess.Core.Core)
-target_link_libraries(${TARGET} PUBLIC Chess.Drawer)
+target_link_libraries(${TARGET} PUBLIC Chess.CLI)
