@@ -54,19 +54,9 @@ Chess::Move Game_basics::getMove() const
         throw std::runtime_error{ "Invalid input!" };
     }
 
-    auto convertCoord = [this](int x, int y) -> Chess::Coordinates
-    {
-        return { Chess::Horizontal{ x }, Chess::Vertical{ y } };
-    };
-
-
     try
     {
-        Chess::Move result
-        { 
-            convertCoord(coord[0] - 'a', coord[1] - '1'), 
-            convertCoord(coord[3] - 'a', coord[4] - '1') 
-        };
+        Chess::Move result{ {coord[0] - 'a', coord[1] - '1'}, {coord[3] - 'a', coord[4] - '1'} };
         return result;
     }
     catch(const std::exception& e)
