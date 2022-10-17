@@ -7,6 +7,7 @@ set(SOURCES
     GameplayHandler.cpp
     GameplayHandler.hpp
     IDrawer.hpp
+    Launcher.hpp
 )
 
 add_library(${TARGET} ${SOURCES})

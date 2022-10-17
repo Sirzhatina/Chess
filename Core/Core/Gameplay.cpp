@@ -8,7 +8,7 @@
 namespace Chess
 {
 
-Gameplay::Gameplay(IGameplayHandler* observer) : _observer(observer)
+Gameplay::Gameplay(std::shared_ptr<IGameplayHandler> observer) : _observer(observer)
 {
     _board = std::make_unique<Board>();
     _white = std::make_unique<Player>(_board.get(), Color::WHITE);

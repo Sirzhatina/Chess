@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <map>
 #include <memory>
 
 #include <Core/IGameplayHandler.hpp>
@@ -20,12 +21,9 @@ class GameplayHandler : public IGameplayHandler
 
     void play();
 
-    std::unique_ptr<IDrawer> dr;
-    Chess::Gameplay _gameplay;
 
 public:
-    GameplayHandler(): _gameplay(this), dr(std::make_unique<IDrawer>(&_gameplay)) { }
-    int run();
+    GameplayHandler() = default;
 
     Chess::Move getMove()                            const                      override;
     void        drawBoard(const Chess::Board* board)                            override;

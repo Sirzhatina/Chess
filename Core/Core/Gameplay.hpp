@@ -14,7 +14,7 @@ public:
     enum class Winner { white, black, stalemate };
     
 public:
-    Gameplay(IGameplayHandler* observer);
+    Gameplay(std::shared_ptr<IGameplayHandler> observer);
     ~Gameplay() = default;
 
     const Board* board() const { return _board.get(); }
@@ -29,7 +29,7 @@ private:
     bool stalemate{ false };
     bool checkmate{ false };
 
-    IGameplayHandler* _observer;
+    std::shared_ptr<IGameplayHandler> _observer;
 
     void mainLoop(Player* moves, Player* notMoves);
 
