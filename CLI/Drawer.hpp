@@ -17,5 +17,5 @@ public:
 
     void drawMainMenu()     const override;
     void drawSettingsMenu() const override { /* dummy method for being implemented in future */ }
-    void drawBoard()        const override;
+    void drawPlay()         const override { system(clear); }       // the game procces containing only Boards
 };

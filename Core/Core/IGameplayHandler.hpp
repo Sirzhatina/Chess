@@ -11,4 +11,15 @@ public:
     virtual void        drawBoard(const Chess::Board* board)       = 0;
 
     virtual ~IGameplayHandler() = default;
+
+    class ExitCase;
+};
+
+class IGameplayHandler::ExitCase
+{
+    const char* byeMessage;
+public:
+    ExitCase(const char* bye): byeMessage{bye} { }
+
+    virtual const char* byeMsg() const { return byeMessage; }
 };

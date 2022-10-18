@@ -4,6 +4,7 @@
 #pragma once
 
 #include <utility>
+#include <stdexcept>
 
 namespace Chess
 {

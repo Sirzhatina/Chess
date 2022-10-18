@@ -7,6 +7,8 @@ set(SOURCES
     GameplayHandler.cpp
     GameplayHandler.hpp
     IDrawer.hpp
+    ILauncher.hpp
+    Launcher.cpp
     Launcher.hpp
 )
 

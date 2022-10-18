@@ -35,7 +35,15 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
     while (!checkmate && !stalemate)
     {
         _observer->drawBoard(_board.get());
-        m = _observer->getMove();
+        try
+        {
+            m = _observer->getMove();   
+        }
+        catch(const std::range_error& e)
+        {
+            std::cout << "Incorrect input!\n";
+            continue;
+        }
         
         if (!moves->isValidMove(m))
         {

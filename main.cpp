@@ -3,11 +3,14 @@
 #include "CLI/Launcher.hpp"
 #include "CLI/GameplayHandler.hpp"
 #include "CLI/Drawer.hpp"
+#include "CLI/ILauncher.hpp"
+
 int main()
 {
-    auto code = Launcher<Drawer, GameplayHandler>().launch();
-
-    if (code)
+    
+    std::unique_ptr<ILauncher> l = std::make_unique<Launcher>();
+    
+    if (bool(code))
     {
         std::cerr << "Something went wrong\n";
         return int(code);

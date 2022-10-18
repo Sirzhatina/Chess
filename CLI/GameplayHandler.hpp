@@ -21,10 +21,12 @@ class GameplayHandler : public IGameplayHandler
 
     void play();
 
+    static constexpr auto quitCommand = "quit";
+    bool wantToQuit() const;
 
 public:
     GameplayHandler() = default;
 
-    Chess::Move getMove()                            const                      override;
-    void        drawBoard(const Chess::Board* board)                            override;
+    Chess::Move getMove()                            const override;
+    void        drawBoard(const Chess::Board* board)       override;
 };

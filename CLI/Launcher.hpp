@@ -5,21 +5,25 @@
 #include <Core/IGameplayHandler.hpp>
 #include <Core/Gameplay.hpp>
 #include "IDrawer.hpp"
+#include "ILauncher.hpp"
 
-template <class DerivedDrawer, class DerivedGameplayHandler>
-class Launcher
+class Launcher : public ILauncher
 {
-public:
-    enum class err_code { ok, err };
-    
 private:
-    std::unique_ptr<IDrawer>          _dr;
-    std::shared_ptr<IGameplayHandler> _gpHandler;
+    std::unique_ptr<Chess::Gameplay> _gp;
 
-    Chess::Gameplay _gp;
+    void startMenu();
+    void play();
 
 public:
-    Launcher(): _dr(std::make_unique<DerivedDrawer>(&_gp)), _gpHandler(std::make_shared<DerivedGameplayHandler>()), _gp(_gpHandler) { }
-
-    err_code launch();
+    Launcher(): ILauncher(std::make_unique<Drawer>(_gp.get()), std::make_shared<GameplayHandler>()),  _gp(std::make_unique<Chess::Gameplay>(_gpHandler)) { }
+    
+    err_code launch() override;
 };
+
+
+
+void Launcher::play()
+{
+
+}
