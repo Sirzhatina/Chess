@@ -26,10 +26,11 @@ void Launcher::startMenu()
         switch (choice)
         {
         case '1':
+            _dr->drawPlay();
             play();
             break;
         case '2':
-            dr->drawSettingsMenu();
+            _dr->drawSettingsMenu();
             break;
         case '3':
             system("pause");
@@ -44,7 +45,7 @@ void Launcher::play()
 {
     try
     {
-        _gp.start();
+        _gp->start();
     }    
     catch(const IGameplayHandler::ExitCase& e)
     {

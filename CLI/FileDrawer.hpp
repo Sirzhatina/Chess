@@ -10,9 +10,9 @@ class FileDrawer : public Drawer
     std::ofstream _drawOutput;
     std::ifstream _askInput;
 public:
-    FileDrawer(const Chess::Gameplay* gp);
+    FileDrawer();
 
     void drawMainMenu()     const final;
     void drawSettingsMenu() const final;
-    void drawBoard()        const final;
+    void drawPlay()         const final;
 };

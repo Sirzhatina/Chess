@@ -55,7 +55,7 @@ bool GameplayHandler::wantToQuit() const
     return choice == 'y';
 }
 
-void GameplayHandler::drawBoard(const Chess::Board* b)
+void GameplayHandler::drawBoard(std::shared_ptr<const Chess::Board> b) const
 {
-    
+    std::cout << "Kuku epta\n";
 }

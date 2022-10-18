@@ -1,10 +1,6 @@
 #include "Drawer.hpp"
 #include <cstdlib>
 
-Drawer::Drawer(const Chess::Gameplay* gp)
-: IDrawer(gp)
-{}
-
 void Drawer::drawMainMenu() const
 {
     system(clear);

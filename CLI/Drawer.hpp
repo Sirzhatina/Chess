@@ -13,9 +13,11 @@ class Drawer : public IDrawer
 #endif
 
 public:
-    Drawer(const Chess::Gameplay* gp);
+    Drawer() = default;
 
     void drawMainMenu()     const override;
     void drawSettingsMenu() const override { /* dummy method for being implemented in future */ }
-    void drawPlay()         const override { system(clear); }       // the game procces containing only Boards
+    // draws all widgets except the board itself which the IGameplayHandler is responsible for,
+    // so in console implementation, does nothing essential
+    void drawPlay()         const override { system(clear); }
 };

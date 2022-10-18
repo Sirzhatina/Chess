@@ -17,12 +17,12 @@ public:
     Gameplay(std::shared_ptr<IGameplayHandler> observer);
     ~Gameplay() = default;
 
-    const Board* board() const { return _board.get(); }
+    std::shared_ptr<const Board> board() const { return _board; }
 
     Winner start();
 
 private:
-    std::unique_ptr<Board>  _board;
+    std::shared_ptr<Board>  _board;
     std::unique_ptr<Player> _white;
     std::unique_ptr<Player> _black;
 

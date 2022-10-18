@@ -27,6 +27,6 @@ class GameplayHandler : public IGameplayHandler
 public:
     GameplayHandler() = default;
 
-    Chess::Move getMove()                            const override;
-    void        drawBoard(const Chess::Board* board)       override;
+    Chess::Move getMove()                                        const override;
+    void        drawBoard(std::shared_ptr<const Chess::Board> b) const override;
 };

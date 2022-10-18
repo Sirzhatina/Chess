@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(SOURCES
-        Game_basics.cpp
-        Game_basics.hpp
-        Msoftcon.cpp
-        Msoftcon.h
+        # Game_basics.cpp
+        # Game_basics.hpp
+        # Msoftcon.cpp
+        # Msoftcon.h
         main.cpp
 )
 

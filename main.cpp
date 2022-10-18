@@ -1,16 +1,12 @@
-#include "Game_basics.hpp"
 #include <iostream>
 #include "CLI/Launcher.hpp"
-#include "CLI/GameplayHandler.hpp"
-#include "CLI/Drawer.hpp"
 #include "CLI/ILauncher.hpp"
 
 int main()
 {
-    
     std::unique_ptr<ILauncher> l = std::make_unique<Launcher>();
     
-    if (bool(code))
+    if (auto code = l->launch(); bool(code))
     {
         std::cerr << "Something went wrong\n";
         return int(code);
