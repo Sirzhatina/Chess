@@ -51,6 +51,20 @@ bool Rook::isPossibleMove(Coordinates to) const
     return isValidRoute(horizontal, vertical) && isClearRoute(horizontal);
 }
 
+bool Rook::isAbleToMove() const
+{
+    /*
+                (0, 1)
+        (-1, 0)   R   (1, 0)
+               (0, -1)
+    */
+    bool result = isAbleToSqr(coord(), 0, 1)  || 
+                  isAbleToSqr(coord(), 1, 0)  ||
+                  isAbleToSqr(coord(), 0, -1) || 
+                  isAbleToSqr(coord(), -1, 0);
+    return result;
+}
+
 std::vector<Coordinates> Rook::squaresBefore(Coordinates to) const
 {
     std::vector<Coordinates> result{ coord() };

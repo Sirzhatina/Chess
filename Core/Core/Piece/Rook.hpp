@@ -4,13 +4,14 @@
 
 namespace Chess
 {
-class King: public Piece
+class Rook: public Piece
 {
+
 public:
-    King(const Player* p, Coordinates coord): Piece(p, coord) { }
+    Rook(const Player* p, Coordinates coord): Piece(p, coord) { }
 
     bool isPossibleMove(Coordinates to) const override;
-
+    bool isAbleToMove() const override;
     std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
 }

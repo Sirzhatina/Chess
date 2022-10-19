@@ -10,6 +10,11 @@ bool Queen::isPossibleMove(Coordinates to) const
     return Bishop{ player(), coord() }.isPossibleMove(to) || Rook{ player(), coord() }.isPossibleMove(to); 
 }
 
+bool Queen::isAbleToMove() const
+{
+    return Bishop{player(), coord()}.isAbleToMove() || Rook{player(), coord()}.isAbleToMove();
+}
+
 std::vector<Coordinates> Queen::squaresBefore(Coordinates to) const
 {
     auto rook   = Rook{ player(), coord() }.squaresBefore(to);

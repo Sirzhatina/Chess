@@ -8,9 +8,9 @@
 namespace Chess
 {
 
-Gameplay::Gameplay(IGameplayHandler* observer) : _observer(observer)
+Gameplay::Gameplay(std::shared_ptr<IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): _drawer(drawer), _input(input)
 {
-    _board = std::make_unique<Board>();
+    _board = std::make_shared<Board>();
     _white = std::make_unique<Player>(_board.get(), Color::WHITE);
     _black = std::make_unique<Player>(_board.get(), Color::BLACK);
 }
@@ -22,7 +22,7 @@ Gameplay::Winner Gameplay::start()
 
     mainLoop(moves, notMoves);
 
-    _observer->drawBoard(_board.get());
+    _drawer->drawBoard(_board);
 
     return moves->isInCheck() ? (moves->color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
 }
@@ -34,15 +34,22 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
 
     while (!checkmate && !stalemate)
     {
-        _observer->drawBoard(_board.get());
-        m = _observer->getMove();
+        _drawer->drawBoard(_board);
+        try
+        {
+            m = _input->getMove();   
+        }
+        catch(const std::range_error& e)
+        {
+            std::cout << "Incorrect input: " << e.what() << '\n';
+            continue;
+        }
         
         if (!moves->isValidMove(m))
         {
-            std::cout << "Foreign square!" << std::endl;
+            std::cout << "Not your square!" << std::endl;
             continue;
         }
-
         moves->setCheck(false);
 
         kicked = moves->move();
@@ -66,7 +73,6 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
         {
             stalemate = isStalemate(moves, notMoves);
         }
-        _observer->drawBoard(_board.get());
         std::swap(moves, notMoves);
     }
 }
@@ -95,11 +101,11 @@ bool Gameplay::isStalemate(Player* moves, Player* notMoves)
             _board->setPiece(nullptr, p->coord());
             if (!moves->isAccessibleSquare(notMoves->kingCoord()))
             {
+                _board->setPiece(p, p->coord());
                 return false;
             }
             _board->setPiece(p, p->coord());
         }
-
         auto squaresForKing = notMoves->kingsAccessibleSquares();
 
         for (auto sqr : squaresForKing)

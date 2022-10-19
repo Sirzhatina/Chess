@@ -6,6 +6,7 @@
 #include "Piece\Piece.hpp"
 #include "Board.hpp"
 #include <stdexcept>
+#include <iostream>
 
 namespace Chess
 {
@@ -35,8 +36,7 @@ Player::Player(Board* b, Color c)
         auto startY = (_color == Color::WHITE) ? Vertical::one : Vertical::eight;
         auto startX = -1;
 
-        constexpr auto queen = 1;
-        for (int i = pawns, inc = 1; i < allPiecesExceptKing - queen;)
+        for (int i = pawns, inc = 1; i < allPiecesExceptKing - 1 /* last position is for queen*/;)
         {
             _pieces[i] = std::make_unique<Rook>(this, Coordinates{ Horizontal{ startX += inc }, startY });
             _board->setPiece(_pieces[i].get(), _pieces[i]->coord());
@@ -83,8 +83,7 @@ bool Player::isValidMove(Move m) const
 
     auto isInCheck = [this](Move m)
     {
-        auto previous = _board->setPiece(_board->setPiece(nullptr, m.from), m.to);
-        _board->setPiece(_board->setPiece(previous, m.to), m.from);
+        auto previous = _board->getPiece(m.to);
 
         auto attackingPieces = _board->enemyOf(this)->piecesAccessingSquare(_king->coord());
 
@@ -150,8 +149,11 @@ std::optional<const Piece*> Player::move()
     {
         alias = _validatedMove.value();
         auto kicked = _board->setPiece(_board->setPiece(nullptr, alias.from), alias.to);
-        const_cast<Piece*>(_board->getPiece(alias.from))->setCoordinates(alias.to);
-        
+
+        if (_board->getPiece(alias.to))
+        {
+            const_cast<Piece*>(_board->getPiece(alias.to))->setCoordinates(alias.to);
+        }
         _validatedMove = { };
 
         return { kicked };
@@ -206,30 +208,11 @@ std::vector<const Piece*> Player::piecesAbleToMove() const
 {
     std::vector<const Piece*> result;
     
-    Coordinates sqrToMove;
-    for (int i = 0, incY = (_color == Color::WHITE ? 1 : -1); i < pawns; i++)
+    for (const auto& p : _pieces)
     {
-        if (_pieces[i])
+        if (p && p->isAbleToMove())
         {
-            sqrToMove.y = Vertical(int(_pieces[i]->coord().y) + incY);
-            for (int x = int(_pieces[i]->coord().x) - 1, lim = x + 3; x < lim; x++)
-            {
-                if (x > 0 && x < boardSize)
-                {
-                    sqrToMove.x = Horizontal{x};
-                    if (_pieces[i]->isPossibleMove(sqrToMove))
-                    {
-                        result.push_back(_pieces[i].get());
-                    }
-                }
-            }
-        }
-    }
-    for (int i = pawns; i < allPiecesExceptKing; i++)
-    {
-        if (_pieces[i])
-        {
-            result.push_back(_pieces[i].get());
+            result.push_back(p.get());
         }
     }
     return result;
@@ -237,22 +220,7 @@ std::vector<const Piece*> Player::piecesAbleToMove() const
 
 bool Player::isMovableKing() const
 {
-    Coordinates coord;
-    for (int x = int(_king->coord().x) - 1, lim = x + 3; x < lim; x++)
-    {
-        for (int y = int(_king->coord().y) - 1, lim = y + 3; y < lim; y++)
-        {
-            if (x > 0 && x < boardSize && y > 0 && y < boardSize)
-            {
-                coord = { Horizontal{x}, Vertical{y} };
-                if (_king->isPossibleMove(coord))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
+    return _king->isAbleToMove();
 }
 
 std::vector<Coordinates> Player::kingsAccessibleSquares() const
@@ -278,59 +246,30 @@ std::vector<Coordinates> Player::kingsAccessibleSquares() const
 
 void Player::removePiece(const Piece* p)
 {
-    if (!p)
+    if (p)
     {
-        return;
-    }
-    for (auto& piece : _pieces)
-    {
-        if (p == piece.get())
+        for (auto& piece : _pieces)
         {
-            piece.release();
-            return;
-        }
-    }
-}
-
-bool Player::isMovablePawns() const
-{
-    Coordinates sqrToMove;
-    for (int i = 0, incY = (_color == Color::WHITE ? 1 : -1); i < pawns; i++)
-    {
-        if (_pieces[i])
-        {
-            sqrToMove.y = Vertical(int(_pieces[i]->coord().y) + incY);
-            for (int x = int(_pieces[i]->coord().x) - 1, lim = x + 3; x < lim; x++)
+            if (p == piece.get())
             {
-                if (x > 0 && x < boardSize)
-                {
-                    sqrToMove.x = Horizontal{x};
-                    if (_pieces[i]->isPossibleMove(sqrToMove))
-                    {
-                        return true;
-                    }
-                }
+                piece.release();
+                return;
             }
         }
     }
-    return false;
+
 }
 
-bool Player::isMovableOthers() const
+bool Player::isAbleToMove() const
 {
-    for (int i = pawns; i < allPiecesExceptKing; i++)
+    for (const auto& p : _pieces)
     {
-        if (_pieces[i])
+        if (p && p->isAbleToMove())
         {
             return true;
         }
     }
     return false;
-}
-
-bool Player::isAbleToMove() const
-{
-    return isMovableOthers() || isMovablePawns();
 }
 
 } // ends namespace Chess

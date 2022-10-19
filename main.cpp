@@ -1,29 +1,24 @@
-#include "Game_basics.hpp"
 #include <iostream>
+#include "CLI/Launcher.hpp"
+#include "CLI/ILauncher.hpp"
+
 int main()
 {
-    Game_basics launcher;
-    try
+    std::unique_ptr<ILauncher> l = std::make_unique<Launcher>();
+    
+    if (auto code = l->launch(); bool(code))
     {
-        return launcher.run();
+        std::cerr << "Something went wrong\n";
+        return int(code);
     }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    return 0;
+    // Game_basics launcher;
+    // try
+    // {
+    //     return launcher.run();
+    // }
+    // catch(const std::exception& e)
+    // {
+    //     std::cerr << e.what() << '\n';
+    // }
 }
-
-
-/*  
- *    * * * * * * * * * * * * * * * * * * * *   * * * * * * * * * * * * * * * * * * * *
- *    * 8 | r |_b_| n |_q_| k |_n_| b |_r_| *   * 1 | R |_B_| N |_K_| Q |_N_| B |_R_| *   
- *    * 7 |_p_| p |_p_| p |_p_| p |_p_| p | *   * 2 |_P_| P |_P_| P |_P_| P |_P_| P | *
- *    * 6 |   |_ _|   |_ _|   |_ _|   |_ _| *   * 3 |   |_ _|   |_ _|   |_ _|   |_ _| *
- *    * 5 |_ _|   |_ _|   |_ _|   |_ _|   | *   * 4 |_ _|   |_ _|   |_ _|   |_ _|   | *
- *    * 4 |   |_ _|   |_ _|   |_ _|   |_ _| *   * 5 |   |_ _|   |_ _|   |_ _|   |_ _| *
- *    * 3 |_ _|   |_ _|   |_ _|   |_ _|   | *   * 6 |_ _|   |_ _|   |_ _|   |_ _|   | *
- *    * 2 | P |_P_| P |_P_| P |_P_| P |_P_| *   * 7 | p |_p_| p |_p_| p |_p_| p |_p_| *
- *    * 1 |_R_| B |_N_| Q |_K_| N |_B_| R | *   * 8 |_r_| b |_n_| k |_q_| n |_b_| r | *
- *    *     a   b   c   d   e   f   g   h   *   *     h   g   f   e   d   c   b   a   *
- *    * * * * * * * * * * * * * * * * * * * *   * * * * * * * * * * * * * * * * * * * *
- */

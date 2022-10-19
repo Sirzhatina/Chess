@@ -9,6 +9,7 @@
 #include <Core\Board.hpp>
 #include <Core\Gameplay.hpp>
 #include <Core\IGameplayHandler.hpp>
+#include <iostream>
 
 class Game_basics : public IGameplayHandler
 {
@@ -22,8 +23,11 @@ class Game_basics : public IGameplayHandler
 
     Chess::Gameplay _gameplay;
 
+    std::ostream& _drawOutput;
+    std::istream& _askInput;
+
 public:
-    Game_basics(): _gameplay(this) { init_graphics(); }
+    Game_basics(std::ostream& drawOutput = std::cout, std::istream& askInput = std::cin);
     int run();
 
     Chess::Move getMove() const override;

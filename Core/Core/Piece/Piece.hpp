@@ -10,7 +10,6 @@
 
 namespace Chess
 {
-class Board;
 class Player;
 
 class Piece
@@ -22,12 +21,16 @@ class Piece
 protected:
     bool isFriendlySquare(Coordinates square) const;
     bool isSameSquare(Coordinates square)     const { return coord() == square; }
+    
+    // utility method for isAbleToMove()
+    bool isAbleToSqr(Coordinates to, int x, int y) const { return to.tryShift(x, y) && isPossibleMove(to); } 
 
 public:
     Piece(const Player* p, Coordinates coord);
     virtual ~Piece() = default;
 
     virtual bool                     isPossibleMove(Coordinates to) const = 0;
+    virtual bool                     isAbleToMove()                 const = 0;
     virtual std::vector<Coordinates> squaresBefore(Coordinates to)  const = 0;
     
     void setCoordinates(Coordinates to);

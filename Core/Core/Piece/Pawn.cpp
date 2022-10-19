@@ -33,9 +33,16 @@ bool Pawn::isPossibleMove(Coordinates to) const
         return result;  
     };
 
-    int direction = int(to.x) - int(coord().x);
+    int direction = int(to.y) - int(coord().y);
 
     return isValidAttack(direction) || isValidRoute(direction); 
+}
+
+bool Pawn::isAbleToMove() const
+{
+    int incY = (player()->color() == Color::WHITE ? 1 : -1);
+    
+    return isAbleToSqr(coord(), -1, incY) || isAbleToSqr(coord(), 0, incY) || isAbleToSqr(coord(), 1, incY);
 }
 
 std::vector<Coordinates> Pawn::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }

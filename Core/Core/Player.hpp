@@ -62,8 +62,5 @@ private:
 
     Player(const Player&) = delete;
     Player& operator=(const Player&) = delete;
-
-    bool isMovablePawns()  const;
-    bool isMovableOthers() const;
 };
 }

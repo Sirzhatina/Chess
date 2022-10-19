@@ -31,9 +31,21 @@ bool Bishop::isPossibleMove(Coordinates to) const
     int incX = (diffX > 0) ? 1 : -1;
     int incY = (diffY > 0) ? 1 : -1;
 
-    Coordinates coor{ Horizontal(int(coord().x) + incX), Vertical(int(coord().y) + incY) };
+    Coordinates afterSourceSquare{ Horizontal(int(coord().x) + incX), Vertical(int(coord().y) + incY) };
     
-    return isValidRoute(diffX, diffY) && isClearRoute(incX, incY, coor);
+    return isValidRoute(diffX, diffY) && isClearRoute(incX, incY, afterSourceSquare);
+}
+
+bool Bishop::isAbleToMove() const
+{
+    /*
+        (-1, 1)    (1, 1)
+                 B
+        (-1, -1)   (1, -1)
+    */
+    bool result = isAbleToSqr(coord(), 1, 1)   || isAbleToSqr(coord(), 1, -1) ||
+                  isAbleToSqr(coord(), -1, -1) || isAbleToSqr(coord(), -1, 1);
+    return result;
 }
 
 std::vector<Coordinates> Bishop::squaresBefore(Coordinates to) const
