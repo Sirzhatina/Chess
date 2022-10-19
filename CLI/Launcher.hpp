@@ -2,11 +2,10 @@
 
 #include <memory>
 
-#include <Core/IGameplayHandler.hpp>
 #include <Core/Gameplay.hpp>
 
 #include "Drawer.hpp"
-#include "GameplayHandler.hpp"
+#include "InputHandler.hpp"
 #include "IDrawer.hpp"
 #include "ILauncher.hpp"
 
@@ -19,9 +18,7 @@ private:
     void play();
 
 public:
-    Launcher()
-    : ILauncher(std::make_unique<Drawer>(), std::make_shared<GameplayHandler>())
-    ,  _gp(std::make_unique<Chess::Gameplay>(_gpHandler)) { }
+    Launcher(): ILauncher(std::make_shared<Drawer>()) {}
     
     err_code launch() override;
 };

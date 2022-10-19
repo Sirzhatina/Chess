@@ -12,12 +12,14 @@ class Drawer : public IDrawer
     static constexpr auto clear = "clear";
 #endif
 
+    void tab() const { std::cout << "\t\t"; }
+
 public:
     Drawer() = default;
 
     void drawMainMenu()     const override;
     void drawSettingsMenu() const override { /* dummy method for being implemented in future */ }
-    // draws all widgets except the board itself which the IGameplayHandler is responsible for,
-    // so in console implementation, does nothing essential
-    void drawPlay()         const override { system(clear); }
+    void drawPlay()         const override { /* just a placeholder: in the current implementation, drawBoard() is enough */ }
+    
+    void drawBoard(std::shared_ptr<const Chess::Board> b) const override;
 };

@@ -2,20 +2,18 @@
 
 #include <memory>
 
-#include "IDrawer.hpp"
-#include <Core/IGameplayHandler.hpp>
+#include <Core/IBoardDrawer.hpp>
+#include <Core/IInputHandler.hpp>
 
 class ILauncher
 {
 public:
     enum class err_code { ok, err };
 
-protected:
-    std::unique_ptr<IDrawer>            _dr;
-    std::shared_ptr<IGameplayHandler>   _gpHandler;
-
-public:
-    ILauncher(std::unique_ptr<IDrawer> dr, std::shared_ptr<IGameplayHandler> gp): _dr(std::move(dr)), _gpHandler(gp) { }
+    ILauncher(std::shared_ptr<IDrawer> dr): _dr(dr) { }
     
     virtual err_code launch() = 0;
+
+protected:
+    std::shared_ptr<IDrawer> _dr;
 };

@@ -23,7 +23,8 @@ set(SOURCES
     Board.hpp
     Gameplay.cpp
     Gameplay.hpp
-    IGameplayHandler.hpp
+    IBoardDrawer.hpp
+    IInputHandler.hpp
     Player.cpp
     Player.hpp
     Primitives.cpp

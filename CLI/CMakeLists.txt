@@ -4,8 +4,8 @@ set(SOURCES
     Drawer.cpp 
     Drawer.hpp
     FileDrawer.hpp
-    GameplayHandler.cpp
-    GameplayHandler.hpp
+    InputHandler.cpp
+    InputHandler.hpp
     IDrawer.hpp
     ILauncher.hpp
     Launcher.cpp

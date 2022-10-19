@@ -8,7 +8,7 @@
 namespace Chess
 {
 
-Gameplay::Gameplay(std::shared_ptr<IGameplayHandler> observer) : _observer(observer)
+Gameplay::Gameplay(std::shared_ptr<IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): _drawer(drawer), _input(input)
 {
     _board = std::make_shared<Board>();
     _white = std::make_unique<Player>(_board.get(), Color::WHITE);
@@ -22,7 +22,7 @@ Gameplay::Winner Gameplay::start()
 
     mainLoop(moves, notMoves);
 
-    _observer->drawBoard(_board);
+    _drawer->drawBoard(_board);
 
     return moves->isInCheck() ? (moves->color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
 }
@@ -34,10 +34,10 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
 
     while (!checkmate && !stalemate)
     {
-        _observer->drawBoard(_board);
+        _drawer->drawBoard(_board);
         try
         {
-            m = _observer->getMove();   
+            m = _input->getMove();   
         }
         catch(const std::range_error& e)
         {

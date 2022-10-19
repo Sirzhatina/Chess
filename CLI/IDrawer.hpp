@@ -1,7 +1,8 @@
 #pragma once
 
+#include <Core/IBoardDrawer.hpp>
 
-class IDrawer
+class IDrawer : public IBoardDrawer
 {
 public:
     IDrawer() = default;

@@ -47,7 +47,7 @@ void Launcher::play()
     {
         _gp->start();
     }    
-    catch(const IGameplayHandler::ExitCase& e)
+    catch(const IInputHandler::ExitCase& e)
     {
         std::cerr << e.byeMsg() << '\n';
     }
