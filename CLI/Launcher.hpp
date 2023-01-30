@@ -6,8 +6,8 @@
 
 #include "Drawer.hpp"
 #include "InputHandler.hpp"
-#include "IDrawer.hpp"
-#include "ILauncher.hpp"
+#include <IDrawer.hpp>
+#include <ILauncher.hpp>
 
 class Launcher : public ILauncher
 {

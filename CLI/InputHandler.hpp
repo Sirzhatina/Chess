@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <Core/IInputHandler.hpp>
+#include <IInputHandler.hpp>
 #include <Core/Primitives.hpp>
 
 class InputHandler : public IInputHandler

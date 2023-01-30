@@ -8,7 +8,7 @@
 namespace Chess
 {
 
-Gameplay::Gameplay(std::shared_ptr<IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): _drawer(drawer), _input(input)
+Gameplay::Gameplay(std::shared_ptr<const IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): _drawer(drawer), _input(input)
 {
     _board = std::make_shared<Board>();
     _white = std::make_unique<Player>(_board.get(), Color::WHITE);
@@ -36,7 +36,7 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
     {
         try
         {
-            auto m = _input->getMove();   
+            m = _input->getMove();   
         }
         catch(const std::range_error& e)
         {

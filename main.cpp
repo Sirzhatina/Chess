@@ -1,6 +1,6 @@
 #include <iostream>
+#include <ILauncher.hpp>
 #include "CLI/Launcher.hpp"
-#include "CLI/ILauncher.hpp"
 
 int main()
 {

@@ -42,7 +42,7 @@ void Launcher::startMenu()
 
 void Launcher::play()
 {
-    _gp = std::make_unique<Chess::Gameplay>(_dr, std::make_shared<InputHandler>());   
+    _gp = std::make_unique<Chess::Gameplay>(_dr->getBoardDrawer(), std::make_shared<InputHandler>());   
     try
     {
         _gp->start();
@@ -51,6 +51,6 @@ void Launcher::play()
     {
         std::cerr << e.byeMsg() << '\n';
     }
-    delete _gp.release();
+    _gp.reset();
 }
     

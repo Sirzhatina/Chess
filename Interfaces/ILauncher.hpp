@@ -1,9 +1,7 @@
 #pragma once
 
 #include <memory>
-
-#include <Core/IBoardDrawer.hpp>
-#include <Core/IInputHandler.hpp>
+#include "IDrawer.hpp"
 
 class ILauncher
 {

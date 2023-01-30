@@ -1,8 +1,10 @@
 #pragma once
 
-#include <Core/IBoardDrawer.hpp>
+#include <memory>
 
-class IDrawer : public IBoardDrawer
+class IBoardDrawer;
+
+class IDrawer
 {
 public:
     IDrawer() = default;
@@ -12,4 +14,6 @@ public:
     virtual void drawMainMenu()     const = 0;
     virtual void drawSettingsMenu() const = 0;
     virtual void drawPlay()         const = 0;
+
+    virtual std::shared_ptr<const IBoardDrawer> getBoardDrawer() const = 0;
 };

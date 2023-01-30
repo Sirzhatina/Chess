@@ -23,8 +23,6 @@ set(SOURCES
     Board.hpp
     Gameplay.cpp
     Gameplay.hpp
-    IBoardDrawer.hpp
-    IInputHandler.hpp
     Player.cpp
     Player.hpp
     Primitives.cpp
@@ -32,5 +30,7 @@ set(SOURCES
 )
 
 add_library(${TARGET} STATIC ${SOURCES})
+
+target_link_libraries(${TARGET} PUBLIC Chess.Interfaces)
 
 target_include_directories(${TARGET} INTERFACE ${CMAKE_SOURCE_DIR}/Core)

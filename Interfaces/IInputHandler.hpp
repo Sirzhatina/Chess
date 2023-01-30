@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Primitives.hpp"
+#include <Core/Primitives.hpp>
 
 class IInputHandler
 {

@@ -23,7 +23,7 @@ set(SOURCES
 # conan_cmake_run(CONANFILE conanfile.txt
 #                 BASIC_SETUP CMAKE_TARGETS
 #                 BUILD missing)
-
+add_subdirectory(Interfaces)
 add_subdirectory(Core)
 add_subdirectory(Logger)
 add_subdirectory(CLI)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IBoardDrawer.hpp"
-#include "IInputHandler.hpp"
+#include <IBoardDrawer.hpp>
+#include <IInputHandler.hpp>
 #include <memory>
 #include "Player.hpp"
 
@@ -15,7 +15,7 @@ public:
     enum class Winner { white, black, stalemate };
     
 public:
-    Gameplay(std::shared_ptr<IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input);
+    Gameplay(std::shared_ptr<const IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input);
     ~Gameplay() = default;
 
     std::shared_ptr<const Board> board() const { return _board; }
@@ -30,7 +30,7 @@ private:
     bool stalemate{ false };
     bool checkmate{ false };
 
-    std::shared_ptr<IBoardDrawer> _drawer;
+    std::shared_ptr<const IBoardDrawer> _drawer;
     std::shared_ptr<IInputHandler> _input;
 
     void mainLoop(Player* moves, Player* notMoves);
