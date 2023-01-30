@@ -9,8 +9,8 @@ set(SOURCES
     FileDrawer.hpp
     InputHandler.cpp
     InputHandler.hpp
-    Launcher.cpp
-    Launcher.hpp
+    Client.cpp
+    Client.hpp
     main.cpp
 )
 

@@ -4,7 +4,7 @@ set(SOURCES
     IBoardDrawer.hpp
     IInputHandler.hpp
     IDrawer.hpp
-    ILauncher.hpp
+    IClient.hpp
 )
 
 add_library(${TARGET} INTERFACE ${SOURCES})

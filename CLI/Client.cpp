@@ -1,7 +1,7 @@
-#include "Launcher.hpp"
+#include "CLient.hpp"
 #include <iostream>
 
-Launcher::err_code Launcher::launch()
+Client::err_code Client::launch()
 {
     try
     {
@@ -15,7 +15,7 @@ Launcher::err_code Launcher::launch()
     return err_code::ok;
 }
 
-void Launcher::startMenu()
+void Client::startMenu()
 {
     char choice;
     while (true)
@@ -40,7 +40,7 @@ void Launcher::startMenu()
     }
 }
 
-void Launcher::play()
+void Client::play()
 {
     _gp = std::make_unique<Chess::Gameplay>(_dr->getBoardDrawer(), std::make_shared<InputHandler>());   
     try

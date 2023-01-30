@@ -1,10 +1,10 @@
 #include <iostream>
-#include <ILauncher.hpp>
-#include "Launcher.hpp"
+#include <IClient.hpp>
+#include "CLient.hpp"
 
 int main()
 {
-    std::unique_ptr<ILauncher> l = std::make_unique<Launcher>();
+    std::unique_ptr<IClient> l = std::make_unique<Client>();
     
     if (auto code = l->launch(); bool(code))
     {

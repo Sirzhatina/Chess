@@ -7,9 +7,9 @@
 #include "Drawer.hpp"
 #include "InputHandler.hpp"
 #include <IDrawer.hpp>
-#include <ILauncher.hpp>
+#include <IClient.hpp>
 
-class Launcher : public ILauncher
+class Client : public IClient
 {
 private:
     std::unique_ptr<Chess::Gameplay> _gp;
@@ -18,7 +18,7 @@ private:
     void play();
 
 public:
-    Launcher(): ILauncher(std::make_shared<Drawer>()) {}
+    Client(): IClient(std::make_shared<Drawer>()) {}
     
     err_code launch() override;
 };
