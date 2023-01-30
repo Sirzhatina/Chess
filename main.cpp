@@ -12,13 +12,4 @@ int main()
         return int(code);
     }
     return 0;
-    // Game_basics launcher;
-    // try
-    // {
-    //     return launcher.run();
-    // }
-    // catch(const std::exception& e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
 }

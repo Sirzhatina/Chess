@@ -9,6 +9,8 @@ public:
         
     virtual ~IInputHandler() = default;
 
+    enum class InputType { move, incorrect, quit };
+
     class ExitCase;
 };
 

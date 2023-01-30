@@ -22,8 +22,6 @@ Gameplay::Winner Gameplay::start()
 
     mainLoop(moves, notMoves);
 
-    _drawer->drawBoard(_board);
-
     return moves->isInCheck() ? (moves->color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
 }
 
@@ -32,12 +30,13 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
     Move m;
     std::optional<const Piece*> kicked;
 
+    _drawer->drawBoard(_board);
+
     while (!checkmate && !stalemate)
     {
-        _drawer->drawBoard(_board);
         try
         {
-            m = _input->getMove();   
+            auto m = _input->getMove();   
         }
         catch(const std::range_error& e)
         {
@@ -74,6 +73,8 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
             stalemate = isStalemate(moves, notMoves);
         }
         std::swap(moves, notMoves);
+
+        _drawer->drawBoard(_board);
     }
 }
 
