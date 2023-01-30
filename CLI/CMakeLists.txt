@@ -11,9 +11,10 @@ set(SOURCES
     InputHandler.hpp
     Launcher.cpp
     Launcher.hpp
+    main.cpp
 )
 
-add_library(${TARGET} ${SOURCES})
+add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} PUBLIC Chess.Core.Core)
 target_link_libraries(${TARGET} PUBLIC Chess.Interfaces)
