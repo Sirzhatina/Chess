@@ -27,6 +27,10 @@ set(SOURCES
     Player.hpp
     Primitives.cpp
     Primitives.hpp
+    Settings.cpp
+    Settings.hpp
+    Timer.cpp
+    Timer.hpp
 )
 
 add_library(${TARGET} STATIC ${SOURCES})
