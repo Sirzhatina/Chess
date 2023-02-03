@@ -1,11 +1,13 @@
 #include "CLient.hpp"
+#include "InputHandler.hpp"
+#include "MatchSettingsIO.hpp"
 #include <iostream>
 
 Client::err_code Client::launch()
 {
     try
     {
-        startMenu();
+        mainMenuLoop();
     }
     catch(const std::exception& e)
     {
@@ -15,7 +17,7 @@ Client::err_code Client::launch()
     return err_code::ok;
 }
 
-void Client::startMenu()
+void Client::mainMenuLoop()
 {
     char choice;
     while (true)
@@ -30,19 +32,45 @@ void Client::startMenu()
             play();
             break;
         case '2':
-            _dr->drawSettingsMenu();
+            settingsMenuLoop();
             break;
-        case '3':
+        case 'q':
             return;
         default:
             continue;
         }
+    }   
+}
+
+void Client::settingsMenuLoop()
+{
+    std::unique_ptr<ISettingsIO> settings;
+    char choice;
+    while (true)
+    {
+        settings.reset();
+        _dr->drawSettingsMenu();
+        std::cin >> choice;
+        while (std::cin.get() != '\n');
+
+        switch (choice)
+        {
+        case 'q':
+            return;
+        case '1':
+            settings = std::make_unique<MatchSettingsIO>();
+        default:
+            continue;
+        }
+        settings->showSettings();
+        settings->inputSettings();
     }
 }
 
+
 void Client::play()
 {
-    _gp = std::make_unique<Chess::Gameplay>(_dr->getBoardDrawer(), std::make_shared<InputHandler>());   
+    _gp = std::make_unique<Chess::Gameplay>(_dr->getBoardDrawer(), std::make_shared<InputHandler>());
     try
     {
         _gp->start();
@@ -53,4 +81,3 @@ void Client::play()
     }
     _gp.reset();
 }
-    

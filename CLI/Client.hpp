@@ -5,7 +5,6 @@
 #include <Core/Gameplay.hpp>
 
 #include "Drawer.hpp"
-#include "InputHandler.hpp"
 #include <IDrawer.hpp>
 #include <IClient.hpp>
 
@@ -14,7 +13,9 @@ class Client : public IClient
 private:
     std::unique_ptr<Chess::Gameplay> _gp;
 
-    void startMenu();
+    void mainMenuLoop();
+    void settingsMenuLoop();
+
     void play();
 
 public:

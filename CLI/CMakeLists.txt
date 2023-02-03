@@ -3,15 +3,17 @@ set(TARGET Chess.CLI)
 set(SOURCES
     BoardDrawer.cpp
     BoardDrawer.hpp
+    Client.cpp
+    Client.hpp
     CLI.hpp
     Drawer.cpp 
     Drawer.hpp
     FileDrawer.hpp
     InputHandler.cpp
     InputHandler.hpp
-    Client.cpp
-    Client.hpp
     main.cpp
+    MatchSettingsIO.cpp
+    MatchSettingsIO.hpp
 )
 
 add_executable(${TARGET} ${SOURCES})

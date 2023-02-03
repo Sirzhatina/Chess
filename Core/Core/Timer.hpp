@@ -10,7 +10,7 @@ public:
     
     template <class Duration>
     static Timer makeTimer(Duration&& d);
-
+    // It's not allowed to launch timer twice until it's finished - in that case, the function returns false; otherwise true
     bool start();
 
     void stop();

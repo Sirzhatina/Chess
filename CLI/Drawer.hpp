@@ -10,8 +10,8 @@ public:
     Drawer() = default;
 
     void drawMainMenu()     const override;
-    void drawSettingsMenu() const override { /* dummy method for being implemented in future */ }
-    void drawPlay()         const override { /* just a placeholder: in the current implementation, drawBoard() is enough */ }
+    void drawSettingsMenu() const override;
+    void drawPlay()         const override { /* just a placeholder: in the current implementation, drawBoard() of boardDrawer is enough */ }
 
     std::shared_ptr<const IBoardDrawer> getBoardDrawer() const override { return boardDrawer_; }
 };

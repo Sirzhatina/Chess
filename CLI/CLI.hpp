@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 
 // entities common among other CLI-entities
 namespace CLI
@@ -11,5 +10,9 @@ namespace CLI
     static constexpr auto clear = "clear";
 #endif
 
-inline void tab() { std::cout << "\t\t"; }
+inline auto tab() { return "\t\t"; }
+
+inline auto dTab() { return "\t\t\t\t"; }
+
+inline auto down() { return "\n\n\n\n\n\n\n\n\n\n"; }
 }

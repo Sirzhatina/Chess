@@ -40,13 +40,11 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
         }
         catch(const std::range_error& e)
         {
-            std::cout << "Incorrect input: " << e.what() << '\n';
             continue;
         }
         
         if (!moves->isValidMove(m))
         {
-            std::cout << "Not your square!" << std::endl;
             continue;
         }
         moves->setCheck(false);
