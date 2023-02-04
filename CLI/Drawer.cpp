@@ -30,8 +30,10 @@ void Drawer::drawSettingsMenu() const
 {
 
     system(CLI::clear);
-    CLI::down();
-    CLI::dTab(); std::cout << "[SETTINGS]\n";
-    CLI::dTab(); std::cout << "1 - Match\n";
-    CLI::dTab(); std::cout << "q - Back to main menu\n";
+    std::cout
+        << CLI::down()
+        << CLI::dTab() << "[SETTINGS]\n"
+        << CLI::dTab() << "1 - Match\n"
+        << CLI::dTab() << "q - Back to main menu\n"
+        << CLI::dTab() << "Input: ";
 }

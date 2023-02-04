@@ -80,7 +80,7 @@ void Timer<DurationUnits>::wait()
     if (!m_expired)
     {
         auto rem_t = remainingImpl();
-        std::this_thread::sleep_for(m_duration <= rem_t ? {0} : rem_t);
+        std::this_thread::sleep_for(m_duration <= rem_t ? 0 : rem_t);
         m_expired = true;
     }
 }
@@ -94,7 +94,7 @@ std::chrono::duration<DurationUnits> Timer<DurationUnits>::remainingTime()
         
         m_expired = m_duration <= rem_t;
 
-        return m_expired ? {0} : rem_t;
+        return m_expired ? 0 : rem_t;
     }
-    return {0};
+    return 0;
 }

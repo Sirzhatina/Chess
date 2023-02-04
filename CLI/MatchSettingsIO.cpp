@@ -12,8 +12,8 @@ std::pair<std::string, std::string> MatchSettingsIO::parseInput(std::string inpu
         {
             return {setting, input.substr(input.find_first_of(' ') + 1)};
         }
-        return {};
     }
+    return {};
 }
 
 void MatchSettingsIO::showSettings() const
@@ -31,9 +31,9 @@ void MatchSettingsIO::showSettings() const
     std::cout << CLI::down() << CLI::dTab() << "[MATCH SETTINGS]\n";
     for (const auto& [key, value] : settingsPatterns)
     {
-        std::cout << CLI::dTab() << CLI::tab() << key << ':' << convertSetting(key) << '\n';
+        std::cout << CLI::dTab() << CLI::tab() << key << ": " << convertSetting(key) << '\n';
     }
-    std::cout << CLI::dTab() << "\nInput: ";
+    std::cout << CLI::dTab() << "Input: ";
 }
 
 void MatchSettingsIO::inputSettings() const
@@ -42,14 +42,14 @@ void MatchSettingsIO::inputSettings() const
     {
         if (setting == "Time")
         {
-            Settings::instance().m_mSettings.tm = Settings::Match::Time(int(std::stoi(value)));
+            Settings::instance().m_mSettings.tm = Settings::Match::Time(std::stoi(value));
         }
     };
 
     std::string result;
     std::getline(std::cin, result);
 
-    if (auto parsed = parseInput(std::move(result)); parsed != std::pair<std::string, std::string>())
+    if (auto parsed = parseInput(std::move(result)); parsed != std::pair<std::string, std::string>{})
     {
         assignSetting(parsed.first, parsed.second);
     }

@@ -55,10 +55,11 @@ void Client::settingsMenuLoop()
 
         switch (choice)
         {
-        case 'q':
-            return;
         case '1':
             settings = std::make_unique<MatchSettingsIO>();
+            break;
+        case 'q':
+            return;
         default:
             continue;
         }
