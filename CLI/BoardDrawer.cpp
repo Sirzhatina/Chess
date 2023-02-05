@@ -2,6 +2,7 @@
 #include "CLI.hpp"
 #include "BoardDrawer.hpp"
 #include <Core/Player.hpp>
+#include <Core/Settings.hpp>
 
 void BoardDrawer::drawBoard(std::shared_ptr<const Chess::Board> b) const
 {
@@ -57,22 +58,20 @@ void BoardDrawer::drawBoard(std::shared_ptr<const Chess::Board> b) const
         cout << " *";
     };
 
-    cout 
-        << CLI::down() 
-        << CLI::tab() 
-        << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
+    cout << CLI::down
+         << CLI::tab 
+         << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
 
     using namespace Chess;
     for (int i = Chess::boardSize - 1; i >= 0; i--)
     {
         // how one line looks
-        cout << CLI::tab(); drawLine(Vertical(i)); 
-        cout << CLI::tab(); drawLine(Vertical(boardSize - 1 - i), true); 
+        cout << CLI::tab; drawLine(Vertical(i)); 
+        cout << CLI::tab; drawLine(Vertical(boardSize - 1 - i), true); 
         cout << '\n';
     }
-    cout << CLI::tab() << "*     a   b   c   d   e   f   g   h   *\t\t*     h   g   f   e   d   c   b   a   *\n";
-
-    cout << CLI::tab() << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
+    cout << CLI::tab << "*     a   b   c   d   e   f   g   h   *\t\t*     h   g   f   e   d   c   b   a   *\n"
+         << CLI::tab << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
 }
 
 /*

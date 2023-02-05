@@ -6,12 +6,14 @@
 class Drawer : public IDrawer
 {
     std::shared_ptr<const BoardDrawer> boardDrawer_{new BoardDrawer{}};
+
+    void drawBoard(const Chess::Board& board) const override;
+
+    void showRemainingTime(const Chess::Match& m) const;
 public:
     Drawer() = default;
 
     void drawMainMenu()     const override;
     void drawSettingsMenu() const override;
-    void drawPlay()         const override { /* just a placeholder: in the current implementation, drawBoard() of boardDrawer is enough */ }
-
-    std::shared_ptr<const IBoardDrawer> getBoardDrawer() const override { return boardDrawer_; }
+    void drawPlay(const Chess::Match& match) const override;
 };

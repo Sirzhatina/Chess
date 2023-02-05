@@ -8,17 +8,30 @@
 namespace Chess
 {
 
-Gameplay::Gameplay(std::shared_ptr<const IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): _drawer(drawer), _input(input)
+Gameplay::Gameplay(std::shared_ptr<const IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): m_drawer(drawer), m_input(input)
 {
-    _board = std::make_shared<Board>();
-    _white = std::make_unique<Player>(_board.get(), Color::WHITE);
-    _black = std::make_unique<Player>(_board.get(), Color::BLACK);
+    m_board = std::make_shared<Board>();
+    m_white.m_player = std::make_unique<Player>(m_board.get(), Color::WHITE);
+    m_black.m_player = std::make_unique<Player>(m_board.get(), Color::BLACK);
+
+    if (Settings::instance().m_mSettings.tm != Settings::Match::Time::no_time)
+    {
+        auto mins = std::chrono::minutes(int(Settings::instance().m_mSettings.tm));
+
+        m_white.m_remainingTime = Timer<std::chrono::seconds>::makeTimer(mins);
+        m_black.m_remainingTime = Timer<std::chrono::seconds>::makeTimer(mins);
+    }
+}
+
+auto Gameplay::remainingTime(Color c) const
+{
+    return (c == Color::WHITE ? m_white : m_black).m_remainingTime->remainingTime();
 }
 
 Gameplay::Winner Gameplay::start()
 {
-    auto moves = _white.get();
-    auto notMoves = _black.get();
+    auto moves = m_white.m_player.get();
+    auto notMoves = m_black.m_player.get();
 
     mainLoop(moves, notMoves);
 
@@ -27,23 +40,16 @@ Gameplay::Winner Gameplay::start()
 
 void Gameplay::mainLoop(Player* moves, Player* notMoves)
 {
-    Move m;
+    std::optional<Move> m;
     std::optional<const Piece*> kicked;
 
-    _drawer->drawBoard(_board);
+    m_drawer->drawBoard(m_board);
 
     while (!checkmate && !stalemate)
     {
-        try
-        {
-            m = _input->getMove();   
-        }
-        catch(const std::range_error& e)
-        {
-            continue;
-        }
+        m = m_input->getMove();
         
-        if (!moves->isValidMove(m))
+        if (!m || !moves->isValidMove(*m))
         {
             continue;
         }
@@ -72,7 +78,7 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
         }
         std::swap(moves, notMoves);
 
-        _drawer->drawBoard(_board);
+        m_drawer->drawBoard(*m_board);
     }
 }
 
@@ -97,13 +103,13 @@ bool Gameplay::isStalemate(Player* moves, Player* notMoves)
         
         for (const auto& p : piecesMovable)
         {
-            _board->setPiece(nullptr, p->coord());
+            m_board->setPiece(nullptr, p->coord());
             if (!moves->isAccessibleSquare(notMoves->kingCoord()))
             {
-                _board->setPiece(p, p->coord());
+                m_board->setPiece(p, p->coord());
                 return false;
             }
-            _board->setPiece(p, p->coord());
+            m_board->setPiece(p, p->coord());
         }
         auto squaresForKing = notMoves->kingsAccessibleSquares();
 

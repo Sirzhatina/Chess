@@ -2,10 +2,12 @@
 
 #include <memory>
 
-class IBoardDrawer;
+namespace Chess { class Match; class Board; }
 
 class IDrawer
 {
+protected:
+    virtual void drawBoard(const Chess::Board& board) const = 0;
 public:
     IDrawer() = default;
 
@@ -13,7 +15,6 @@ public:
 
     virtual void drawMainMenu()     const = 0;
     virtual void drawSettingsMenu() const = 0;
-    virtual void drawPlay()         const = 0;
+    virtual void drawPlay(const Chess::Match& match) const = 0;
 
-    virtual std::shared_ptr<const IBoardDrawer> getBoardDrawer() const = 0;
 };

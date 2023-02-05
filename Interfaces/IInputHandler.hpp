@@ -5,7 +5,7 @@
 class IInputHandler
 {
 public:
-    virtual Chess::Move getMove() const = 0;
+    virtual std::optional<Chess::Move> getMove() const = 0;
         
     virtual ~IInputHandler() = default;
 

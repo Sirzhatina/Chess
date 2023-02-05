@@ -1,13 +1,23 @@
 #pragma once
 
-#include <IBoardDrawer.hpp>
+
+#include <IDrawer.hpp>
 #include <IInputHandler.hpp>
 #include <memory>
 #include "Player.hpp"
+#include "Settings.hpp"
+#include "Timer.hpp"
 
 namespace Chess
 {
 class Board;
+
+struct PlayerAttributes
+{
+    std::unique_ptr<Timer<std::chrono::seconds>> m_remainingTime;
+    std::unique_ptr<Player> m_player;
+};
+
 
 class Gameplay
 {
@@ -15,23 +25,26 @@ public:
     enum class Winner { white, black, stalemate };
     
 public:
-    Gameplay(std::shared_ptr<const IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input);
+    Gameplay(std::shared_ptr<const IDrawer> drawer, std::shared_ptr<IInputHandler> input);
     ~Gameplay() = default;
 
-    std::shared_ptr<const Board> board() const { return _board; }
+    const Board& board() const { return *m_board; }
 
     Winner start();
 
+    auto remainingTime(Color ofPlayer) const;
+
 private:
-    std::shared_ptr<Board>  _board;
-    std::unique_ptr<Player> _white;
-    std::unique_ptr<Player> _black;
+    std::unique_ptr<Board>  m_board;
+    
+    PlayerAttributes m_white;
+    PlayerAttributes m_black;
 
     bool stalemate{ false };
     bool checkmate{ false };
 
-    std::shared_ptr<const IBoardDrawer> _drawer;
-    std::shared_ptr<IInputHandler> _input;
+    std::shared_ptr<const IDrawer> m_drawer;
+    std::shared_ptr<IInputHandler> m_input;
 
     void mainLoop(Player* moves, Player* notMoves);
 

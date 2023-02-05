@@ -12,5 +12,5 @@ class InputHandler : public IInputHandler
 public:
     InputHandler() = default;
 
-    Chess::Move getMove() const override;
+    std::optional<Chess::Move> getMove() const override;
 };
