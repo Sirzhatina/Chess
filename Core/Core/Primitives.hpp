@@ -5,6 +5,7 @@
 
 #include <utility>
 #include <stdexcept>
+#include <optional>
 
 namespace Chess
 {
@@ -19,13 +20,21 @@ struct Coordinates
     Vertical   y;
 
     Coordinates() = default;
-    Coordinates(Horizontal _x, Vertical _y): x(_x), y(_y) { }
-    Coordinates(int _x, int _y)
+    Coordinates(Horizontal x_, Vertical y_): x(x_), y(y_) { }
+
+    static std::optional<Coordinates> makeCoord(int x_, int y_) noexcept
+    {
+        if (x_ < 0 || x_ >= boardSize || y_ < 0 || y_ >= boardSize)
+            return {};
+        return {{Horizontal{x_}, Vertical{y_}}};
+    }
+
+    Coordinates(int x_, int y_)
     { 
-        if (_x < 0 || _x >= boardSize || _y < 0 || _y >= boardSize) 
+        if (x_ < 0 || x_ >= boardSize || y_ < 0 || y_ >= boardSize) 
             throw std::range_error("Coordinates are out of range");
-        x = Horizontal(_x);
-        y = Vertical(_y);
+        x = Horizontal(x_);
+        y = Vertical(y_);
     }
 
     bool tryShift(int x_, int y_)
