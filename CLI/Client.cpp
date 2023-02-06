@@ -80,5 +80,5 @@ void Client::play()
     {
         std::cerr << e.byeMsg() << '\n';
     }
-    _gp.reset();
+    _gp.reset(nullptr);
 }
