@@ -8,7 +8,7 @@
 namespace Chess
 {
 
-Gameplay::Gameplay(std::shared_ptr<const IBoardDrawer> drawer, std::shared_ptr<IInputHandler> input): m_drawer(drawer), m_input(input)
+Gameplay::Gameplay(std::shared_ptr<const IDrawer> drawer, std::shared_ptr<IInputHandler> input): m_drawer(drawer), m_input(input)
 {
     m_board = std::make_shared<Board>();
     m_white.m_player = std::make_unique<Player>(m_board.get(), Color::WHITE);
