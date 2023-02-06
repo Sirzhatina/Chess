@@ -8,14 +8,12 @@ class Timer
 {
 public:
     
-    template <class Duration>
-    Timer(Duration&& d)
-    : m_expired{true}
-    , m_start{std::chrono::system_clock::time_point{}}
-    , m_duration(std::chrono::duration_cast<DurationUnits&&>(d))
-    {
+    Timer() = default;
 
-    }
+    template <class Duration = std::chrono::seconds>
+    Timer(Duration&& d = Duration{0});
+
+    auto& operator=(Timer&& t);
 
     // It's not allowed to launch timer twice until it's finished - in that case, the function returns false; otherwise true
     bool start();
@@ -27,8 +25,6 @@ public:
     DurationUnits remainingTime();
 
 private:
-
-    Timer() = default;
 
     bool m_expired;
     std::chrono::system_clock::time_point   m_start;
@@ -48,6 +44,24 @@ private:
  * ***********************************************************************************************
 */
 
+template <class DurationUnits>
+template <class Duration>
+Timer<DurationUnits>::Timer(Duration&& d)
+: m_expired{true}
+, m_start{std::chrono::system_clock::time_point{}}
+, m_duration(std::chrono::duration_cast<DurationUnits&&>(d))
+{
+
+}
+template <class DurationUnits>
+auto& Timer<DurationUnits>::operator=(Timer&& t)
+{
+    m_expired  = t.m_expired;
+    m_start    = t.m_start;
+    m_duration = t.m_duration;
+
+    return *this;
+}
 
 template <class DurationUnits>
 bool Timer<DurationUnits>::start() 
