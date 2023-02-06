@@ -50,6 +50,11 @@ void Drawer::drawPlay(const Chess::Match& match) const
     drawBoard(match.board());
 }
 
+void Drawer::showRemainingTime(const Chess::Match& match) const
+{
+    std::cout << "SHOW REMAINING TIME IS NOT IMPLEMENTED";
+}
+
 void Drawer::drawBoard(const Chess::Board& b) const
 {
     system(CLI::clear);
