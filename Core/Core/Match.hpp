@@ -16,6 +16,8 @@ struct PlayerAttributes
 {
     Player m_player;
     Timer<std::chrono::seconds> m_remainingTime;
+
+    bool m_isInCheck{false};
 };
 
 

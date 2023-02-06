@@ -35,7 +35,7 @@ Match::Winner Match::start()
 
     mainLoop(moves, notMoves);
 
-    return moves->m_player.isInCheck() ? (moves->m_player.color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
+    return moves->m_isInCheck ? (moves->m_player.color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
 }
 
 void Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
@@ -53,7 +53,7 @@ void Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
         {
             continue;
         }
-        moves->m_player.setCheck(false);
+        moves->m_isInCheck = false;
 
         kicked = moves->m_player.move();
         if (kicked.has_value())
@@ -64,7 +64,7 @@ void Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
         auto checkingPieces = moves->m_player.piecesAccessingSquare(notMoves->m_player.kingCoord());
         if (!checkingPieces.empty())
         {
-            notMoves->m_player.setCheck(true);
+            notMoves->m_isInCheck = true;
             checkmate = !isEscapable(moves, notMoves);
             
             if (checkingPieces.size() == 1 && notMoves->m_player.isAccessibleSquare(checkingPieces[0]->coord()))
