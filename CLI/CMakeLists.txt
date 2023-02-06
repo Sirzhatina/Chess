@@ -1,8 +1,6 @@
 set(TARGET Chess.CLI)
 
 set(SOURCES
-    BoardDrawer.cpp
-    BoardDrawer.hpp
     Client.cpp
     Client.hpp
     CLI.hpp

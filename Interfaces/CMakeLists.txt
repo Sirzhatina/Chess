@@ -1,7 +1,6 @@
 set(TARGET Chess.Interfaces)
 
 set(SOURCES
-    IBoardDrawer.hpp
     IInputHandler.hpp
     IDrawer.hpp
     IClient.hpp

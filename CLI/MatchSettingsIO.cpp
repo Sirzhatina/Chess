@@ -28,12 +28,12 @@ void MatchSettingsIO::showSettings() const
     };
 
     system(CLI::clear);
-    std::cout << CLI::down() << CLI::dTab() << "[MATCH SETTINGS]\n";
+    std::cout << CLI::down << CLI::dTab << "[MATCH SETTINGS]\n";
     for (const auto& [key, value] : settingsPatterns)
     {
-        std::cout << CLI::dTab() << CLI::tab() << key << ": " << convertSetting(key) << '\n';
+        std::cout << CLI::dTab << CLI::tab << key << ": " << convertSetting(key) << '\n';
     }
-    std::cout << CLI::dTab() << "Input: ";
+    std::cout << CLI::dTab << "Input: ";
 }
 
 void MatchSettingsIO::inputSettings() const

@@ -27,8 +27,8 @@ public:
 private:
 
     bool m_expired;
-    std::chrono::system_clock::time_point   m_start;
-    std::chrono::duration<DurationUnits>    m_duration;
+    std::chrono::system_clock::time_point m_start;
+    DurationUnits                         m_duration;
 
     std::mutex m_mtx;
 
@@ -49,7 +49,7 @@ template <class Duration>
 Timer<DurationUnits>::Timer(Duration&& d)
 : m_expired{true}
 , m_start{std::chrono::system_clock::time_point{}}
-, m_duration(std::chrono::duration_cast<DurationUnits&&>(d))
+, m_duration{std::chrono::duration_cast<DurationUnits>(std::forward<Duration&&>(d))}
 {
 
 }
