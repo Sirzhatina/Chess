@@ -10,35 +10,35 @@ namespace Chess
 
 Gameplay::Gameplay(std::shared_ptr<const IDrawer> drawer, std::shared_ptr<IInputHandler> input): m_drawer(drawer), m_input(input)
 {
-    m_board = std::make_shared<Board>();
-    m_white.m_player = std::make_unique<Player>(m_board.get(), Color::WHITE);
-    m_black.m_player = std::make_unique<Player>(m_board.get(), Color::BLACK);
+    m_board = std::make_unique<Board>();
+    m_white = std::make_unique<PlayerAttributes>(Player{m_board.get(), Color::WHITE});
+    m_black = std::make_unique<PlayerAttributes>(Player{m_board.get(), Color::BLACK});
 
     if (Settings::instance().m_mSettings.tm != Settings::Match::Time::no_time)
     {
         auto mins = std::chrono::minutes(int(Settings::instance().m_mSettings.tm));
 
-        m_white.m_remainingTime = Timer<std::chrono::seconds>::makeTimer(mins);
-        m_black.m_remainingTime = Timer<std::chrono::seconds>::makeTimer(mins);
+        m_white->m_remainingTime = Timer<std::chrono::seconds>(mins);
+        m_black->m_remainingTime = Timer<std::chrono::seconds>(mins);
     }
 }
 
 auto Gameplay::remainingTime(Color c) const
 {
-    return (c == Color::WHITE ? m_white : m_black).m_remainingTime->remainingTime();
+    return (c == Color::WHITE ? m_white : m_black)->m_remainingTime.remainingTime();
 }
 
 Gameplay::Winner Gameplay::start()
 {
-    auto moves = m_white.m_player.get();
-    auto notMoves = m_black.m_player.get();
+    auto moves = m_white.get();
+    auto notMoves = m_black.get();
 
     mainLoop(moves, notMoves);
 
-    return moves->isInCheck() ? (moves->color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
+    return moves->m_player.isInCheck() ? (moves->m_player.color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
 }
 
-void Gameplay::mainLoop(Player* moves, Player* notMoves)
+void Gameplay::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
 {
     std::optional<Move> m;
     std::optional<const Piece*> kicked;
@@ -49,25 +49,25 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
     {
         m = m_input->getMove();
         
-        if (!m || !moves->isValidMove(*m))
+        if (!m || !moves->m_player.isValidMove(*m))
         {
             continue;
         }
-        moves->setCheck(false);
+        moves->m_player.setCheck(false);
 
-        kicked = moves->move();
+        kicked = moves->m_player.move();
         if (kicked.has_value())
         {
-            notMoves->removePiece(kicked.value());
+            notMoves->m_player.removePiece(kicked.value());
         }
 
-        auto checkingPieces = moves->piecesAccessingSquare(notMoves->kingCoord());
+        auto checkingPieces = moves->m_player.piecesAccessingSquare(notMoves->m_player.kingCoord());
         if (!checkingPieces.empty())
         {
-            notMoves->setCheck(true);
+            notMoves->m_player.setCheck(true);
             checkmate = !isEscapable(moves, notMoves);
             
-            if (checkingPieces.size() == 1 && notMoves->isAccessibleSquare(checkingPieces[0]->coord()))
+            if (checkingPieces.size() == 1 && notMoves->m_player.isAccessibleSquare(checkingPieces[0]->coord()))
             {
                 checkmate = false;
             }
@@ -82,12 +82,12 @@ void Gameplay::mainLoop(Player* moves, Player* notMoves)
     }
 }
 
-bool Gameplay::isEscapable(Player* moves, Player* notMoves)
+bool Gameplay::isEscapable(PlayerAttributes* moves, PlayerAttributes* notMoves)
 {
-    auto escape = notMoves->kingsAccessibleSquares();
+    auto escape = notMoves->m_player.kingsAccessibleSquares();
     for (auto sqr : escape)
     {
-        if (!moves->isAccessibleSquare(sqr))
+        if (!moves->m_player.isAccessibleSquare(sqr))
         {
             return true;
         }
@@ -95,27 +95,27 @@ bool Gameplay::isEscapable(Player* moves, Player* notMoves)
     return false;
 }
 
-bool Gameplay::isStalemate(Player* moves, Player* notMoves)
+bool Gameplay::isStalemate(PlayerAttributes* moves, PlayerAttributes* notMoves)
 {
-    if (notMoves->isAbleToMove() || notMoves->isMovableKing())
+    if (notMoves->m_player.isAbleToMove() || notMoves->m_player.isMovableKing())
     {
-        auto piecesMovable = notMoves->piecesAbleToMove();
+        auto piecesMovable = notMoves->m_player.piecesAbleToMove();
         
         for (const auto& p : piecesMovable)
         {
             m_board->setPiece(nullptr, p->coord());
-            if (!moves->isAccessibleSquare(notMoves->kingCoord()))
+            if (!moves->m_player.isAccessibleSquare(notMoves->m_player.kingCoord()))
             {
                 m_board->setPiece(p, p->coord());
                 return false;
             }
             m_board->setPiece(p, p->coord());
         }
-        auto squaresForKing = notMoves->kingsAccessibleSquares();
+        auto squaresForKing = notMoves->m_player.kingsAccessibleSquares();
 
         for (auto sqr : squaresForKing)
         {
-            if (!moves->isAccessibleSquare(sqr))
+            if (!moves->m_player.isAccessibleSquare(sqr))
             {
                 return false;;
             }

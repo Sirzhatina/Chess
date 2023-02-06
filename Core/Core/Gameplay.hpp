@@ -14,8 +14,8 @@ class Board;
 
 struct PlayerAttributes
 {
-    std::unique_ptr<Timer<std::chrono::seconds>> m_remainingTime;
-    std::unique_ptr<Player> m_player;
+    Player m_player;
+    Timer<std::chrono::seconds> m_remainingTime;
 };
 
 
@@ -37,8 +37,8 @@ public:
 private:
     std::unique_ptr<Board>  m_board;
     
-    PlayerAttributes m_white;
-    PlayerAttributes m_black;
+    std::unique_ptr<PlayerAttributes> m_white;
+    std::unique_ptr<PlayerAttributes> m_black;
 
     bool stalemate{ false };
     bool checkmate{ false };
@@ -46,9 +46,9 @@ private:
     std::shared_ptr<const IDrawer> m_drawer;
     std::shared_ptr<IInputHandler> m_input;
 
-    void mainLoop(Player* moves, Player* notMoves);
+    void mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves);
 
-    bool isStalemate(Player* moves, Player* notMoves);
-    bool isEscapable(Player* moves, Player* notMoves);
+    bool isStalemate(PlayerAttributes* moves, PlayerAttributes* notMoves);
+    bool isEscapable(PlayerAttributes* moves, PlayerAttributes* notMoves);
 };
 } // ends namespace Chess
