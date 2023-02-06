@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <Core/Gameplay.hpp>
+#include <Core/Match.hpp>
 
 #include "Drawer.hpp"
 #include <IDrawer.hpp>
@@ -11,7 +11,7 @@
 class Client : public IClient
 {
 private:
-    std::unique_ptr<Chess::Gameplay> _gp;
+    std::unique_ptr<Chess::Match> _gp;
 
     void mainMenuLoop();
     void settingsMenuLoop();

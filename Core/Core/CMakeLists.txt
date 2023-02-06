@@ -21,8 +21,8 @@ set(SOURCES
     ${PIECES}
     Board.cpp
     Board.hpp
-    Gameplay.cpp
-    Gameplay.hpp
+    Match.cpp
+    Match.hpp
     Player.cpp
     Player.hpp
     Primitives.cpp

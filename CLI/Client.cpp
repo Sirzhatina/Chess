@@ -71,7 +71,7 @@ void Client::settingsMenuLoop()
 
 void Client::play()
 {
-    _gp = std::make_unique<Chess::Gameplay>(_dr->getBoardDrawer(), std::make_shared<InputHandler>());
+    _gp = std::make_unique<Chess::Match>(_dr, std::make_shared<InputHandler>());
     try
     {
         _gp->start();
