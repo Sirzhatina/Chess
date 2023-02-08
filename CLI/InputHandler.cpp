@@ -4,29 +4,34 @@
 #include <string>
 
 
-std::optional<Chess::Move> InputHandler::getMove() const
+std::future<Chess::Move> InputHandler::getMove()
 {
-    std::string coord;
+    auto makeMove = [this]() -> Chess::Move
+    {
+        m_moveRetrieved.store(false);
 
-    std::cout << "Move: ";
-    std::getline(std::cin, coord);
+        std::string inputField;
+        std::optional<Chess::Coordinates> from, to;
 
-    std::optional<Chess::Coordinates> from, to;
-        
-    from = Chess::Coordinates::makeCoord(coord[0] - 'a', coord[1] - '1');
-    to   = Chess::Coordinates::makeCoord(coord[3] - 'a', coord[4] - '1');
+        do {
+            std::cout << "Move: ";
+            std::getline(std::cin, inputField);
     
-    if (coord == quitCommand && wantToQuit())
-    {
-        throw ExitCase{"Do svidanya, spasibo, prihodite eshche"};
-    }
+            from = Chess::Coordinates::makeCoord(inputField[0] - 'a', inputField[1] - '1');
+            to   = Chess::Coordinates::makeCoord(inputField[3] - 'a', inputField[4] - '1');
 
-    if (!from || !to)
-    {
-        return {};
-    }
+            if (inputField == quitCommand && wantToQuit())
+            {
+                throw ExitCase{"Do svidanya, spasibo, prihodite eshche"};
+            }
+        } while (!from || !to);
 
-    return {{*from, *to}};
+        m_moveRetrieved.store(true);
+
+        return {*from, *to};
+    };
+
+    return std::async(std::launch::async, std::move(makeMove));
 }
 
 bool InputHandler::wantToQuit() const 

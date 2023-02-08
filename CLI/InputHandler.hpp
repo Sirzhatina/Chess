@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <IInputHandler.hpp>
 #include <Core/Primitives.hpp>
 
@@ -12,5 +11,5 @@ class InputHandler : public IInputHandler
 public:
     InputHandler() = default;
 
-    std::optional<Chess::Move> getMove() const override;
+    std::future<Chess::Move> getMove() override;
 };

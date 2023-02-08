@@ -1,15 +1,20 @@
 #pragma once
 
 #include <Core/Primitives.hpp>
+#include <future>
+#include <atomic>
 
 class IInputHandler
 {
+protected:
+    std::atomic<bool> m_moveRetrieved{false};
+
 public:
-    virtual std::optional<Chess::Move> getMove() const = 0;
+    virtual std::future<Chess::Move> getMove() = 0;
+
+    bool isMoveRetrieved() const { return m_moveRetrieved.load(); }
         
     virtual ~IInputHandler() = default;
-
-    enum class InputType { move, incorrect, quit };
 
     class ExitCase;
 };
