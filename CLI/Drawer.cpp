@@ -41,7 +41,7 @@ void Drawer::drawSettingsMenu() const
 void Drawer::drawPlay(const Chess::Match& match) const
 {
     system(CLI::clear);
-    std::cout << CLI::down << CLI::tab;
+    std::cout << CLI::down;
 
     if (Settings::instance().m_mSettings.tm != Settings::Match::Time::no_time)
     {
@@ -52,12 +52,11 @@ void Drawer::drawPlay(const Chess::Match& match) const
 
 void Drawer::showRemainingTime(const Chess::Match& match) const
 {
-    std::cout << "SHOW REMAINING TIME IS NOT IMPLEMENTED";
+    std::cout << CLI::tab << "SHOW REMAINING TIME IS NOT IMPLEMENTED\n";
 }
 
 void Drawer::drawBoard(const Chess::Board& b) const
 {
-    system(CLI::clear);
     using std::cout;
 
     auto getPieceKind = [](const Chess::Piece* p)

@@ -79,6 +79,7 @@ void Client::play()
     catch(const IInputHandler::ExitCase& e)
     {
         std::cerr << e.byeMsg() << '\n';
+        std::cin.get();
     }
     _gp.reset(nullptr);
 }
