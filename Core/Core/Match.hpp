@@ -15,7 +15,7 @@ class Board;
 struct PlayerAttributes
 {
     Player m_player;
-    Timer<std::chrono::seconds> m_remainingTime;
+    Timer<std::chrono::seconds> m_timer;
 
     bool m_isInCheck{false};
 };
@@ -44,11 +44,18 @@ private:
 
     bool stalemate{ false };
     bool checkmate{ false };
+    bool expired{false};
+
+    Settings::Match m_matchAlias{Settings::instance().m_mSettings};
 
     std::shared_ptr<const IDrawer> m_drawer;
     std::shared_ptr<IInputHandler> m_input;
 
+    void waitForInput(std::future<Move>& f, auto& timer);
+
     void mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves);
+
+    void completeMove(PlayerAttributes* moves, PlayerAttributes* notMoves);
 
     bool isStalemate(PlayerAttributes* moves, PlayerAttributes* notMoves);
     bool isEscapable(PlayerAttributes* moves, PlayerAttributes* notMoves);
