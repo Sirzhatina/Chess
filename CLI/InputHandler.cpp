@@ -8,7 +8,7 @@ std::future<Chess::Move> InputHandler::getMove()
 {
     auto makeMove = [this]() -> Chess::Move
     {
-        m_moveRetrieved.store(false);
+        AtomicRAII moveRetrieved(this);
 
         std::string inputField;
         std::optional<Chess::Coordinates> from, to;
@@ -27,8 +27,6 @@ std::future<Chess::Move> InputHandler::getMove()
             from = Chess::Coordinates::makeCoord(inputField[0] - 'a', inputField[1] - '1');
             to   = Chess::Coordinates::makeCoord(inputField[3] - 'a', inputField[4] - '1');
         }
-
-        m_moveRetrieved.store(true);
 
         return {*from, *to};
     };

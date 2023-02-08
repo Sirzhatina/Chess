@@ -9,6 +9,14 @@ class IInputHandler
 protected:
     std::atomic<bool> m_moveRetrieved{false};
 
+    class AtomicRAII
+    {
+        IInputHandler* m_withAtomic;
+    public:
+        AtomicRAII(IInputHandler* withAtomic): m_withAtomic(withAtomic) { m_withAtomic->m_moveRetrieved.store(false); }
+        ~AtomicRAII() { m_withAtomic->m_moveRetrieved.store(true); }
+    };
+
 public:
     virtual std::future<Chess::Move> getMove() = 0;
 
