@@ -13,18 +13,20 @@ std::future<Chess::Move> InputHandler::getMove()
         std::string inputField;
         std::optional<Chess::Coordinates> from, to;
 
-        do {
+        while (!from || !to)
+        {
             std::cout << "Move: ";
             std::getline(std::cin, inputField);
-    
-            from = Chess::Coordinates::makeCoord(inputField[0] - 'a', inputField[1] - '1');
-            to   = Chess::Coordinates::makeCoord(inputField[3] - 'a', inputField[4] - '1');
 
             if (inputField == quitCommand && wantToQuit())
             {
                 throw ExitCase{"Do svidanya, spasibo, prihodite eshche"};
             }
-        } while (!from || !to);
+            if (inputField.size() != 5) continue; // 5 is the size of a string with correct move
+            
+            from = Chess::Coordinates::makeCoord(inputField[0] - 'a', inputField[1] - '1');
+            to   = Chess::Coordinates::makeCoord(inputField[3] - 'a', inputField[4] - '1');
+        }
 
         m_moveRetrieved.store(true);
 
