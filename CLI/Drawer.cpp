@@ -52,7 +52,16 @@ void Drawer::drawPlay(const Chess::Match& match) const
 
 void Drawer::showRemainingTime(const Chess::Match& match) const
 {
-    std::cout << CLI::tab << "SHOW REMAINING TIME IS NOT IMPLEMENTED\n";
+    auto tm = [](const Chess::Match& match, Chess::Color c)
+    {
+        return  std::to_string(match.remainingTime(c).count() / 60) + ':' + 
+                std::to_string(match.remainingTime(c).count() % 60);
+    };
+
+    std::cout << CLI::tab << std::setw(5) << tm(match, Chess::Color::WHITE);
+    std::cout << "                                      ";
+    std::cout << std::setw(5) << tm(match, Chess::Color::BLACK) << '\n';
+
 }
 
 void Drawer::drawBoard(const Chess::Board& b) const
