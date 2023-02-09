@@ -252,7 +252,7 @@ void Player::removePiece(const Piece* p)
         {
             if (p == piece.get())
             {
-                piece.release();
+                piece.reset(nullptr);
                 return;
             }
         }

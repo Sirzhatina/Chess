@@ -21,16 +21,20 @@ set(SOURCES
     ${PIECES}
     Board.cpp
     Board.hpp
-    Gameplay.cpp
-    Gameplay.hpp
-    IBoardDrawer.hpp
-    IInputHandler.hpp
+    Match.cpp
+    Match.hpp
     Player.cpp
     Player.hpp
     Primitives.cpp
     Primitives.hpp
+    Settings.cpp
+    Settings.hpp
+    Timer.cpp
+    Timer.hpp
 )
 
 add_library(${TARGET} STATIC ${SOURCES})
+
+target_link_libraries(${TARGET} PUBLIC Chess.Interfaces)
 
 target_include_directories(${TARGET} INTERFACE ${CMAKE_SOURCE_DIR}/Core)

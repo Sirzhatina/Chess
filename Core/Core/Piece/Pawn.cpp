@@ -19,7 +19,7 @@ bool Pawn::isPossibleMove(Coordinates to) const
 
     auto isValidRoute = [this, to](int direction)
     {
-        bool correctDirection = player()->color() == Color::WHITE ? direction > 0 : direction < 0;
+        bool correctDirection = (player()->color() == Color::WHITE ? direction > 0 : direction < 0);
         bool clearSquare      = player()->board()->getPiece(to) == nullptr;
         bool correctStep      = std::abs(direction) <= (isFirstMove() ? 2 : 1);
 

@@ -2,22 +2,36 @@
 
 #include <iostream>
 #include <string>
+#include "CLI.hpp"
 
-
-Chess::Move InputHandler::getMove() const
+std::future<Chess::Move> InputHandler::getMove()
 {
-    std::string coord;
-
-    std::cout << "Move: ";
-    std::getline(std::cin, coord);
-    
-    if (coord == quitCommand && wantToQuit())
+    auto makeMove = [this]() -> Chess::Move
     {
-        throw ExitCase{"Do svidanya, spasibo, prihodite eshche"};
-    }
+        AtomicRAII moveRetrieved(this);
 
-    Chess::Move result{ {coord[0] - 'a', coord[1] - '1'}, {coord[3] - 'a', coord[4] - '1'} };
-    return result;
+        std::string inputField;
+        std::optional<Chess::Coordinates> from, to;
+
+        while (!from || !to)
+        {
+            std::cout << CLI::tab << "Move: ";
+            std::getline(std::cin, inputField);
+
+            if (inputField == quitCommand && wantToQuit())
+            {
+                throw ExitCase{"Do svidanya, spasibo, prihodite eshche"};
+            }
+            if (inputField.size() != 5) continue; // 5 is the size of a string with correct move
+            
+            from = Chess::Coordinates::makeCoord(inputField[0] - 'a', inputField[1] - '1');
+            to   = Chess::Coordinates::makeCoord(inputField[3] - 'a', inputField[4] - '1');
+        }
+
+        return {*from, *to};
+    };
+
+    return std::async(std::launch::async, std::move(makeMove));
 }
 
 bool InputHandler::wantToQuit() const 
@@ -29,42 +43,3 @@ bool InputHandler::wantToQuit() const
 
     return choice == 'y';
 }
-
-// void GameplayHandler::drawBoard(std::shared_ptr<const Chess::Board> b) const
-// {
-// /*
-//  *    * * * * * * * * * * * * * * * * * * * *   * * * * * * * * * * * * * * * * * * * *
-//  *    * 8 | r |_b_| n |_q_| k |_n_| b |_r_| *   * 1 | R |_B_| N |_K_| Q |_N_| B |_R_| *
-//  *    * 7 |_p_| p |_p_| p |_p_| p |_p_| p | *   * 2 |_P_| P |_P_| P |_P_|   |_P_| P | *
-//  *    * 6 |   |_ _|   |_ _|   |_ _|   |_ _| *   * 3 |   |_ _|   |_ _|   |_ _|   |_ _| *
-//  *    * 5 |_ _|   |_ _|   |_ _|   |_ _|   | *   * 4 |_ _|   |_ _|   |_ _| P |_ _|   | *
-//  *    * 4 |   |_ _| P |_ _|   |_ _|   |_ _| *   * 5 |   |_ _|   |_ _|   |_ _|   |_ _| *
-//  *    * 3 |_ _|   |_ _|   |_ _|   |_ _|   | *   * 6 |_ _|   |_ _|   |_ _|   |_ _|   | *
-//  *    * 2 | P |_P_|   |_P_| P |_P_| P |_P_| *   * 7 | p |_p_| p |_p_| p |_p_| p |_p_| *
-//  *    * 1 |_R_| B |_N_| Q |_K_| N |_B_| R | *   * 8 |_r_| b |_n_| k |_q_| n |_b_| r | *
-//  *    *     a   b   c   d   e   f   g   h   *   *     h   g   f   e   d   c   b   a   *
-//  *    * * * * * * * * * * * * * * * * * * * *   * * * * * * * * * * * * * * * * * * * *
-//  * */
-
-//     auto drawSquare = [](bool whiteSquare, char piece = ' ')
-//     {
-//         char kek = whiteSquare ? '_' : ' ';
-//         std::cout << kek << piece << kek << '|';
-//     };
-
-//     auto drawLine = [](Chess::Vertical l, bool reversed = false)
-//     {
-//         std::cout << "* " << int(l) + 1 << " |";
-
-//         for (int i = 0; i < Chess::boardSize; i++)
-//         {
-
-//         }
-//     };
-
-//     tab(); std::cout << "* * * * * * * * * * * * * * * * * * * *  \t* * * * * * * * * * * * * * * * * * * *\n";
-
-
-//     tab(); std::cout << "* * * * * * * * * * * * * * * * * * * *  \t* * * * * * * * * * * * * * * * * * * *\n";
-
-// }

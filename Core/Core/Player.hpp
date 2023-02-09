@@ -32,10 +32,8 @@ public:
 
     void removePiece(const Piece* p);
 
-    void setCheck(bool ch) { _inCheck = ch; }
 
     Coordinates kingCoord() const { return _king->coord(); }
-    bool        isInCheck() const { return _inCheck; }
     Color       color()     const { return _color; }
     Board*      board()     const { return _board; }
 
@@ -43,7 +41,6 @@ private:
     static constexpr auto pawns = 8;
     static constexpr auto allPiecesExceptKing = 15;
 
-    bool         _inCheck{ false };
     Board*       _board;
     const Color  _color;
     bool         _isCastled{ false };

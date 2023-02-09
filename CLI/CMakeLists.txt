@@ -1,17 +1,20 @@
 set(TARGET Chess.CLI)
 
-set(SOURCES 
+set(SOURCES
+    Client.cpp
+    Client.hpp
+    CLI.hpp
     Drawer.cpp 
     Drawer.hpp
     FileDrawer.hpp
     InputHandler.cpp
     InputHandler.hpp
-    IDrawer.hpp
-    ILauncher.hpp
-    Launcher.cpp
-    Launcher.hpp
+    main.cpp
+    MatchSettingsIO.cpp
+    MatchSettingsIO.hpp
 )
 
-add_library(${TARGET} ${SOURCES})
+add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} PUBLIC Chess.Core.Core)
+target_link_libraries(${TARGET} PUBLIC Chess.Interfaces)

@@ -1,25 +1,16 @@
 #pragma once
 
-#include <iostream>
-
-#include "IDrawer.hpp"
+#include <IDrawer.hpp>
 
 class Drawer : public IDrawer
 {
-#ifdef _WIN32
-    static constexpr auto clear = "cls";
-#else
-    static constexpr auto clear = "clear";
-#endif
+    void drawBoard(const Chess::Board& board) const override;
 
-    void tab() const { std::cout << "\t\t"; }
-
+    void showRemainingTime(const Chess::Match& m) const;
 public:
     Drawer() = default;
 
     void drawMainMenu()     const override;
-    void drawSettingsMenu() const override { /* dummy method for being implemented in future */ }
-    void drawPlay()         const override { /* just a placeholder: in the current implementation, drawBoard() is enough */ }
-    
-    void drawBoard(std::shared_ptr<const Chess::Board> b) const override;
+    void drawSettingsMenu() const override;
+    void drawPlay(const Chess::Match& match) const override;
 };

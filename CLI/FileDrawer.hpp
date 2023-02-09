@@ -4,7 +4,7 @@
 
 #include "Drawer.hpp"
 
-// can be useful for action tracking during playing or logging
+// can't be useful for action tracking during playing or logging
 class FileDrawer : public Drawer
 {
     std::ofstream _drawOutput;

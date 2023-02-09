@@ -1,31 +1,72 @@
+#include <iostream>
+#include "CLI.hpp"
 #include "Drawer.hpp"
-#include <cstdlib>
-#include "InputHandler.hpp"
 #include <Core/Player.hpp>
+#include <Core/Settings.hpp>
+#include <Core/Match.hpp>
 
 void Drawer::drawMainMenu() const
 {
-    system(clear);
+    system(CLI::clear);
+    using std::cout;
 
-    // 10 positions down from left up corner
-    std::cout << "\n\n\n\n\n\n\n\n\n\n";
+    cout << CLI::down;
 
-    tab(); std::cout << "\t\t* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n";
-    tab(); std::cout << "\t\t*           WELCOME TO THE BEST GAME YOU'VE EVER            *\n";
-    tab(); std::cout << "\t\t*                        EXPERIENCED                        *\n";
-    tab(); std::cout << "\t\t*                                                           *\n";
-    tab(); std::cout << "\t\t*                  Choose the option below                  *\n";
-    tab(); std::cout << "\t\t* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n";
-    std::cout << "\n\n";
-    tab(); std::cout << "\t\t1 - Play.\n";
-    tab(); std::cout << "\t\t2 - Settings (not implemented).\n";
-    tab(); std::cout << "\t\t3 - Quit.\n";
-    tab(); std::cout << "\t\tInput: ";
+    cout 
+        << CLI::dTab << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n"
+        << CLI::dTab << "*           WELCOME TO THE BEST GAME YOU'VE EVER            *\n"
+        << CLI::dTab << "*                        EXPERIENCED                        *\n"
+        << CLI::dTab << "*                                                           *\n"
+        << CLI::dTab << "*                  Choose the option below                  *\n"
+        << CLI::dTab << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n"
+        << "\n\n"
+
+        << CLI::dTab << "1 - Play.\n"
+        << CLI::dTab << "2 - Settings.\n"
+        << CLI::dTab << "q - Quit.\n"
+        << CLI::dTab << "Input: ";
 }
 
-void Drawer::drawBoard(std::shared_ptr<const Chess::Board> b) const
+void Drawer::drawSettingsMenu() const
 {
-    system(clear);
+    system(CLI::clear);
+    std::cout
+        << CLI::down
+        << CLI::dTab << "[SETTINGS]\n"
+        << CLI::dTab << "1 - Match\n"
+        << CLI::dTab << "q - Back to main menu\n"
+        << CLI::dTab << "Input: ";
+}
+
+void Drawer::drawPlay(const Chess::Match& match) const
+{
+    system(CLI::clear);
+    std::cout << CLI::down;
+
+    if (Settings::instance().m_mSettings.tm != Settings::Match::Time::no_time)
+    {
+        showRemainingTime(match);
+    }
+    drawBoard(match.board());
+}
+
+void Drawer::showRemainingTime(const Chess::Match& match) const
+{
+    auto tm = [](const Chess::Match& match, Chess::Color c)
+    {
+        return  std::to_string(match.remainingTime(c).count() / 60) + ':' + 
+                std::to_string(match.remainingTime(c).count() % 60);
+    };
+
+    std::cout << CLI::tab << std::setw(5) << tm(match, Chess::Color::WHITE);
+    std::cout << "                                      ";
+    std::cout << std::setw(5) << tm(match, Chess::Color::BLACK) << '\n';
+
+}
+
+void Drawer::drawBoard(const Chess::Board& b) const
+{
+    using std::cout;
 
     auto getPieceKind = [](const Chess::Piece* p)
     {
@@ -46,66 +87,46 @@ void Drawer::drawBoard(std::shared_ptr<const Chess::Board> b) const
         else {
             return ' ';
         }
-        if (p->player()->color() == Chess::Color::WHITE) {
-            result = std::toupper(result);
-        }
-        return result;
+        return p->player()->color() == Chess::Color::WHITE ? char(std::toupper(result)) : result;
     };
     
     auto drawSquare = [](bool whiteSquare, char piece = ' ')
     {
         // draws '_P_|' or ' P |'
         char space = whiteSquare ? ' ' : '_';
-        std::cout << space << piece << space << '|';
+        cout << space << piece << space << '|';
     };
 
     auto drawLine = [&](Chess::Vertical l, bool reversed = false)
     {
-        std::cout << "* " << int(l) + 1 << " |";
+        cout << "* " << int(l) + 1 << " |";
         if (!reversed)
         {
             for (int i = 0; i < Chess::boardSize; i++)
             {
-                drawSquare((int(l) + i) % 2, getPieceKind(b->getPiece({i, int(l)})));
+                drawSquare((int(l) + i) % 2, getPieceKind(b.getPiece({i, int(l)})));
             }
         }
         else
         {
             for (int i = Chess::boardSize - 1; i >= 0; i--)
             {
-                drawSquare((int(l) + i) % 2, getPieceKind(b->getPiece({i, int(l)})));
+                drawSquare((int(l) + i) % 2, getPieceKind(b.getPiece({i, int(l)})));
             }
         }
-        std::cout << " *";
+        cout << " *";
     };
 
+    cout << CLI::tab << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
 
-    std::cout << "\n\n\n\n\n\n\n\n\n\n";
-    tab(); std::cout << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
-
-    using std::cout;
     using namespace Chess;
     for (int i = Chess::boardSize - 1; i >= 0; i--)
     {
         // how one line looks
-        tab(); drawLine(Vertical(i)); cout << "\t\t"; drawLine(Vertical(boardSize - 1 - i), true); cout << '\n';
+        cout << CLI::tab; drawLine(Vertical(i)); 
+        cout << CLI::tab; drawLine(Vertical(boardSize - 1 - i), true); 
+        cout << '\n';
     }
-    tab(); std::cout << "*     a   b   c   d   e   f   g   h   *\t\t*     h   g   f   e   d   c   b   a   *\n";
-
-    tab(); std::cout << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
-
+    cout << CLI::tab << "*     a   b   c   d   e   f   g   h   *\t\t*     h   g   f   e   d   c   b   a   *\n"
+         << CLI::tab << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
 }
-
-/*
- *    * * * * * * * * * * * * * * * * * * * *   * * * * * * * * * * * * * * * * * * * *
- *    * 8 | r |_b_| n |_q_| k |_n_| b |_r_| *   * 1 | R |_B_| N |_K_| Q |_N_| B |_R_| *
- *    * 7 |_p_| p |_p_| p |_p_| p |_p_| p | *   * 2 |_P_| P |_P_| P |_P_|   |_P_| P | *
- *    * 6 |   |_ _|   |_ _|   |_ _|   |_ _| *   * 3 |   |_ _|   |_ _|   |_ _|   |_ _| *
- *    * 5 |_ _|   |_ _|   |_ _|   |_ _|   | *   * 4 |_ _|   |_ _|   |_ _| P |_ _|   | *
- *    * 4 |   |_ _| P |_ _|   |_ _|   |_ _| *   * 5 |   |_ _|   |_ _|   |_ _|   |_ _| *
- *    * 3 |_ _|   |_ _|   |_ _|   |_ _|   | *   * 6 |_ _|   |_ _|   |_ _|   |_ _|   | *
- *    * 2 | P |_P_|   |_P_| P |_P_| P |_P_| *   * 7 | p |_p_| p |_p_| p |_p_| p |_p_| *
- *    * 1 |_R_| B |_N_| Q |_K_| N |_B_| R | *   * 8 |_r_| b |_n_| k |_q_| n |_b_| r | *
- *    *     a   b   c   d   e   f   g   h   *   *     h   g   f   e   d   c   b   a   *
- *    * * * * * * * * * * * * * * * * * * * *   * * * * * * * * * * * * * * * * * * * *
- */

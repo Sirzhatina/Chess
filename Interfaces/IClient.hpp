@@ -1,16 +1,14 @@
 #pragma once
 
 #include <memory>
+#include "IDrawer.hpp"
 
-#include <Core/IBoardDrawer.hpp>
-#include <Core/IInputHandler.hpp>
-
-class ILauncher
+class IClient
 {
 public:
     enum class err_code { ok, err };
 
-    ILauncher(std::shared_ptr<IDrawer> dr): _dr(dr) { }
+    IClient(std::shared_ptr<IDrawer> dr): _dr(dr) { }
     
     virtual err_code launch() = 0;
 
