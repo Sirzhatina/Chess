@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-
+#include "CLI.hpp"
 
 std::future<Chess::Move> InputHandler::getMove()
 {
@@ -15,7 +15,7 @@ std::future<Chess::Move> InputHandler::getMove()
 
         while (!from || !to)
         {
-            std::cout << "Move: ";
+            std::cout << CLI::tab << "Move: ";
             std::getline(std::cin, inputField);
 
             if (inputField == quitCommand && wantToQuit())

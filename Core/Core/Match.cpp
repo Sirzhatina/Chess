@@ -23,10 +23,6 @@ Match::Match(std::shared_ptr<const IDrawer> drawer, std::shared_ptr<IInputHandle
     }
 }
 
-auto Match::remainingTime(Color c) const
-{
-    return (c == Color::WHITE ? m_white : m_black)->m_timer.remainingTime();
-}
 
 Match::Winner Match::start()
 {
@@ -52,7 +48,6 @@ void Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
     while (!checkmate && !stalemate && !expired)
     {
         m_drawer->drawPlay(*this);
-
         moves->m_timer.resume();
         waitForInput(fut, moves->m_timer);
         if (expired) 

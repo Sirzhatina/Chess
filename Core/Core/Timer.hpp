@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <chrono>
 #include <mutex>
 
@@ -18,7 +19,7 @@ public:
 
     }
 
-    auto& operator=(Timer&& t)
+    Timer& operator=(Timer&& t) noexcept
     {
         m_expired  = t.m_expired;
         m_start    = t.m_start;
@@ -27,12 +28,12 @@ public:
         return *this;
     }
 
-    void start() 
+    void start()
     {
         std::lock_guard lock{m_mtx};
         if (m_expired)
         {
-            m_start = std::chrono::system_clock::now(); 
+            m_start = std::chrono::system_clock::now();
             m_expired = false;
         }
     }
@@ -46,24 +47,28 @@ public:
     bool isExpired()   const { return m_expired;   }
     bool isSuspended() const { return m_suspended; }
 
-    void suspend() { m_suspended = true;  }
+    void suspend() 
+    {
+        m_duration = remainingTime();
+        m_suspended = true; 
+    }
     void resume()  
     {
         if (!m_expired && m_suspended)
         {
-            m_start = std::chrono::system_clock::now(); 
+            m_start = std::chrono::system_clock::now();
             m_suspended = false; 
         }
     }
 
-    void wait() 
+    void wait()
     {
-        // waiting for suspended timer lasts forever and essentially doesn't make sense
+        // awaiting for suspended timer lasts forever and essentially doesn't make sense
         if (m_suspended) return;
         if (!m_expired)
         {
-            m_duration =- remainingImpl();
-            std::this_thread::sleep_for(m_duration <= 0 ? DurationUnits{0} : m_duration);
+            auto remaining = m_duration - elapsed();
+            std::this_thread::sleep_for(remaining <= 0 ? DurationUnits{0} : remaining);
             m_expired = true;
         }
     }
@@ -76,11 +81,9 @@ public:
         }
         if (!m_expired)
         {
-            m_duration =- remainingImpl();
-            
-            m_expired = m_duration <= DurationUnits{0};
-
-            return m_expired ? DurationUnits{0} : m_duration;
+            auto remaining = m_duration - elapsed();
+            m_expired = remaining <= DurationUnits{0};
+            return m_expired ? DurationUnits{0} : remaining;
         }
         return DurationUnits{0};
     }
@@ -94,7 +97,7 @@ private:
 
     std::mutex m_mtx;
 
-    DurationUnits remainingImpl() const
+    DurationUnits elapsed() const
     {
         return std::chrono::duration_cast<DurationUnits>(std::chrono::system_clock::now() - m_start);
     }

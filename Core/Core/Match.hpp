@@ -34,7 +34,10 @@ public:
 
     Winner start();
 
-    auto remainingTime(Color ofPlayer) const;
+    auto remainingTime(Color ofPlayer) const
+    {
+        return (ofPlayer == Color::WHITE ? m_white : m_black)->m_timer.remainingTime();
+    }
 
 private:
     std::unique_ptr<Board>  m_board;
