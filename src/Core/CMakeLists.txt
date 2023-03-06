@@ -1,4 +1,6 @@
-set(TARGET Chess.Core.Core)
+set(TARGET Chess.Core)
+
+project(${TARGET} LANGUAGES CXX)
 
 set(PIECES
     Piece/Bishop.cpp
@@ -35,6 +37,4 @@ set(SOURCES
 
 add_library(${TARGET} STATIC ${SOURCES})
 
-target_link_libraries(${TARGET} PUBLIC Chess.Interfaces)
-
-target_include_directories(${TARGET} INTERFACE ${CMAKE_SOURCE_DIR}/Core)
+target_link_libraries(${TARGET} Chess.Interfaces)

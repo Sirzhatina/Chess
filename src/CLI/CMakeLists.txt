@@ -16,5 +16,5 @@ set(SOURCES
 
 add_executable(${TARGET} ${SOURCES})
 
-target_link_libraries(${TARGET} PUBLIC Chess.Core.Core)
-target_link_libraries(${TARGET} PUBLIC Chess.Interfaces)
+target_link_libraries(${TARGET} Chess.Core)
+target_link_libraries(${TARGET} Chess.Interfaces)

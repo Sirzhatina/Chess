@@ -8,6 +8,7 @@
 # CMake
 cmake-build-debug/
 [Bb]uild/
+[Bb]in/
 
 [Ll]ogs.txt
 

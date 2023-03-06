@@ -1,6 +1,6 @@
 #include <iostream>
-#include <IClient.hpp>
-#include "CLient.hpp"
+#include <Interfaces/IClient.hpp>
+#include "Client.hpp"
 
 int main()
 {

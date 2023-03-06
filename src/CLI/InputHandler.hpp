@@ -1,6 +1,6 @@
 #pragma once
 
-#include <IInputHandler.hpp>
+#include <Interfaces/IInputHandler.hpp>
 #include <Core/Primitives.hpp>
 
 class InputHandler : public IInputHandler
