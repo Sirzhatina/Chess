@@ -1,4 +1,4 @@
-#include "CLient.hpp"
+#include "Client.hpp"
 #include "InputHandler.hpp"
 #include "MatchSettingsIO.hpp"
 #include <iostream>

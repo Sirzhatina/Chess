@@ -1,9 +1,10 @@
 #pragma once
 
-#include <Core/Primitives.hpp>
+
 #include <future>
 #include <atomic>
 
+namespace Chess { struct Move; }
 class IInputHandler
 {
 protected:

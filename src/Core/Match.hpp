@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include <IDrawer.hpp>
-#include <IInputHandler.hpp>
+#include <Interfaces/IDrawer.hpp>
+#include <Interfaces/IInputHandler.hpp>
 #include <memory>
 #include "Player.hpp"
 #include "Settings.hpp"
