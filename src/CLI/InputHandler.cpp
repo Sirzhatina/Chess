@@ -2,14 +2,14 @@
 
 #include <iostream>
 #include <string>
+#include <optional>
+#include <Core/Primitives.hpp>
 #include "CLI.hpp"
 
-std::future<Chess::Move> InputHandler::getMove()
+IInputHandler::MoveResult InputHandler::getMove()
 {
-    auto makeMove = [this]() -> Chess::Move
+    auto makeMove = [this]() -> std::variant<Chess::Move, QuitToken>
     {
-        AtomicRAII moveRetrieved(this);
-
         std::string inputField;
         std::optional<Chess::Coordinates> from, to;
 
@@ -20,7 +20,7 @@ std::future<Chess::Move> InputHandler::getMove()
 
             if (inputField == quitCommand && wantToQuit())
             {
-                throw ExitCase{"Do svidanya, spasibo, prihodite eshche"};
+                return QuitToken{};
             }
             if (inputField.size() != 5) continue; // 5 is the size of a string with correct move
             
@@ -28,7 +28,7 @@ std::future<Chess::Move> InputHandler::getMove()
             to   = Chess::Coordinates::makeCoord(inputField[3] - 'a', inputField[4] - '1');
         }
 
-        return {*from, *to};
+        return Chess::Move{*from, *to};
     };
 
     return std::async(std::launch::async, std::move(makeMove));
