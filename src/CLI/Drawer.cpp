@@ -7,7 +7,7 @@
 
 void Drawer::drawMainMenu() const
 {
-    system(CLI::clear);
+    CLI::clear();
     using std::cout;
 
     cout << CLI::down;
@@ -29,7 +29,7 @@ void Drawer::drawMainMenu() const
 
 void Drawer::drawSettingsMenu() const
 {
-    system(CLI::clear);
+    CLI::clear();
     std::cout
         << CLI::down
         << CLI::dTab << "[SETTINGS]\n"
@@ -40,7 +40,7 @@ void Drawer::drawSettingsMenu() const
 
 void Drawer::drawPlay(const Chess::Match& match) const
 {
-    system(CLI::clear);
+    CLI::clear();
     std::cout << CLI::down;
 
     if (Settings::instance().m_mSettings.tm != Settings::Match::Time::no_time)
@@ -54,12 +54,12 @@ void Drawer::showRemainingTime(const Chess::Match& match) const
 {
     auto tm = [](const Chess::Match& match, Chess::Color c)
     {
-        return  std::to_string(match.remainingTime(c).count() / 60) + ':' + 
-                std::to_string(match.remainingTime(c).count() % 60);
+        return  std::to_string(std::uint64_t(std::ceil(match.remainingTime(c).count()) / 60)) + ':' + 
+                std::to_string(std::uint64_t(std::ceil(match.remainingTime(c).count())) % 60);
     };
 
     std::cout << CLI::tab << std::setw(5) << tm(match, Chess::Color::WHITE);
-    std::cout << "                                      ";
+    std::cout << "                                             ";
     std::cout << std::setw(5) << tm(match, Chess::Color::BLACK) << '\n';
 
 }
@@ -129,4 +129,14 @@ void Drawer::drawBoard(const Chess::Board& b) const
     }
     cout << CLI::tab << "*     a   b   c   d   e   f   g   h   *\t\t*     h   g   f   e   d   c   b   a   *\n"
          << CLI::tab << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
+}
+
+void Drawer::drawMatchEnd(Chess::Match::Winner w) const
+{
+    using enum Chess::Match::Winner;
+    CLI::clear();
+    std::cout << CLI::down << CLI::dTab
+              << (w == stalemate ? "Stalemate.\n" : (w == white ? "White" : "Black") + std::string(" won. Congratulations."))
+              << std::endl;
+    
 }

@@ -1,8 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <Core/Match.hpp>
 
-namespace Chess { class Match; class Board; }
+namespace Chess { class Board; }
 
 class IDrawer
 {
@@ -15,6 +16,8 @@ public:
 
     virtual void drawMainMenu()     const = 0;
     virtual void drawSettingsMenu() const = 0;
-    virtual void drawPlay(const Chess::Match& match) const = 0;
+    
+    virtual void drawMatchEnd(Chess::Match::Winner winner) const = 0;
+    virtual void drawPlay(const Chess::Match& match)       const = 0;
 
 };

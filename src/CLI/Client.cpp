@@ -72,14 +72,8 @@ void Client::settingsMenuLoop()
 void Client::play()
 {
     _gp = std::make_unique<Chess::Match>(_dr, std::make_shared<InputHandler>());
-    try
-    {
-        _gp->start();
-    }
-    catch(const IInputHandler::ExitCase& e)
-    {
-        std::cerr << e.byeMsg() << '\n';
-        std::cin.get();
-    }
+
+    _dr->drawMatchEnd(_gp->start());
+
     _gp.reset(nullptr);
 }
