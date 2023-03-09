@@ -4,6 +4,7 @@
 
 #include "Player.hpp"
 #include "Piece\Piece.hpp"
+#include "Piece/Bishop.hpp"
 #include "Board.hpp"
 #include <stdexcept>
 #include <iostream>
@@ -227,6 +228,16 @@ std::vector<Coordinates> Player::kingsAccessibleSquares() const
 {
     std::vector<Coordinates> result;
     Coordinates coord;
+
+    auto addIfAble = [&result, this](Coordinates coord, int x, int y)
+    {
+        if (_king->isAbleToSqr(coord, x, y))
+        {
+            result.push_back(coord);
+        }
+    };
+
+
     for (int x = int(_king->coord().x) - 1, lim = x + 3; x < lim; x++)
     {
         for (int y = int(_king->coord().y) - 1, lim = y + 3; y < lim; y++)

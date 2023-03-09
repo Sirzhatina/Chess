@@ -5,14 +5,14 @@
 namespace CLI
 {
 #ifdef _WIN32
-    static constexpr auto clear = "cls";
+    inline void clear() { std::system("cls"); }
 #else
-    static constexpr auto clear = "clear";
+    inline void clear() { std::system("clear"); }
 #endif
 
-inline auto tab{"\t\t"};
+inline constexpr auto tab{"\t\t"};
 
-inline auto dTab{ "\t\t\t\t" };
+inline constexpr auto dTab{ "\t\t\t\t" };
 
-inline auto down{ "\n\n\n\n\n\n\n\n\n\n" };
+inline constexpr auto down{ "\n\n\n\n\n\n\n\n\n\n" };
 }

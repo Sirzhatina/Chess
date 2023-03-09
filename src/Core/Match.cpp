@@ -1,3 +1,4 @@
+#include <Interfaces/IDrawer.hpp>
 #include "Match.hpp"
 #include "Player.hpp"
 #include "Board.hpp"
@@ -18,8 +19,8 @@ Match::Match(std::shared_ptr<const IDrawer> drawer, std::shared_ptr<IInputHandle
     {
         auto mins = std::chrono::minutes(int(Settings::instance().m_mSettings.tm));
 
-        m_white->m_timer = Timer<std::chrono::seconds>(mins);
-        m_black->m_timer = Timer<std::chrono::seconds>(mins);
+        m_white->m_timer = Timer<std::chrono::duration<double>>(mins);
+        m_black->m_timer = Timer<std::chrono::duration<double>>(mins);
     }
 }
 
@@ -29,32 +30,32 @@ Match::Winner Match::start()
     auto moves = m_white.get();
     auto notMoves = m_black.get();
 
-    mainLoop(moves, notMoves);
-
-    return moves->m_isInCheck ? (moves->m_player.color() == Color::BLACK ? Winner::black : Winner::white) : Winner::stalemate;
+    return mainLoop(moves, notMoves);
 }
 
-void Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
+Match::Winner Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
 {
-    using namespace std::chrono_literals;
-
-    std::future<Move> fut;
+    IInputHandler::MoveResult fut;
+    std::variant<Chess::Move, IInputHandler::QuitToken> futureResult;
     Move m;
 
     moves->m_timer.start();
     notMoves->m_timer.start(); 
     notMoves->m_timer.suspend();
 
-    while (!checkmate && !stalemate && !expired)
+    while (!checkmate && !stalemate)
     {
         m_drawer->drawPlay(*this);
         moves->m_timer.resume();
+
         waitForInput(fut, moves->m_timer);
-        if (expired) 
+        futureResult = fut.get();
+
+        if (expired || std::holds_alternative<IInputHandler::QuitToken>(futureResult))
         {
-            return;
+            return moves->m_player.color() == Color::WHITE ? Winner::black : Winner::white;
         }
-        if (!moves->m_player.isValidMove(fut.get()))
+        if (!moves->m_player.isValidMove(std::get<0>(futureResult)))
         {
             continue;
         }
@@ -64,20 +65,18 @@ void Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves)
         std::swap(moves, notMoves);
     }
     m_drawer->drawPlay(*this);
+
+    return checkmate ? (moves->m_player.color() == Color::WHITE ? Winner::black : Winner::white) : Winner::stalemate;
 }
 
-void Match::waitForInput(std::future<Move>& f, auto& timer)
+void Match::waitForInput(IInputHandler::MoveResult& f, auto& timer)
 {
     using namespace std::chrono_literals;
     f = m_input->getMove();
 
-    while (!m_input->isMoveRetrieved())
+    if (m_matchAlias.tm != Settings::Match::Time::no_time)
     {
-        if (m_matchAlias.tm != Settings::Match::Time::no_time && timer.remainingTime() <= 0s)
-        {
-            expired = true;
-            break;
-        }
+        expired = f.wait_for(timer.remainingTime()) == std::future_status::timeout;
     }
 }
 
