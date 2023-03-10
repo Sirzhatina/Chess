@@ -134,9 +134,10 @@ void Drawer::drawBoard(const Chess::Board& b) const
 void Drawer::drawMatchEnd(Chess::Match::Winner w) const
 {
     using enum Chess::Match::Winner;
-    CLI::clear();
-    std::cout << CLI::down << CLI::dTab
-              << (w == stalemate ? "Stalemate.\n" : (w == white ? "White" : "Black") + std::string(" won. Congratulations."))
+
+    std::cout << "\n\n" << CLI::dTab
+              << (w == stalemate ? "Stalemate.\n" : (w == white ? "White" : "Black") + std::string(" won. "))
+              << "Dosvidanya, spasibo, prihodite esh4e."
               << std::endl;
-    
+    std::cin.get();
 }
