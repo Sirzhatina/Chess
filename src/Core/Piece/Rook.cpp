@@ -7,7 +7,7 @@ bool Rook::isPossibleMove(Coordinates to) const
 { 
     auto isValidRoute = [this, to](bool horizontal, bool vertical) 
     { 
-        return !isSameSquare(to) && !isFriendlySquare(to) && !(horizontal && vertical);
+        return !isSameSquare(to) && !isFriendlySquare(to) && (horizontal ^ vertical);
     };
     auto isClearRoute = [this, to](bool horizontal)
     {
@@ -47,7 +47,8 @@ bool Rook::isPossibleMove(Coordinates to) const
 
     bool horizontal = to.x != coord().x;
     bool vertical   = to.y != coord().y;
-
+    
+    // for second function, it's enough to take any of the boolean values because they are mutually exclusive
     return isValidRoute(horizontal, vertical) && isClearRoute(horizontal);
 }
 
