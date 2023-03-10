@@ -12,8 +12,8 @@ namespace Chess
 Match::Match(std::shared_ptr<const IDrawer> drawer, std::shared_ptr<IInputHandler> input): m_drawer(drawer), m_input(input)
 {
     m_board = std::make_unique<Board>();
-    m_white.reset(new PlayerAttributes(Player(m_board.get(), Color::WHITE)));
-    m_black.reset(new PlayerAttributes(Player(m_board.get(), Color::BLACK)));
+    m_white.reset(new PlayerAttributes{Player(m_board.get(), Color::WHITE)});
+    m_black.reset(new PlayerAttributes{Player(m_board.get(), Color::BLACK)});
 
     if (m_matchAlias.tm != Settings::Match::Time::no_time)
     {
@@ -109,11 +109,44 @@ void Match::completeMove(PlayerAttributes* moves, PlayerAttributes* notMoves)
     }
 }
 
+struct LiftPiece
+{
+    Chess::Coordinates coord;
+    const Piece* p;
+    Board* board;
+
+    bool condition = false;
+    
+    LiftPiece(Board& b, Chess::Coordinates c, const Player* pieceBelongsTo = nullptr) : coord(c), board(&b)
+    {
+        if (pieceBelongsTo)
+        {
+            if (condition = pieceBelongsTo == board->getPiece(coord)->player())
+            {
+                p = board->setPiece(nullptr, coord);
+            }
+        }
+        else
+        {
+            condition = true;
+            p = board->setPiece(nullptr, coord);
+        }
+        
+    }
+    ~LiftPiece()
+    {
+        if (condition) board->setPiece(p, coord);
+    }
+};
+
 bool Match::isEscapable(PlayerAttributes* moves, PlayerAttributes* notMoves)
 {
+
     auto escape = notMoves->m_player.kingsAccessibleSquares();
     for (auto sqr : escape)
     {
+        LiftPiece aboveTheBoard(*m_board, sqr, &moves->m_player);
+
         if (!moves->m_player.isAccessibleSquare(sqr))
         {
             return true;
@@ -130,13 +163,11 @@ bool Match::isStalemate(PlayerAttributes* moves, PlayerAttributes* notMoves)
         
         for (const auto& p : piecesMovable)
         {
-            m_board->setPiece(nullptr, p->coord());
+            LiftPiece aboveTheBoard(*m_board, p->coord());
             if (!moves->m_player.isAccessibleSquare(notMoves->m_player.kingCoord()))
             {
-                m_board->setPiece(p, p->coord());
                 return false;
             }
-            m_board->setPiece(p, p->coord());
         }
         auto squaresForKing = notMoves->m_player.kingsAccessibleSquares();
 
