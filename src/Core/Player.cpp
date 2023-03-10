@@ -227,7 +227,7 @@ bool Player::isMovableKing() const
 std::vector<Coordinates> Player::kingsAccessibleSquares() const
 {
     std::vector<Coordinates> result;
-    Coordinates coord;
+    Coordinates coord = _king->coord();
 
     auto addIfAble = [&result, this](Coordinates coord, int x, int y)
     {
@@ -237,21 +237,10 @@ std::vector<Coordinates> Player::kingsAccessibleSquares() const
         }
     };
 
+    addIfAble(coord, -1,  1);   addIfAble(coord,  0,  1);   addIfAble(coord,  1,  1);
+    addIfAble(coord, -1,  0);          /* King */           addIfAble(coord,  1,  0);
+    addIfAble(coord, -1, -1);   addIfAble(coord, 0,  -1);   addIfAble(coord,  1, -1);
 
-    for (int x = int(_king->coord().x) - 1, lim = x + 3; x < lim; x++)
-    {
-        for (int y = int(_king->coord().y) - 1, lim = y + 3; y < lim; y++)
-        {
-            if (x > 0 && x < boardSize && y > 0 && y < boardSize)
-            {
-                coord = { Horizontal{x}, Vertical{y} };
-                if (_king->isPossibleMove(coord))
-                {
-                    result.push_back(coord);
-                }
-            }
-        }
-    }
     return result;
 }
 
