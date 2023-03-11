@@ -1,6 +1,6 @@
 #pragma once
 
-#include <IDrawer.hpp>
+#include <Interfaces/IDrawer.hpp>
 
 class Drawer : public IDrawer
 {
@@ -12,5 +12,6 @@ public:
 
     void drawMainMenu()     const override;
     void drawSettingsMenu() const override;
-    void drawPlay(const Chess::Match& match) const override;
+    void drawMatchEnd(Chess::Match::Winner winner) const override;
+    void drawPlay(const Chess::Match& match)       const override;
 };

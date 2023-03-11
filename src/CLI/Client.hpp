@@ -5,8 +5,8 @@
 #include <Core/Match.hpp>
 
 #include "Drawer.hpp"
-#include <IDrawer.hpp>
-#include <IClient.hpp>
+#include <Interfaces/IDrawer.hpp>
+#include <Interfaces/IClient.hpp>
 
 class Client : public IClient
 {

@@ -39,7 +39,7 @@ struct Coordinates
 
     bool tryShift(int x_, int y_)
     {
-        auto isOut = [&](int first, int sec) { return first + sec < 0 || first + sec >= boardSize; };
+        static auto isOut = [](int first, int sec) { return first + sec < 0 || first + sec >= boardSize; };
         if (isOut(int(x), x_) || isOut(int(y), y_))
         {
             return false;

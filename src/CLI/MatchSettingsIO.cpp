@@ -27,7 +27,7 @@ void MatchSettingsIO::showSettings() const
         return std::string{};
     };
 
-    system(CLI::clear);
+    CLI::clear();
     std::cout << CLI::down << CLI::dTab << "[MATCH SETTINGS]\n";
     for (const auto& [key, value] : settingsPatterns)
     {

@@ -21,9 +21,6 @@ class Piece
 protected:
     bool isFriendlySquare(Coordinates square) const;
     bool isSameSquare(Coordinates square)     const { return coord() == square; }
-    
-    // utility method for isAbleToMove()
-    bool isAbleToSqr(Coordinates to, int x, int y) const { return to.tryShift(x, y) && isPossibleMove(to); } 
 
 public:
     Piece(const Player* p, Coordinates coord);
@@ -38,5 +35,7 @@ public:
     const Player* player()      const { return _player; }
     Coordinates   coord()       const { return _currentCoord; }
     bool          isFirstMove() const { return _firstMove; }
+    // utility method for isAbleToMove()
+    bool isAbleToSqr(Coordinates to, int x, int y) const { return to.tryShift(x, y) && isPossibleMove(to); }
 };
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 
-#include <IDrawer.hpp>
-#include <IInputHandler.hpp>
+#include <Interfaces/IInputHandler.hpp>
 #include <memory>
 #include "Player.hpp"
 #include "Settings.hpp"
 #include "Timer.hpp"
+
+class IDrawer;
 
 namespace Chess
 {
@@ -15,7 +16,7 @@ class Board;
 struct PlayerAttributes
 {
     Player m_player;
-    Timer<std::chrono::seconds> m_timer;
+    Timer<std::chrono::duration<double>> m_timer;
 
     bool m_isInCheck{false};
 };
@@ -54,9 +55,9 @@ private:
     std::shared_ptr<const IDrawer> m_drawer;
     std::shared_ptr<IInputHandler> m_input;
 
-    void waitForInput(std::future<Move>& f, auto& timer);
+    void waitForInput(IInputHandler::MoveResult& f, auto& timer);
 
-    void mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves);
+    Winner mainLoop(PlayerAttributes* moves, PlayerAttributes* notMoves);
 
     void completeMove(PlayerAttributes* moves, PlayerAttributes* notMoves);
 
