@@ -5,21 +5,13 @@
 #include <Core/Match.hpp>
 
 #include "Drawer.hpp"
-#include <Interfaces/IDrawer.hpp>
+#include "Menu.hpp"
 #include <Interfaces/IClient.hpp>
 
 class Client : public IClient
 {
-private:
-    std::unique_ptr<Chess::Match> m_gameplay;
-
-    void mainMenuLoop();
-    void settingsMenuLoop();
-
-    void play();
-
 public:
-    Client(): IClient(std::make_shared<Drawer>()) {}
+    Client(): IClient(std::make_unique<Menu>()) {}
     
     err_code launch() override;
 };

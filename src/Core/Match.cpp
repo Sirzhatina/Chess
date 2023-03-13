@@ -45,7 +45,7 @@ Match::Winner Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMove
 
     while (!checkmate && !stalemate)
     {
-        m_drawer->drawPlay(*this);
+        m_drawer->drawGameplay(*this);
         moves->m_timer.resume();
 
         waitForInput(fut, moves->m_timer);
@@ -64,7 +64,7 @@ Match::Winner Match::mainLoop(PlayerAttributes* moves, PlayerAttributes* notMove
         moves->m_timer.suspend();
         std::swap(moves, notMoves);
     }
-    m_drawer->drawPlay(*this);
+    m_drawer->drawGameplay(*this);
 
     return checkmate ? (moves->m_player.color() == Color::WHITE ? Winner::black : Winner::white) : Winner::stalemate;
 }

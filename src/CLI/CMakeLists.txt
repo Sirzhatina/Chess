@@ -12,6 +12,8 @@ set(SOURCES
     main.cpp
     MatchSettingsIO.cpp
     MatchSettingsIO.hpp
+    Menu.cpp
+    Menu.hpp
 )
 
 add_executable(${TARGET} ${SOURCES})
