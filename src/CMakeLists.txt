@@ -4,5 +4,6 @@ add_subdirectory(Interfaces)
 add_subdirectory(Core)
 add_subdirectory(Logger)
 add_subdirectory(CLI)
+add_subdirectory(Server)
 
-install(TARGETS Chess.CLI DESTINATION ${CMAKE_SOURCE_DIR}/bin)
+install(TARGETS Chess.CLI Chess.Server DESTINATION ${CMAKE_SOURCE_DIR}/bin)
