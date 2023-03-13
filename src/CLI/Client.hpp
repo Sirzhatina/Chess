@@ -11,7 +11,7 @@
 class Client : public IClient
 {
 private:
-    std::unique_ptr<Chess::Match> _gp;
+    std::unique_ptr<Chess::Match> m_gameplay;
 
     void mainMenuLoop();
     void settingsMenuLoop();
