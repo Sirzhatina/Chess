@@ -2,12 +2,15 @@
 
 #include <SFML/Network.hpp>
 #include <vector>
+#include <memory>
 
 class Server
 {
     unsigned short m_port;
 
-    std::vector<sf::TcpSocket> m_clients{64};
+    using Client = std::unique_ptr<sf::TcpSocket>;
+
+    std::vector<Client> m_clients{64};
 
     sf::SocketSelector m_selector;
     sf::TcpListener    m_acceptor;
@@ -38,24 +41,20 @@ public:
         {
             if (m_selector.isReady(m_acceptor))
             {
-                m_clients.push_back(sf::TcpSocket{});
+                m_clients.emplace_back(std::make_unique<sf::TcpSocket>());
                 try
                 {
-                    acceptionHandler(m_acceptor.accept(m_clients.back()));   
+                    acceptionHandler(m_acceptor.accept(*m_clients.back()));   
                 }
                 catch(const std::runtime_error& e)
                 {
                     m_clients.pop_back();
                     throw e;
                 }
-
             }
             else
             {
-                for (auto&& client : m_clients)
-                {
-
-                }
+                for (auto&& client : m_clients) {}
             }
         }
     }
