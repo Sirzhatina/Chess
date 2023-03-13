@@ -22,7 +22,7 @@ void Client::mainMenuLoop()
     char choice;
     while (true)
     {
-        _dr->drawMainMenu();
+        m_drawer->drawMainMenu();
         std::cin >> choice;
         while (std::cin.get() != '\n');
 
@@ -49,7 +49,7 @@ void Client::settingsMenuLoop()
     while (true)
     {
         settings.reset();
-        _dr->drawSettingsMenu();
+        m_drawer->drawSettingsMenu();
         std::cin >> choice;
         while (std::cin.get() != '\n');
 
@@ -71,9 +71,9 @@ void Client::settingsMenuLoop()
 
 void Client::play()
 {
-    _gp = std::make_unique<Chess::Match>(_dr, std::make_shared<InputHandler>());
+    m_gameplay = std::make_unique<Chess::Match>(m_drawer, std::make_shared<InputHandler>());
 
-    _dr->drawMatchEnd(_gp->start());
+    m_drawer->drawMatchEnd(m_gameplay->start());
 
-    _gp.reset(nullptr);
+    m_gameplay.reset(nullptr);
 }
