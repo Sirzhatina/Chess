@@ -51,6 +51,7 @@ public:
                     m_clients.pop_back();
                     throw e;
                 }
+                m_selector.add(*m_clients.back());
             }
             else
             {
