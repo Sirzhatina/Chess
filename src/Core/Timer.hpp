@@ -49,11 +49,16 @@ public:
 
     void suspend() 
     {
-        m_duration = remainingTime();
-        m_suspended = true; 
+        std::lock_guard lock{m_mtx};
+        if (!m_suspended)
+        {
+            m_duration = remainingTime();
+            m_suspended = true;
+        } 
     }
     void resume()  
     {
+        std::lock_guard lock{m_mtx};
         if (!m_expired && m_suspended)
         {
             m_start = std::chrono::system_clock::now();
