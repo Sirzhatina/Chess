@@ -38,20 +38,21 @@ void Drawer::drawSettingsMenu() const
         << CLI::dTab << "Input: ";
 }
 
-void Drawer::drawPlay(const Chess::Match& match) const
+void Drawer::drawGameplay(const Chess::Match& match) const
 {
     CLI::clear();
     std::cout << CLI::down;
 
-    if (Settings::instance().m_mSettings.tm != Settings::Match::Time::no_time)
-    {
-        showRemainingTime(match);
-    }
+    showRemainingTime(match);
     drawBoard(match.board());
 }
 
 void Drawer::showRemainingTime(const Chess::Match& match) const
 {
+    if (Settings::instance().m_mSettings.tm == Settings::Match::Time::no_time)
+    {
+        return;
+    }
     auto tm = [](const Chess::Match& match, Chess::Color c)
     {
         return  std::to_string(std::uint64_t(std::ceil(match.remainingTime(c).count()) / 60)) + ':' + 
@@ -131,7 +132,7 @@ void Drawer::drawBoard(const Chess::Board& b) const
          << CLI::tab << "* * * * * * * * * * * * * * * * * * * *\t\t* * * * * * * * * * * * * * * * * * * *\n";
 }
 
-void Drawer::drawMatchEnd(Chess::Match::Winner w) const
+void Drawer::drawEndgame(Chess::Match::Winner w) const
 {
     using enum Chess::Match::Winner;
 

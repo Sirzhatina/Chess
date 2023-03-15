@@ -17,7 +17,7 @@ public:
     virtual void drawMainMenu()     const = 0;
     virtual void drawSettingsMenu() const = 0;
     
-    virtual void drawMatchEnd(Chess::Match::Winner winner) const = 0;
-    virtual void drawPlay(const Chess::Match& match)       const = 0;
+    virtual void drawEndgame(Chess::Match::Winner winner) const = 0;
+    virtual void drawGameplay(const Chess::Match& match)  const = 0;
 
 };
