@@ -22,10 +22,6 @@ void Server::waitForEvents()
         {
             onReady();
         }
-        else
-        {
-            onTimeout();
-        }
         updateFromCLI();
     }
 }
