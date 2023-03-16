@@ -6,6 +6,7 @@
 
 class Server
 {
+    friend class AdminCLI;
 public:
     using Seconds = std::uint16_t;
 

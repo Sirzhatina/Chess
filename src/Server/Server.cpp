@@ -1,10 +1,17 @@
+#include <future>
 #include "Server.hpp"
 
 void Server::run()
 {
     m_acceptor.listen(m_port);
 
-    waitForEvents();
+    auto futureRes = std::async(std::launch::async, [this]{ waitForEvents(); });
+
+    // something like
+    // AdminCLI cli;
+    // cli.manage(this);
+
+    futureRes.get();
 }
 
 void Server::waitForEvents()

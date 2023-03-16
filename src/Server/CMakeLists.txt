@@ -3,6 +3,7 @@ set(TARGET Chess.Server)
 project(${TARGET} LANGUAGES CXX)
 
 set(SOURCES
+    AdminCLI.hpp
     main.cpp
     Server.cpp
     Server.hpp
