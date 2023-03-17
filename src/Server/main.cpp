@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
         std::cerr << "Fatal error: port value is not provided. Program usage: <program> <port>.";
         return EXIT_FAILURE;
     }
-    Server server{std::stoi(argv[1])};
+    Server server(std::stoi(argv[1]));
 
-    server.run();
+    auto status = server.run();
 }

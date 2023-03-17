@@ -1,17 +1,29 @@
 #include <future>
+#include <iostream>
 #include "Server.hpp"
+#include "AdminCLI.hpp"
 
-void Server::run()
+Server::StateCode Server::run()
 {
+    m_currentState = StateCode::inWork;
     m_acceptor.listen(m_port);
 
     auto futureRes = std::async(std::launch::async, [this]{ waitForEvents(); });
 
-    // something like
-    // AdminCLI cli;
-    // cli.manage(this);
+    AdminCLI managing(this);
+    managing.manage();
 
-    futureRes.get();
+    try
+    {
+        futureRes.get();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        m_currentState = StateCode::unexpectedBevahior;
+    }
+    
+    return m_currentState;
 }
 
 void Server::waitForEvents()
@@ -22,10 +34,17 @@ void Server::waitForEvents()
         {
             onReady();
         }
-        updateFromCLI();
+        updateStateFromCLI();
     }
 }
 
+void Server::updateStateFromCLI()
+{
+    if (!m_isWaiting)
+    {
+        m_currentState = StateCode::stopped;
+    }
+}
 void Server::onReady()
 {
     if (m_selector.isReady(m_acceptor))

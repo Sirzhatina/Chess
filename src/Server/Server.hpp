@@ -6,26 +6,27 @@
 
 class Server
 {
-    friend class AdminCLI;
 public:
+    friend class AdminCLI;
     using Seconds = std::uint16_t;
 
-    Server(std::uint16_t port) : m_port{port} { m_selector.add(m_acceptor); }
-
-    void run();
-
-    enum class StatusCode
+    enum class StateCode
     {
-        inWork,
         stopped,
-        timeout,
+        inWork,
         unexpectedBevahior
     };
+
+    Server(std::uint16_t port) : m_port{port}, m_currentState{StateCode::stopped} { m_selector.add(m_acceptor); }
+
+    StateCode run();
+
+    StateCode currentState() const { return m_currentState; }
 
 private:
     using Client = std::unique_ptr<sf::TcpSocket>;
 
-    static constexpr Seconds defaultAwaiting = 1;
+    static constexpr Seconds defaultAwaiting = 1000;
 
     std::uint16_t m_port;
     Seconds       m_eventAwaiting{defaultAwaiting};
@@ -37,6 +38,8 @@ private:
 
     bool m_isWaiting{true};
 
+    StateCode m_currentState;
+
 private:
     void acceptionHandler(sf::Socket::Status s);
 
@@ -45,7 +48,7 @@ private:
 
     void onReady();
     
-    void updateFromCLI();
+    void updateStateFromCLI();
 
     void waitForEvents();
 };
