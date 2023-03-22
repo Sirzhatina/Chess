@@ -2,14 +2,14 @@
 
 #include <iostream>
 #include <array>
-#include <string>
+#include <memory>
 
 class Server;
 
 class AdminCLI
 {
 private:
-    Server* m_managable;
+    std::unique_ptr<Server> m_managed;
 
     static constexpr std::array commands
     {
@@ -20,7 +20,7 @@ private:
     void updateServerState(const std::string& cmd);
 
 public:
-    AdminCLI(Server* managable);
+    AdminCLI(std::unique_ptr<Server> managed);
 
     void manage();
 };
