@@ -47,6 +47,8 @@ private:
     void onClient();
 
     void onReady();
+
+    void onDisconnection();
     
     void updateStateFromCLI();
 
