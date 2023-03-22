@@ -26,7 +26,7 @@ public:
 private:
     using Client = std::unique_ptr<sf::TcpSocket>;
 
-    static constexpr Seconds defaultAwaiting = 1000;
+    static constexpr Seconds defaultAwaiting = 1;
 
     std::uint16_t m_port;
     Seconds       m_eventAwaiting{defaultAwaiting};
