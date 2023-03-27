@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Server.hpp"
+#include "AdminCLI.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -9,7 +10,7 @@ int main(int argc, char* argv[])
         std::cerr << "Fatal error: port value is not provided. Program usage: <program> <port>.";
         return EXIT_FAILURE;
     }
-    Server server(std::stoi(argv[1]));
+    AdminCLI manager{std::make_unique<Server>(std::stoi(argv[1]))};
 
-    auto status = server.run();
+    manager.manage();
 }

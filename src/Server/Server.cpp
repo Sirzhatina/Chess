@@ -1,4 +1,3 @@
-#include <future>
 #include <iostream>
 #include "Server.hpp"
 #include "AdminCLI.hpp"
@@ -8,21 +7,14 @@ Server::StateCode Server::run()
     m_currentState = StateCode::inWork;
     m_acceptor.listen(m_port);
 
-    auto futureRes = std::async(std::launch::async, [this]{ waitForEvents(); });
-
-    AdminCLI managing(this);
-    managing.manage();
-
     try
     {
-        futureRes.get();
+        waitForEvents();
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
         m_currentState = StateCode::unexpectedBevahior;
     }
-    
     return m_currentState;
 }
 
@@ -36,6 +28,7 @@ void Server::waitForEvents()
         }
         updateStateFromCLI();
     }
+    onDisconnection();
 }
 
 void Server::updateStateFromCLI()
@@ -85,5 +78,14 @@ void Server::acceptionHandler(sf::Socket::Status s)
     case Error:        throw std::runtime_error{"Error when connecting occured"};
     case Disconnected: throw std::runtime_error{"Disconnected"};
     default:           break;
+    }
+}
+
+void Server::onDisconnection()
+{
+    for (auto&& client : m_clients)
+    {
+        // TODO: Notify the peer on disconnecting
+        client->disconnect();
     }
 }
