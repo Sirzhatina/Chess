@@ -35,6 +35,8 @@ set(SOURCES
     Timer.hpp
 )
 
-add_library(${TARGET} STATIC ${SOURCES})
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+add_library(${TARGET} SHARED ${SOURCES})
 
 target_link_libraries(${TARGET} Chess.Interfaces)
