@@ -1,19 +1,13 @@
-//
-// Created by Sirzh on 15.04.2021.
-//
+export module Player;
 
-#pragma once
+import std.core;
+import Primitives;
 
-#include <vector>
-#include <array>
-#include <memory>
-#include <optional>
-#include "Primitives.hpp"
-#include "Piece/Pieces.hpp"
-#include "Board.hpp"
-
-namespace Chess 
+export namespace Core 
 {
+class Board;
+class Piece;
+
 class Player 
 {
 public:
@@ -33,9 +27,9 @@ public:
     void removePiece(const Piece* p);
 
 
-    Coordinates kingCoord() const { return _king->coord(); }
-    Color       color()     const { return _color; }
-    Board*      board()     const { return _board; }
+    Coordinates kingCoord() const;
+    Color       color()     const;
+    Board*      board()     const;
 
 private:
     static constexpr auto pawns = 8;

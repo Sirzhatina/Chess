@@ -1,10 +1,17 @@
-#include <Interfaces/IDrawer.hpp>
-#include "Match.hpp"
-#include "Player.hpp"
-#include "Board.hpp"
-#include <vector>
-#include <cstdlib>
-#include <iostream>
+module Match;
+
+import std.core;
+import IDrawer;
+import Player;
+import Board;
+
+// #include <Interfaces/IDrawer.hpp>
+// #include "Match.hpp"
+// #include "Player.hpp"
+// #include "Board.hpp"
+// #include <vector>
+// #include <cstdlib>
+// #include <iostream>
 
 namespace Chess
 {

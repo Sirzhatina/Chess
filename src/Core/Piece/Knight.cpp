@@ -1,7 +1,6 @@
-#include "Knight.hpp"
-#include "..\Player.hpp"
+module Knight;
 
-namespace Chess
+namespace Core
 {
 bool Knight::isPossibleMove(Coordinates to) const 
 {

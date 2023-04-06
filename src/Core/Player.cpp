@@ -1,16 +1,16 @@
-//
-// Created by Sirzh on 15.04.2021.
-//
+module Player;
 
-#include "Player.hpp"
-#include "Piece\Piece.hpp"
-#include "Piece/Bishop.hpp"
-#include "Board.hpp"
-#include <stdexcept>
-#include <iostream>
+import Pieces;
+import Board;
+import std.core;
 
-namespace Chess
+namespace Core
 {
+
+Coordinates Player::kingCoord() const { return _king->coord(); }
+Color       Player::color()     const { return _color; }
+Board*      Player::board()     const { return _board; }
+
 Player::Player(Board* b, Color c)
 : _board(b)
 , _color(c)

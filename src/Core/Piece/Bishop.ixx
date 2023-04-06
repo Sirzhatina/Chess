@@ -1,8 +1,8 @@
-#pragma once
+export module Bishop;
 
-#include "Piece.hpp"
+import Piece;
 
-namespace Chess
+export namespace Core
 {
 class Bishop: public Piece
 {

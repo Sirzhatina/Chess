@@ -1,7 +1,9 @@
-#include "Pawn.hpp"
-#include "..\Player.hpp"
+module Pawn;
 
-namespace Chess
+import Player;
+import Board;
+
+namespace Core
 {
 bool Pawn::isPossibleMove(Coordinates to) const 
 {

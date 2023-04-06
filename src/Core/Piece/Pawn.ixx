@@ -1,14 +1,13 @@
-#pragma once
+export module Pawn;
 
-#include "Piece.hpp"
+import Piece;
 
-namespace Chess
+export namespace Core
 {
-class Rook: public Piece
+class Pawn: public Piece
 {
-
 public:
-    Rook(const Player* p, Coordinates coord): Piece(p, coord) { }
+    Pawn(const Player* p, Coordinates coord): Piece(p, coord) { }
 
     bool isPossibleMove(Coordinates to) const override;
     bool isAbleToMove() const override;

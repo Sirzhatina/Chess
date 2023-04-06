@@ -1,6 +1,6 @@
-#pragma once
+export module Settings;
 
-class ISettingsIO
+export class ISettingsIO
 {
 public:
 
@@ -13,7 +13,7 @@ public:
 
 // settings that are being kept only for a session. Represented as a set of enum toggles.
 // TODO: make them be kept independently on a session, probably as a part of local database
-struct Settings
+export struct Settings
 {
     static Settings& instance();
     

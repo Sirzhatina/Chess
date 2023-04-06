@@ -1,14 +1,9 @@
-//
-// Created by Sirzh on 15.04.2021.
-//
+export module Piece;
 
-#pragma once
+import Primitives;
+import std.core;
 
-#include "..\Primitives.hpp"
-#include <string>
-#include <vector>
-
-namespace Chess
+export namespace Core
 {
 class Player;
 

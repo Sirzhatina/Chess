@@ -1,10 +1,9 @@
-#pragma once
+export module Timer;
 
-#include <iostream>
-#include <chrono>
-#include <mutex>
+import std.core;
+import std.threading;
 
-template <class DurationUnits>
+export template <class DurationUnits>
 class Timer
 {
 public:

@@ -1,9 +1,8 @@
-#include "King.hpp"
-#include "../Player.hpp"
-#include "Bishop.hpp"
-#include "Rook.hpp"
+module King;
 
-namespace Chess
+import Queen;
+
+namespace Core
 {
 
 bool King::isPossibleMove(Coordinates to) const 
@@ -21,7 +20,7 @@ bool King::isPossibleMove(Coordinates to) const
 
 bool King::isAbleToMove() const
 {
-    return Bishop{player(), coord()}.isAbleToMove() || Rook{player(), coord()}.isAbleToMove();
+    return Queen{player(), coord()}.isAbleToMove();
 }
 
 std::vector<Coordinates> King::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }

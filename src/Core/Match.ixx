@@ -1,15 +1,16 @@
-#pragma once
+export module Match;
 
+import std.core;
+import Settings;
+import Timer;
+import Player;
+import IInputHandler;
 
-#include <Interfaces/IInputHandler.hpp>
-#include <memory>
-#include "Player.hpp"
-#include "Settings.hpp"
-#include "Timer.hpp"
 
 class IDrawer;
+class IInputHandler;
 
-namespace Chess
+export namespace Core
 {
 class Board;
 

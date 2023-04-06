@@ -1,7 +1,9 @@
-#include "Bishop.hpp"
-#include "../Player.hpp"
+module Bishop;
 
-namespace Chess
+import Player;
+import Board;
+
+namespace Core
 {
 bool Bishop::isPossibleMove(Coordinates to) const 
 {

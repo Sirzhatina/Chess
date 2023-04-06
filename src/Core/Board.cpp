@@ -1,13 +1,11 @@
-//
-// Created by Sirzh on 10.05.2021.
-//
+module Board;
 
-#include <stdexcept>
-#include "Board.hpp"
-#include "Player.hpp"
-#include "Piece/Pieces.hpp"
+import std.core;
+import Board;
+import Player;
+import Piece;
 
-namespace Chess
+namespace Core
 {
 Board::Board()
 {    

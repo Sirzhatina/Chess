@@ -1,4 +1,4 @@
-#include "Settings.hpp"
+module Settings;
 
 Settings& Settings::instance()
 {

@@ -1,8 +1,9 @@
-#include "Queen.hpp"
-#include "Bishop.hpp"
-#include "Rook.hpp"
+module Queen;
 
-namespace Chess
+import Bishop;
+import Rook;
+
+namespace Core
 {
 
 bool Queen::isPossibleMove(Coordinates to) const 

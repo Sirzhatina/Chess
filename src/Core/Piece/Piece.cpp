@@ -1,14 +1,10 @@
-//
-// Created by Sirzh on 15.04.2021.
-//
+module Piece;
 
-#include <stdexcept>
-#include <cstdlib>
-#include "Piece.hpp"
-#include "..\Player.hpp"
-#include "..\Board.hpp"
+import std.core;
+import Board;
+import Player;
 
-namespace Chess
+namespace Core
 {
 Piece::Piece(const Player* p, Coordinates coord)
 : _player(p)

@@ -4,39 +4,44 @@ project(${TARGET} LANGUAGES CXX)
 
 set(PIECES
     Piece/Bishop.cpp
-    Piece/Bishop.hpp
+    Piece/Bishop.ixx
     Piece/King.cpp
-    Piece/King.hpp
+    Piece/King.ixx
     Piece/Knight.cpp
-    Piece/Knight.hpp
+    Piece/Knight.ixx
     Piece/Pawn.cpp
-    Piece/Pawn.hpp
-    Piece/Pieces.hpp
+    Piece/Pawn.ixx
+    Piece/Pieces.ixx
     Piece/Piece.cpp
-    Piece/Piece.hpp
+    Piece/Piece.ixx
     Piece/Queen.cpp
-    Piece/Queen.hpp
+    Piece/Queen.ixx
     Piece/Rook.cpp
-    Piece/Rook.hpp
+    Piece/Rook.ixx
 )
 set(SOURCES
     ${PIECES}
     Board.cpp
-    Board.hpp
-    Match.cpp
-    Match.hpp
+    Board.ixx
+    # Match.cpp
+    Match.ixx
     Player.cpp
-    Player.hpp
+    Player.ixx
     Primitives.cpp
-    Primitives.hpp
+    Primitives.ixx
     Settings.cpp
-    Settings.hpp
+    Settings.ixx
     Timer.cpp
-    Timer.hpp
+    Timer.ixx
 )
 
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 add_library(${TARGET} SHARED ${SOURCES})
 
+if (MSVC)
+    target_compile_options(${TARGET} PUBLIC "/experimental:module")
+    set_target_properties(${TARGET} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
 target_link_libraries(${TARGET} Chess.Interfaces)
+target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/)

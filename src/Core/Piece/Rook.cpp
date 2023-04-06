@@ -1,7 +1,9 @@
-#include "Rook.hpp"
-#include "../Player.hpp"
+module Rook;
 
-namespace Chess
+import Player;
+import Board;
+
+namespace Core
 {
 bool Rook::isPossibleMove(Coordinates to) const 
 { 
@@ -29,7 +31,7 @@ bool Rook::isPossibleMove(Coordinates to) const
                 coor.x = Horizontal(int(coor.x) + increment);
             }
         }
-        else
+        else // condition is either horizontal or vertical
         {
             increment = int(to.y) - int(coord().y) > 0 ? 1 : -1;
             coor = { coord().x, Vertical(int(coord().y) + increment) };
