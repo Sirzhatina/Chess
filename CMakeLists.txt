@@ -12,3 +12,13 @@ ExecuteConan()
 find_package(SFML REQUIRED)
 
 add_subdirectory(src)
+
+
+install(
+    TARGETS 
+        Chess.CLI 
+        Chess.Core 
+        Chess.Server 
+    DESTINATION 
+        $<IF:$<CONFIG:Debug>,Debug,Release> # CMAKE_INSTALL_PREFIX is prepended here
+)
