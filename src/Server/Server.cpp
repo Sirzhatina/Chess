@@ -65,10 +65,10 @@ void Server::onAcceptor()
     m_selector.add(*m_clients.back());
 }
 
-// void Server::onClient()
-// {
-//     for (auto&& client : m_clients) {}
-// }
+void Server::onClient()
+{
+    for (auto&& client : m_clients) {}
+}
 
 void Server::acceptionHandler(sf::Socket::Status s)
 {
