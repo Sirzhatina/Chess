@@ -3,37 +3,34 @@
 
 namespace Chess
 {
-bool Bishop::isPossibleMove(Coordinates to) const 
+
+bool Bishop::isValidRoute(Coordinates to) const
 {
-    auto isValidRoute = [this, to](int differenceOnX, int differenceOnY)
-    {
-        bool isDiagonal = std::abs(differenceOnX) == std::abs(differenceOnY);
-        return !isSameSquare(to) && !isFriendlySquare(to) && isDiagonal;
-    };
+    int diffOnX = int(to.x) - int(coord().x);
+    int diffOnY = int(to.y) - int(coord().y);
 
-    auto isClearRoute = [this, to](int incX, int incY, Coordinates each)
+    bool isDiagonal = std::abs(diffOnX) == std::abs(diffOnY);
+
+    return !isSameSquare(to) && !isFriendlySquare(to) && isDiagonal;
+}
+
+bool Bishop::isClearRoute(Coordinates to) const
+{
+    int incX = int(to.x) - int(coord().x) > 0 ? 1 : -1;
+    int incY = int(to.y) - int(coord().y) > 0 ? 1 : -1;
+
+    Coordinates start{Horizontal{int(coord().x) + incX}, Vertical{int(coord().y) + incY}};
+
+    while (start != to)
     {
-        while (each != to)
+        if (player()->board()->getPiece(start) != nullptr)
         {
-            if (player()->board()->getPiece(each) != nullptr)
-            {
-                return false;
-            }
-            each.x = Horizontal(int(each.x) + incX);
-            each.y = Vertical(int(each.y) + incY);
+            return false;
         }
-        return true;
-    };
-
-    int diffX = int(to.x) - int(coord().x);
-    int diffY = int(to.y) - int(coord().y);
-
-    int incX = (diffX > 0) ? 1 : -1;
-    int incY = (diffY > 0) ? 1 : -1;
-
-    Coordinates afterSourceSquare{ Horizontal(int(coord().x) + incX), Vertical(int(coord().y) + incY) };
-    
-    return isValidRoute(diffX, diffY) && isClearRoute(incX, incY, afterSourceSquare);
+        start.x = Horizontal{int(start.x) + incX};
+        start.y = Vertical{int(start.y) + incY};
+    }
+    return true;
 }
 
 bool Bishop::isAbleToMove() const

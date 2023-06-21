@@ -5,7 +5,6 @@
 #pragma once
 
 #include "..\Primitives.hpp"
-#include <string>
 #include <vector>
 
 namespace Chess
@@ -22,11 +21,13 @@ protected:
     bool isFriendlySquare(Coordinates square) const;
     bool isSameSquare(Coordinates square)     const { return coord() == square; }
 
+    virtual bool isValidRoute(Coordinates to) const = 0;
+    virtual bool isClearRoute(Coordinates to) const = 0;
 public:
     Piece(const Player* p, Coordinates coord);
     virtual ~Piece() = default;
 
-    virtual bool                     isPossibleMove(Coordinates to) const = 0;
+    bool                     isPossibleMove(Coordinates to) const;
     virtual bool                     isAbleToMove()                 const = 0;
     virtual std::vector<Coordinates> squaresBefore(Coordinates to)  const = 0;
     

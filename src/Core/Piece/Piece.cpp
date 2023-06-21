@@ -21,6 +21,11 @@ bool Piece::isFriendlySquare(Coordinates square) const
     return piece ? _player == piece->_player : false; 
 }
 
+bool Piece::isPossibleMove(Coordinates to) const
+{ 
+    return isValidRoute(to) && isClearRoute(to); 
+}
+
 std::vector<Coordinates> Piece::squaresBefore(Coordinates to) const { return { coord() }; }
 
 void Piece::setCoordinates(Coordinates to)

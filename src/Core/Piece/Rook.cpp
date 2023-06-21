@@ -3,53 +3,57 @@
 
 namespace Chess
 {
-bool Rook::isPossibleMove(Coordinates to) const 
-{ 
-    auto isValidRoute = [this, to](bool horizontal, bool vertical) 
-    { 
-        return !isSameSquare(to) && !isFriendlySquare(to) && (horizontal ^ vertical);
-    };
-    auto isClearRoute = [this, to](bool horizontal)
-    {
-        auto clearSquare = [this](Coordinates c) { return player()->board()->getPiece(c) == nullptr; };
 
-        Coordinates coor;
-        int increment = 0;
-        if (horizontal)
-        {
-            increment = (int(to.x) - int(coord().x) > 0) ? 1 : -1;
-            coor = { Horizontal(int(coord().x) + increment), coord().y };
-            
-            while (coor != to)
-            {
-                if (!clearSquare(coor))
-                {
-                    return false;
-                }
-                coor.x = Horizontal(int(coor.x) + increment);
-            }
-        }
-        else
-        {
-            increment = int(to.y) - int(coord().y) > 0 ? 1 : -1;
-            coor = { coord().x, Vertical(int(coord().y) + increment) };
-            while (coor != to)
-            {
-                if (!clearSquare(coor))
-                {
-                    return false;
-                }
-                coor.y = Vertical(int(coor.y) + increment);
-            }
-        }
-        return true;
-    };
-
+bool Rook::isValidRoute(Coordinates to) const
+{
     bool horizontal = to.x != coord().x;
     bool vertical   = to.y != coord().y;
-    
-    // for second function, it's enough to take any of the boolean values because they are mutually exclusive
-    return isValidRoute(horizontal, vertical) && isClearRoute(horizontal);
+
+    return !isSameSquare(to) && !isFriendlySquare(to) && (horizontal ^ vertical);
+}
+
+bool Rook::isClearRoute(Coordinates to) const
+{
+    bool horizontal = to.x != coord().x;
+    bool vertical   = to.y != coord().y;
+    if (horizontal ^ vertical)
+    {
+        return false;
+    }
+
+    auto isClearSquare = [this](Coordinates c) { return player()->board()->getPiece(c) == nullptr; };
+
+    Coordinates coor;
+    int increment = 0;
+
+    if (horizontal)
+    {
+        increment = (int(to.x) - int(coord().x) > 0) ? 1 : -1;
+        coor = { Horizontal(int(coord().x) + increment), coord().y };
+        
+        while (coor != to)
+        {
+            if (!isClearSquare(coor))
+            {
+                return false;
+            }
+            coor.x = Horizontal(int(coor.x) + increment);
+        }
+    }
+    else
+    {
+        increment = int(to.y) - int(coord().y) > 0 ? 1 : -1;
+        coor = { coord().x, Vertical(int(coord().y) + increment) };
+        while (coor != to)
+        {
+            if (!isClearSquare(coor))
+            {
+                return false;
+            }
+            coor.y = Vertical(int(coor.y) + increment);
+        }
+    }
+    return true;
 }
 
 bool Rook::isAbleToMove() const

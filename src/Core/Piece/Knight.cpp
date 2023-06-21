@@ -3,19 +3,20 @@
 
 namespace Chess
 {
-bool Knight::isPossibleMove(Coordinates to) const 
+
+bool Knight::isValidRoute(Coordinates to) const
 {
-    auto isValidRoute = [this](Coordinates to)
-    {
         if ((std::abs(int(to.y) - int(coord().y)) == 2 && std::abs(int(to.x) - int(coord().x)) == 1) ||
             (std::abs(int(to.x) - int(coord().x)) == 2 && std::abs(int(to.y) - int(coord().y)) == 1))
         {
             return !isFriendlySquare(to) && !isSameSquare(to);
         }
         return false;
-    };
+}
 
-    return isValidRoute(to);
+bool Knight::isClearRoute(Coordinates to) const
+{
+    return true;
 }
 
 bool Knight::isAbleToMove() const

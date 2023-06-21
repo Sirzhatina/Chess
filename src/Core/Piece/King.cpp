@@ -6,18 +6,20 @@
 namespace Chess
 {
 
-bool King::isPossibleMove(Coordinates to) const 
-{ 
-    auto isValidRoute = [this, to]()
+bool King::isValidRoute(Coordinates to) const
+{
+    if (std::abs(int(to.x) - int(coord().x)) > 1 || std::abs(int(to.y) - int(coord().y)) > 1)
     {
-        if (std::abs(int(to.x) - int(coord().x)) > 1 || std::abs(int(to.y) - int(coord().y)) > 1)
-        {
-            return false;
-        }
-        return !isSameSquare(to) && !isFriendlySquare(to);
-    };
-    return isValidRoute(); 
+        return false;
+    }
+    return !isSameSquare(to) && !isFriendlySquare(to);    
 }
+
+bool King::isClearRoute(Coordinates to) const
+{
+    return true;
+}
+
 
 bool King::isAbleToMove() const
 {

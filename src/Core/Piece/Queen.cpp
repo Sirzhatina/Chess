@@ -4,10 +4,14 @@
 
 namespace Chess
 {
+bool Queen::isValidRoute(Coordinates to) const
+{
+    return Bishop{player(), coord()}.isValidRoute(to) || Rook{player(), coord()}.isValidRoute(to);
+}
 
-bool Queen::isPossibleMove(Coordinates to) const 
-{ 
-    return Bishop{ player(), coord() }.isPossibleMove(to) || Rook{ player(), coord() }.isPossibleMove(to); 
+bool Queen::isClearRoute(Coordinates to) const
+{
+    return Bishop{player(), coord()}.isClearRoute(to) || Rook{player(), coord()}.isClearRoute(to);
 }
 
 bool Queen::isAbleToMove() const

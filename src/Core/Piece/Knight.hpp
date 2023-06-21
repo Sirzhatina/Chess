@@ -6,10 +6,13 @@ namespace Chess
 {
 class Knight: public Piece
 {
+protected:
+    bool isValidRoute(Coordinates to) const override;
+    bool isClearRoute(Coordinates to) const override;
+
 public:
     Knight(const Player* p, Coordinates coord): Piece(p, coord) { }
 
-    bool isPossibleMove(Coordinates to) const override;
     bool isAbleToMove() const override;
     std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
