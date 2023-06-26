@@ -12,7 +12,7 @@ bool King::isValidRoute(Coordinates to) const
     {
         return false;
     }
-    return !isSameSquare(to) && !isFriendlySquare(to);    
+    return !isSameSquare(to) && !isFriendlySquare(to);
 }
 
 bool King::isClearRoute(Coordinates to) const
@@ -23,6 +23,6 @@ bool King::isClearRoute(Coordinates to) const
 
 bool King::isAbleToMove() const
 {
-    return Bishop{player(), coord()}.isAbleToMove() || Rook{player(), coord()}.isAbleToMove();
+    return Queen{player(), coord()}.isAbleToMove();
 }
 }
