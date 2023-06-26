@@ -13,3 +13,4 @@ set(SOURCES
 add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} sfml::sfml)
+target_include_directories(${TARGET} PRIVATE ${SFML_INCLUDE_DIR})

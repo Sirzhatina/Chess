@@ -82,5 +82,5 @@ function(ConanInstall)
     )
     set(CONAN_ALREADY_EXECUTED ON CACHE BOOL ${DOCSTR} FORCE)
 
-    list(APPEND CMAKE_PREFIX_PATH ${CONAN_OUTPUT_DIR})
+    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${${prefix}_OUTPUT_DIR} PARENT_SCOPE)
 endfunction()
