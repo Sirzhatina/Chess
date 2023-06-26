@@ -29,8 +29,7 @@ struct Coordinates
 
     bool tryShiftAt(int x_, int y_);
 
-    bool operator==(const Coordinates& c) const;
-    bool operator!=(const Coordinates& c) const;
+    auto operator<=>(const Coordinates& rhs) const = default;
 };
 
 
@@ -39,8 +38,7 @@ struct Move
     Coordinates from;
     Coordinates to;
 
-    bool operator==(const Move& m) const;
-    bool operator!=(const Move& m) const;
+    auto operator<=>(const Move& rhs) const = default;
 };
 
 }

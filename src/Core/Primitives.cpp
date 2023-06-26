@@ -30,11 +30,4 @@ namespace Chess
         *this = *coord;
         return true;
     }
-
-    bool Coordinates::operator==(const Coordinates& c) const { return x == c.x && y == c.y; }
-    bool Coordinates::operator!=(const Coordinates& c) const { return !(*this == c); }
-
-    bool Move::operator==(const Move& m) const { return from == m.from && to == m.to; }
-    bool Move::operator!=(const Move& m) const { return !(*this == m); }
-
 } // namespace Chess
