@@ -20,7 +20,7 @@ namespace Chess
         return {{Horizontal{x_}, Vertical{y_}}};
     }
 
-    bool Coordinates::tryShift(int x_, int y_)
+    bool Coordinates::tryShiftAt(int x_, int y_)
     {
         static auto isOut = [](int first, int sec) { return first + sec < 0 || first + sec >= boardSize; };
         if (isOut(int(x), x_) || isOut(int(y), y_))

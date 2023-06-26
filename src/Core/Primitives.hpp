@@ -27,7 +27,7 @@ struct Coordinates
 
     static std::optional<Coordinates> makeCoord(int x_, int y_) noexcept;
 
-    bool tryShift(int x_, int y_);
+    bool tryShiftAt(int x_, int y_);
 
     bool operator==(const Coordinates& c) const;
     bool operator!=(const Coordinates& c) const;

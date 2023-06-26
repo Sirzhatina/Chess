@@ -36,6 +36,6 @@ public:
     Coordinates   coord()       const { return _currentCoord; }
     bool          isFirstMove() const { return _firstMove; }
     // utility method for isAbleToMove()
-    bool isAbleToSqr(Coordinates to, int x, int y) const { return to.tryShift(x, y) && isPossibleMove(to); }
+    bool isAbleToSqr(Coordinates to, int x, int y) const { return to.tryShiftAt(x, y) && isPossibleMove(to); }
 };
 }
