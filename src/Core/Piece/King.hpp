@@ -14,6 +14,5 @@ public:
     King(const Player* p, Coordinates coord): Piece(p, coord) { }
 
     bool isAbleToMove() const override;
-    std::vector<Coordinates> squaresBefore(Coordinates to) const override;
 };
 }

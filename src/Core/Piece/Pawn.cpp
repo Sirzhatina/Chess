@@ -46,6 +46,4 @@ bool Pawn::isAbleToMove() const
     
     return isAbleToSqr(coord(), -1, incY) || isAbleToSqr(coord(), 0, incY) || isAbleToSqr(coord(), 1, incY);
 }
-
-std::vector<Coordinates> Pawn::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
 }

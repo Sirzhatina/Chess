@@ -35,6 +35,4 @@ bool Knight::isAbleToMove() const
                   isAbleToSqr(coord(), -2, 1)  || isAbleToSqr(coord(), -1, 2);
     return result;
 }
-
-std::vector<Coordinates> Knight::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
 }

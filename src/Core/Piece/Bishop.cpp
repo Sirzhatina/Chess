@@ -44,30 +44,4 @@ bool Bishop::isAbleToMove() const
                   isAbleToSqr(coord(), -1, -1) || isAbleToSqr(coord(), -1, 1);
     return result;
 }
-
-std::vector<Coordinates> Bishop::squaresBefore(Coordinates to) const
-{
-    int diffX = int(to.x) - int(coord().x);
-    int diffY = int(to.y) - int(coord().y);
-
-    std::vector<Coordinates> result{ coord() };
-
-    if (std::abs(diffX) == std::abs(diffY))
-    {
-        int incX = (diffX > 0) ? 1 : -1;
-        int incY = (diffY > 0) ? 1 : -1;
-
-        auto coor = coord();
-        coor.x = Horizontal(int(coor.x) + incX); 
-        coor.y = Vertical(int(coor.y) + incY);
-        while (coor != to)
-        {
-            result.push_back(coor);
-
-            coor.x = Horizontal(int(coor.x) + incX); 
-            coor.y = Vertical(int(coor.y) + incY);
-        }
-    }
-    return result;
-}
 }

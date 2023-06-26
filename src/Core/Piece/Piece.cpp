@@ -26,8 +26,6 @@ bool Piece::isPossibleMove(Coordinates to) const
     return isValidRoute(to) && isClearRoute(to); 
 }
 
-std::vector<Coordinates> Piece::squaresBefore(Coordinates to) const { return { coord() }; }
-
 void Piece::setCoordinates(Coordinates to)
 {
     _firstMove = false;

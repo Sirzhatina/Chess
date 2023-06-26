@@ -25,6 +25,4 @@ bool King::isAbleToMove() const
 {
     return Bishop{player(), coord()}.isAbleToMove() || Rook{player(), coord()}.isAbleToMove();
 }
-
-std::vector<Coordinates> King::squaresBefore(Coordinates to) const { return Piece::squaresBefore(to); }
 }

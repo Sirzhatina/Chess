@@ -69,40 +69,4 @@ bool Rook::isAbleToMove() const
                   isAbleToSqr(coord(), -1, 0);
     return result;
 }
-
-std::vector<Coordinates> Rook::squaresBefore(Coordinates to) const
-{
-    std::vector<Coordinates> result{ coord() };
-
-    bool horizontally = coord().x != to.x;
-    bool vertically   = coord().y != to.y;
-
-    if (!(coord().x != to.x && coord().y != to.y))
-    {
-        auto coor = coord();
-        if (coord().x != to.x)
-        {
-            int incX = int(to.x) - int(coord().x) > 0 ? 1 : -1;
-
-            coor.x = Horizontal(int(coor.x) + incX);
-            while (coor != to)
-            {
-                result.push_back(coor);
-                coor.x = Horizontal(int(coor.x) + incX);
-            }
-        }
-        else
-        {
-            int incY = int(to.y) - int(coord().y) > 0 ? 1 : -1;
-
-            coor.y = Vertical(int(coor.y) + incY);
-            while (coor != to)
-            {
-                result.push_back(coor);
-                coor.y = Vertical(int(coor.y) + incY);
-            }
-        }
-    }
-    return result;
-}
 }

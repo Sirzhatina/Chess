@@ -27,9 +27,8 @@ public:
     Piece(const Player* p, Coordinates coord);
     virtual ~Piece() = default;
 
-    bool                     isPossibleMove(Coordinates to) const;
-    virtual bool                     isAbleToMove()                 const = 0;
-    virtual std::vector<Coordinates> squaresBefore(Coordinates to)  const = 0;
+    bool isPossibleMove(Coordinates to) const;
+    virtual bool isAbleToMove() const = 0;
     
     void setCoordinates(Coordinates to);
 
