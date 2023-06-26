@@ -7,10 +7,10 @@ namespace Chess
 
     Coordinates::Coordinates(int x_, int y_)
     { 
-        if (x_ < 0 || x_ >= boardSize || y_ < 0 || y_ >= boardSize) 
+        auto coord = makeCoord(x_, y_);
+        if (!coord.has_value()) 
             throw std::range_error("Coordinates are out of range");
-        x = Horizontal(x_);
-        y = Vertical(y_);
+        *this = *coord;
     }
 
     std::optional<Coordinates> Coordinates::makeCoord(int x_, int y_) noexcept
@@ -22,14 +22,12 @@ namespace Chess
 
     bool Coordinates::tryShiftAt(int x_, int y_)
     {
-        static auto isOut = [](int first, int sec) { return first + sec < 0 || first + sec >= boardSize; };
-        if (isOut(int(x), x_) || isOut(int(y), y_))
+        auto coord = makeCoord(int(x) + x_, int(y) + y_);
+        if (!coord.has_value())
         {
             return false;
         }
-        x = Horizontal{int(x) + x_};
-        y = Vertical{int(y) + y_};
-
+        *this = *coord;
         return true;
     }
 
