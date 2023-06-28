@@ -63,10 +63,10 @@ bool Rook::isAbleToMove() const
         (-1, 0)   R   (1, 0)
                (0, -1)
     */
-    bool result = isAbleToSqr(coord(), 0, 1)  || 
-                  isAbleToSqr(coord(), 1, 0)  ||
-                  isAbleToSqr(coord(), 0, -1) || 
-                  isAbleToSqr(coord(), -1, 0);
+    bool result = isAbleToMoveToSqr(coord(), 0, 1)  || 
+                  isAbleToMoveToSqr(coord(), 1, 0)  ||
+                  isAbleToMoveToSqr(coord(), 0, -1) || 
+                  isAbleToMoveToSqr(coord(), -1, 0);
     return result;
 }
 }

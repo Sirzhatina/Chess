@@ -40,8 +40,8 @@ bool Bishop::isAbleToMove() const
                  B
         (-1, -1)   (1, -1)
     */
-    bool result = isAbleToSqr(coord(), 1, 1)   || isAbleToSqr(coord(), 1, -1) ||
-                  isAbleToSqr(coord(), -1, -1) || isAbleToSqr(coord(), -1, 1);
+    bool result = isAbleToMoveToSqr(coord(), 1, 1)   || isAbleToMoveToSqr(coord(), 1, -1) ||
+                  isAbleToMoveToSqr(coord(), -1, -1) || isAbleToMoveToSqr(coord(), -1, 1);
     return result;
 }
 }

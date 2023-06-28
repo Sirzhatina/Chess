@@ -235,7 +235,7 @@ std::vector<Coordinates> Player::kingsAccessibleSquares() const
 
     auto addIfAble = [&result, this](Coordinates coord, int x, int y)
     {
-        if (_king->isAbleToSqr(coord, x, y))
+        if (_king->isAbleToMoveToSqr(coord, x, y))
         {
             result.push_back(coord);
         }

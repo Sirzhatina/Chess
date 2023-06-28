@@ -29,10 +29,10 @@ bool Knight::isAbleToMove() const
                  (-1, -2)     (1, -2)
     */
 
-    bool result = isAbleToSqr(coord(), 1, 2)   || isAbleToSqr(coord(), 2, 1)   ||
-                  isAbleToSqr(coord(), 2, -1)  || isAbleToSqr(coord(), 1, -2)  ||
-                  isAbleToSqr(coord(), -1, -2) || isAbleToSqr(coord(), -2, -1) ||
-                  isAbleToSqr(coord(), -2, 1)  || isAbleToSqr(coord(), -1, 2);
+    bool result = isAbleToMoveToSqr(coord(), 1, 2)   || isAbleToMoveToSqr(coord(), 2, 1)   ||
+                  isAbleToMoveToSqr(coord(), 2, -1)  || isAbleToMoveToSqr(coord(), 1, -2)  ||
+                  isAbleToMoveToSqr(coord(), -1, -2) || isAbleToMoveToSqr(coord(), -2, -1) ||
+                  isAbleToMoveToSqr(coord(), -2, 1)  || isAbleToMoveToSqr(coord(), -1, 2);
     return result;
 }
 }

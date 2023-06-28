@@ -78,7 +78,7 @@ public:
     /// @param x Shift on x
     /// @param y Shift on y
     /// @return True if {to.x + x, to.y + y} is a correct coordinates and the piece can move there, false otherwise
-    bool isAbleToSqr(Coordinates to, int x, int y) const { return to.tryShiftAt(x, y) && isPossibleMove(to); }
+    bool isAbleToMoveToSqr(Coordinates to, int x, int y) const { return to.tryShiftAt(x, y) && isPossibleMove(to); }
 
     const Player* player()      const { return _player; }
     Coordinates   coord()       const { return _currentCoord; }

@@ -44,6 +44,6 @@ bool Pawn::isAbleToMove() const
 {
     int incY = (player()->color() == Color::WHITE ? 1 : -1);
     
-    return isAbleToSqr(coord(), -1, incY) || isAbleToSqr(coord(), 0, incY) || isAbleToSqr(coord(), 1, incY);
+    return isAbleToMoveToSqr(coord(), -1, incY) || isAbleToMoveToSqr(coord(), 0, incY) || isAbleToMoveToSqr(coord(), 1, incY);
 }
 }
