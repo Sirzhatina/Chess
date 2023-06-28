@@ -12,7 +12,7 @@ bool King::isValidRoute(Coordinates to) const
     {
         return false;
     }
-    return !isSameSquare(to) && !isFriendlySquare(to);
+    return Piece::isValidRoute(to);
 }
 
 bool King::isClearRoute(Coordinates to) const

@@ -9,7 +9,7 @@ bool Rook::isValidRoute(Coordinates to) const
     bool horizontal = to.x != coord().x;
     bool vertical   = to.y != coord().y;
 
-    return !isSameSquare(to) && !isFriendlySquare(to) && (horizontal ^ vertical);
+    return Piece::isValidRoute(to) && (horizontal ^ vertical);
 }
 
 bool Rook::isClearRoute(Coordinates to) const

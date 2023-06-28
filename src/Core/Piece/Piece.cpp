@@ -15,6 +15,11 @@ Piece::Piece(const Player* p, Coordinates coord)
 , _currentCoord(coord)
 { }
 
+bool Piece::isValidRoute(Coordinates to) const
+{
+    return !isFriendlySquare(to) && !isSameSquare(to);
+}
+
 bool Piece::isFriendlySquare(Coordinates square) const
 {
     auto piece = _player->board()->getPiece(square); 

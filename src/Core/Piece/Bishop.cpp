@@ -11,7 +11,7 @@ bool Bishop::isValidRoute(Coordinates to) const
 
     bool isDiagonal = std::abs(diffOnX) == std::abs(diffOnY);
 
-    return !isSameSquare(to) && !isFriendlySquare(to) && isDiagonal;
+    return Piece::isValidRoute(to) && isDiagonal;
 }
 
 bool Bishop::isClearRoute(Coordinates to) const
