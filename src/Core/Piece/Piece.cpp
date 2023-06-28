@@ -15,6 +15,11 @@ Piece::Piece(const Player* p, Coordinates coord)
 , _currentCoord(coord)
 { }
 
+bool Piece::isAbleToMoveToSqr(Coordinates to, int x, int y) const 
+{ 
+    return to.tryShiftAt(x, y) && isPossibleMove(to); 
+}
+
 bool Piece::isValidRoute(Coordinates to) const
 {
     return !isFriendlySquare(to) && !isSameSquare(to);
