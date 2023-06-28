@@ -45,8 +45,8 @@ private:
     const Color  _color;
     bool         _isCastled{ false };
 
-    mutable std::optional<Move> _validatedMove;
-    mutable std::optional<Move> _validatedCastling;
+    std::optional<Move> _validatedMove;
+    std::optional<Move> _validatedCastling;
 
     template <std::size_t N>
     using Pieces = std::array<std::unique_ptr<Piece>, N>;
