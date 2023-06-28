@@ -107,16 +107,20 @@ bool Player::isValidMove(Move m) const
         auto enemy = board()->enemyOf(this);
         if (p == _king.get() && _king->isFirstMove() && to.y == _king->coord().y)
         {
-            bool isAccessed = enemy->isAccessibleSquare({ Horizontal::E, _king->coord().y });
+            bool isAccessible = enemy->isAccessibleSquare({ Horizontal::E, _king->coord().y });
             if (to.x == Horizontal::G)
             {
-                isAccessed &= enemy->isAccessibleSquare({ Horizontal::F, _king->coord().y });
-                return rightRook->isFirstMove() && rightRook->isPossibleMove({ Horizontal::F, to.y }) && !isAccessed;
+                isAccessible = isAccessible && 
+                               enemy->isAccessibleSquare({ Horizontal::F, _king->coord().y }) &&
+                               enemy->isAccessibleSquare({ to.x, _king->coord().y });
+                return rightRook->isFirstMove() && rightRook->isPossibleMove({ Horizontal::F, to.y }) && !isAccessible;
             }
             if (to.x == Horizontal::C)
             {
-                isAccessed &= enemy->isAccessibleSquare({ Horizontal::D, _king->coord().y });
-                return leftRook->isFirstMove() && leftRook->isPossibleMove({ Horizontal::D, to.y }) && !isAccessed;
+                isAccessible = isAccessible && 
+                               enemy->isAccessibleSquare({ Horizontal::D, _king->coord().y }) &&
+                               enemy->isAccessibleSquare({ to.x, _king->coord().y });
+                return leftRook->isFirstMove() && leftRook->isPossibleMove({ Horizontal::D, to.y }) && !isAccessible;
             }
         }
         return false;
