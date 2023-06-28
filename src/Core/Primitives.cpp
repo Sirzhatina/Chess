@@ -1,4 +1,6 @@
 #include "Primitives.hpp"
+#include <utility>
+#include <stdexcept>
 
 namespace Chess
 {

@@ -3,8 +3,6 @@
 //
 #pragma once
 
-#include <utility>
-#include <stdexcept>
 #include <optional>
 
 namespace Chess
