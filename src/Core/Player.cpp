@@ -68,7 +68,7 @@ Player::Player(Board* b, Color c)
     initOthers();
 }
 
-bool Player::isValidMove(Move m) const
+bool Player::isValidMove(Move m)
 {
     auto findPiece = [this](const Piece* p) -> Piece*
     {

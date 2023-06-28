@@ -19,7 +19,7 @@ class Player
 public:
     Player(Board* b, Color c);
 
-    bool isValidMove(Move m) const;
+    bool isValidMove(Move m);
     std::optional<const Piece*> move();
 
     bool isAccessibleSquare(Coordinates to) const;
