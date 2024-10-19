@@ -10,6 +10,8 @@ cmake-build-debug/
 [Bb]uild/
 [Bb]in/
 
+CMakeUserPresets.json
+
 [Ll]ogs.txt
 
 # Prerequisites
