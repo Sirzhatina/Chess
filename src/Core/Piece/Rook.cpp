@@ -16,7 +16,7 @@ bool Rook::isClearRoute(Coordinates to) const
 {
     bool horizontal = to.x != coord().x;
     bool vertical   = to.y != coord().y;
-    if (horizontal ^ vertical)
+    if (!(horizontal ^ vertical))
     {
         return false;
     }
