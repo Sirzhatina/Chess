@@ -8,6 +8,11 @@ class Server;
 
 class AdminCLI
 {
+public:
+    AdminCLI(std::unique_ptr<Server> managed);
+
+    void manage();
+
 private:
     std::unique_ptr<Server> m_managed;
 
@@ -18,9 +23,4 @@ private:
     };
 
     void updateServerState(const std::string& cmd);
-
-public:
-    AdminCLI(std::unique_ptr<Server> managed);
-
-    void manage();
 };

@@ -2,6 +2,13 @@
 #include "Server.hpp"
 #include "AdminCLI.hpp"
 
+Server::Server(std::uint16_t port) 
+    : m_port{ port }
+    , m_currentState{ StateCode::stopped }
+    , m_acceptor{io} {
+
+}
+
 Server::StateCode Server::run()
 {
     m_currentState = StateCode::inWork;
@@ -18,11 +25,12 @@ Server::StateCode Server::run()
     return m_currentState;
 }
 
+// TODO: implement the method
 void Server::waitForEvents()
 {
-    while (m_isWaiting)
+    while (false)
     {
-        if (m_selector.wait(sf::seconds(m_eventAwaiting)))
+        if (false)
         {
             onReady();
         }
@@ -40,7 +48,7 @@ void Server::updateStateFromCLI()
 }
 void Server::onReady()
 {
-    if (m_selector.isReady(m_acceptor))
+    if (true)
     {
         onAcceptor();
     }
@@ -52,17 +60,16 @@ void Server::onReady()
 
 void Server::onAcceptor()
 {
-    m_clients.emplace_back(std::make_unique<sf::TcpSocket>());
     try
     {
-        acceptionHandler(m_acceptor.accept(*m_clients.back()));   
+        //acceptionHandler(m_acceptor.accept(*m_clients.back()));   
     }
     catch(const std::runtime_error& e)
     {
         m_clients.pop_back();
         throw e;
     }
-    m_selector.add(*m_clients.back());
+    //m_selector.add(*m_clients.back());
 }
 
 void Server::onClient()
@@ -70,15 +77,8 @@ void Server::onClient()
     for (auto&& client : m_clients) {}
 }
 
-void Server::acceptionHandler(sf::Socket::Status s)
+void Server::acceptionHandler()
 {
-    using enum sf::Socket::Status;
-    switch (s)
-    {
-    case Error:        throw std::runtime_error{"Error when connecting occured"};
-    case Disconnected: throw std::runtime_error{"Disconnected"};
-    default:           break;
-    }
 }
 
 void Server::onDisconnection()
@@ -86,6 +86,6 @@ void Server::onDisconnection()
     for (auto&& client : m_clients)
     {
         // TODO: Notify the peer on disconnecting
-        client->disconnect();
+        //client->disconnect();
     }
 }
